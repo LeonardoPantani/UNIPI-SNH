@@ -1,0 +1,32 @@
+services:
+ db:
+  image: mysql:9.1.0
+  container_name: php_snh_db
+  ports:
+   - "127.0.0.1:3306:3306"
+  volumes:
+   - ./db:/var/lib/mysql
+  environment:
+   MYSQL_ROOT_PASSWORD: root
+   MYSQL_DATABASE: snh_db
+   MYSQL_USER: dev
+   MYSQL_PASSWORD: dev
+
+ app:
+  image: php_snh
+  build: .
+  container_name: php_snh_app
+  volumes:
+   - ./app:/var/www/html/
+  environment:
+   DB_HOST: db
+   DB_USER: root
+   DB_PSW: root
+   DB_NAME: snh_db
+  ports:
+   - "127.0.0.1:8080:80"
+  depends_on:
+   - db
+  links:
+   - db
+  tty: true
