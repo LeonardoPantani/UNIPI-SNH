@@ -6,6 +6,22 @@ Al primo avvio, creare la cartella `db` ed eseguire
 ```
 docker compose build
 ```
+Successivamente, creare la cartella `env` e inserire i file `db.env`
+```
+MYSQL_ROOT_PASSWORD=<root_password>
+MYSQL_DATABASE=snh_db
+MYSQL_USER=<non_root_user>
+MYSQL_PASSWORD=<non_root_password>
+```
+e `app.env`
+```
+DB_HOST=db
+DB_NAME=snh_db
+DB_USER=<user>
+DB_PASSWORD=<password>
+```
+Ad esempio, `MYSQL_ROOT_PASSWORD=root`, `DB_USER=root` e `DB_PASSWORD=root`. Per `MYSQL_USER` e `MYSQL_PASSWORD` inserisci stinghe a piacere.
+
 Di seguito sono riportati i comandi principali per interagire con i container docker.
 
 ```
