@@ -55,5 +55,5 @@ just start     # docker compose start
 just stop      # docker compose stop
 just ps        # docker compose ps -a
 just app       # apre una shell sul container php_snh_app
-just db        # apre una shell sul container php_snh_db (usare comando mysql per acceder al db)
+just db        # apre una shell sul container php_snh_db (usare comando mysql per accedere al db)
 ```
