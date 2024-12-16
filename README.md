@@ -43,7 +43,11 @@ docker exec -it <container_name> /bin/bash      # per aprire una shell su un con
 docker exec -it snh_db mysql -u root -p         # per accedere al database (vedi MYSQL_ROOT_PASSWORD in compose.yml per la password)
 ```
 
-Di seguito sono riportati alcuni comandi utili per interagire con il database (NOTA: ogni comando deve terminare con `;`)
+Di seguito sono riportati alcuni comandi utili per interagire con il database
+
+> [!NOTE]
+> Ogni comando deve terminare con `;`
+
 ```
 show databases; 
 use snh_db; 
