@@ -1,24 +1,46 @@
 services:
  db:
   image: mysql:9.1.0
-  container_name: php_snh_db
-  env_file: "env/db.env"
+  container_name: snh_db
+  env_file: env/db.env
   ports:
-   - "127.0.0.1:3306:3306"
+   - '127.0.0.1:3306:3306'
   volumes:
-   - ./db:/var/lib/mysql
+   - db_volume:/var/lib/mysql
+  healthcheck:
+   test: ['CMD', 'mysqladmin', 'ping', '-h', '127.0.0.1', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
+   start_period: 5s
+   interval: 5s
+   timeout: 5s
+   retries: 4
 
  app:
-  image: php_snh
-  build: .
-  container_name: php_snh_app
-  env_file: "env/app.env"
-  volumes:
-   - ./app:/var/www/html/
+  build: 
+    context: .
+    args:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+      APACHE_APP_ROOT: /var/www/html
+  container_name: snh_app
+  env_file: env/app.env
   ports:
-   - "127.0.0.1:8080:80"
+   - '127.0.0.1:8080:80'
+   - '127.0.0.1:8443:443'
   depends_on:
-   - db
-  links:
-   - db
+    db:
+      condition: service_healthy
+  develop:
+    watch:
+      - action: sync
+        path: ./app
+        target: /var/www/html
+        ignore:
+          - libs/composer.json
+          - public/.htaccess
+      - action: rebuild
+        path: ./app/libs/composer.json
+      - action: rebuild
+        path: ./app/public/.htaccess
   tty: true
+
+volumes:
+  db_volume:
