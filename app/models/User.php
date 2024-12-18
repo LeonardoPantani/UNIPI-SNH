@@ -15,7 +15,7 @@ class User
 
     public function getAllUsers()
     {
-        $sql = "SELECT * FROM user";
+        $sql = "SELECT * FROM users";
         $result = $this->conn->query($sql);
 
         if ($result->num_rows > 0) {

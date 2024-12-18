@@ -1,6 +1,7 @@
 services:
  db:
-  image: mysql:9.1.0
+  build: 
+    context: ./database
   container_name: snh_db
   env_file: database/db.env
   ports:

@@ -6,20 +6,20 @@
     <title><?php echo isset($title) ? $title : 'App'; ?></title>
 
     <!-- Bulma CSS -->
-    <link rel="stylesheet" href="../public/assets/stylesheets/main.css">
+    <link rel="stylesheet" href="/assets/stylesheets/main.css">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../public/assets/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
 
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="../../public/assets/stylesheets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/assets/stylesheets/fontawesome/css/all.min.css">
 </head>
 <body>
     <header>
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="../public/storyforge/index.php">
-                    <img src="../public/assets/images/logo_extended.webp" alt="Logo">
+                <a class="navbar-item" href="/">
+                    <img src="/assets/images/logo_extended.webp" alt="Logo">
                 </a>
             
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="test">
@@ -133,6 +133,6 @@
       </footer>
 
     <!-- Generic JavaScript -->
-    <script src="../public/assets/javascript/generic.js"></script>
+    <script src="/assets/javascript/generic.js"></script>
 </body>
 </html>
