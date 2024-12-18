@@ -2,7 +2,7 @@ services:
  db:
   image: mysql:9.1.0
   container_name: snh_db
-  env_file: env/db.env
+  env_file: database/db.env
   ports:
    - '127.0.0.1:3306:3306'
   volumes:
@@ -21,7 +21,7 @@ services:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
       APACHE_APP_ROOT: /var/www/html
   container_name: snh_app
-  env_file: env/app.env
+  env_file: app/app.env
   ports:
    - '127.0.0.1:8080:80'
    - '127.0.0.1:8443:443'
