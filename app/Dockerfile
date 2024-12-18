@@ -27,7 +27,7 @@ RUN docker-php-ext-install mysqli \
 	&& docker-php-ext-enable mysqli
 
 # copy app files
-COPY ./app/ ${APACHE_APP_ROOT}
+COPY ./src/ ${APACHE_APP_ROOT}
 
 # install php libraries from composer.json
 RUN composer update --no-cache --working-dir=libs
