@@ -1,3 +1,2 @@
 specs/
-env/
-.env
+*.env
