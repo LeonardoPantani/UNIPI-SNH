@@ -100,6 +100,13 @@ ALTER INSTANCE RELOAD KEYRING;
 ```
 per eseguire a runtime il reload della componente `component_keyring_file`.  
 
+## Logs
+Le operazioni eseguite dall'applicazione sono monitorate attraverso un sistema di logging. Per estrarre dal container
+i file di log, eseguire
+```
+docker cp snh_app:/var/www/html/logs .
+```
+
 ## justfile
 I comandi di Docker possono essere eseguiti anche attraverso [just](https://github.com/casey/just). 
 Il `justfile` presente nella repo permette di eseguire i seguenti comandi.
