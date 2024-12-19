@@ -2,21 +2,32 @@
 Progetto per il corso di System and Network Hacking del Corso di Cybersecurity dell'Università di Pisa.
 
 ## Docker
-Al primo avvio, creare la cartella `env` e inserire i file `db.env`
+Al primo avvio, inserire il file `db.env` nella cartella `database`:
 ```
 MYSQL_ROOT_PASSWORD=<root_password>
 MYSQL_DATABASE=snh_db
 MYSQL_USER=<non_root_user>
 MYSQL_PASSWORD=<non_root_password>
 ```
-e `app.env`
+Ad esempio, `MYSQL_ROOT_PASSWORD=root`, `DB_USER=root` e `DB_PASSWORD=root`. Per `MYSQL_USER` e `MYSQL_PASSWORD` inserire stinghe a piacere. 
+
+
+Inserire anche il file `app.env` nella cartella `app`:
 ```
 DB_HOST=db
 DB_NAME=snh_db
 DB_USER=<user>
 DB_PASSWORD=<password>
+
+MAIL_HOST=<mail_server_address>
+MAIL_PORT=<mail_server_port>
+MAIL_ADDRESS=<mail_address>
+MAIL_PASSWORD=<mail_address_password>
 ```
-Ad esempio, `MYSQL_ROOT_PASSWORD=root`, `DB_USER=root` e `DB_PASSWORD=root`. Per `MYSQL_USER` e `MYSQL_PASSWORD` inserire stinghe a piacere. Successivamente, eseguire
+
+
+
+Successivamente, eseguire
 ```
 docker compose up --build
 ```
