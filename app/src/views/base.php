@@ -82,26 +82,26 @@
                     <div class="navbar-item">
                         <div class="buttons">
                             <?php if(1==2) { ?>
-                                <a class="button is-primary" href="TODO">
+                                <a class="button is-primary" href="#TODO">
                                     <span class="icon">
                                         <i class="fa-solid fa-circle-user"></i>
                                     </span>
                                     <span><strong>TEST</strong></span>
                                 </a>
-                                <a class="button is-danger" href="TODO">
+                                <a class="button is-danger" href="#TODO">
                                     <span class="icon">
                                         <i class="fa-solid fa-door-open"></i>
                                     </span>
                                     <span>Log out</span>
                                 </a>
                             <?php } else { ?>
-                                <a class="button is-primary" href="TODO ">
+                                <a class="button is-primary" href="#TODO">
                                     <span class="icon">
                                         <i class="fa-solid fa-pen-fancy"></i>
                                     </span>
                                     <strong>Register</strong>
                                 </a>
-                                <a class="button is-light" href="TODO">
+                                <a class="button is-light" href="#TODO">
                                     <span class="icon">
                                         <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                     </span>

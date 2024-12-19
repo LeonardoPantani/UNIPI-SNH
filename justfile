@@ -1,4 +1,4 @@
-set dotenv-load
+set dotenv-filename := '.just.env'
 
 alias rs := restart
 alias w  := watch
@@ -254,23 +254,29 @@ exec *args='': up
 		exit 1
 	fi
 
+	command=""
 	if [ -n "$1" ]; then 
 		command="$@"
-	else
-		echo "Getting into ${container_name}..."
-
-		case "${container_name#*_}" in
-			app)
-				docker exec -it "${container_name}" /bin/bash
-				;;
-			db)
-				docker exec -it "${container_name}" /bin/bash -c 'mysql -u root -proot'
-				;;
-			*)
-				docker exec -it "${container_name}" /bin/bash
-				;;
-		esac
 	fi
+
+	echo "Getting into ${container_name}..."
+
+	case "${container_name#*_}" in
+		app)
+			[ -n "$command" ] \
+				&& docker exec -it "${container_name}" $command \
+				|| docker exec -it "${container_name}" /bin/bash
+			;;
+		db)
+			[ -n "$command" ] \
+				&& docker exec -it "${container_name}" $command \
+				|| docker exec -it "${container_name}" /bin/bash -c 'mysql -u root -proot'
+			;;
+		*)
+			echo 'Error: unknown container'
+			exit 1
+			;;
+	esac
 
 # build images
 build:
