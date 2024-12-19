@@ -22,6 +22,10 @@ RUN a2enmod ssl
 # apache2 HTTPS env
 RUN a2ensite default-ssl.conf
 
+# install pdo and pdo_mysql modules
+RUN docker-php-ext-install pdo pdo_mysql \
+    && docker-php-ext-enable pdo pdo_mysql
+
 # install mysqli module
 RUN docker-php-ext-install mysqli \
 	&& docker-php-ext-enable mysqli

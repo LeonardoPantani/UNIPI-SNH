@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="/assets/stylesheets/fontawesome/css/all.min.css">
 </head>
+
 <body>
     <header>
         <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -21,24 +23,24 @@
                 <a class="navbar-item" href="/">
                     <img src="/assets/images/logo_extended.webp" alt="Logo">
                 </a>
-            
+
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="test">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
                 </a>
             </div>
-            
+
             <div id="test" class="navbar-menu">
-                <div class="navbar-start">           
+                <div class="navbar-start">
                     <a class="navbar-item">
                         <span class="icon">
                             <i class="fa-solid fa-book"></i>
                         </span>
                         <span>Test</span>
                     </a>
-                
+
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
                             <span class="icon">
@@ -46,7 +48,7 @@
                             </span>
                             <span>More</span>
                         </a>
-                
+
                         <div class="navbar-dropdown">
                             <a class="navbar-item">
                                 <span class="icon">
@@ -76,12 +78,12 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Navbar lato destro -->
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                            <?php if(1==2) { ?>
+                            <?php if (1 == 2) { ?>
                                 <a class="button is-primary" href="#TODO">
                                     <span class="icon">
                                         <i class="fa-solid fa-circle-user"></i>
@@ -125,14 +127,15 @@
 
     <footer class="footer">
         <div class="content has-text-centered">
-          <p>
-            <strong>StoryForge</strong> by <i>Leonardo Pantani, Christian Sabella & Gioele Dimilta</i>.
-            The <a href="https://github.com/LeonardoPantani/UNIPI-SNH">source code</a> is licensed <a href="https://www.gnu.org/licenses/gpl-3.0.html#license-text">GPL-3.0</a>.
-          </p>
+            <p>
+                <strong>StoryForge</strong> by <i>Leonardo Pantani, Christian Sabella & Gioele Dimilta</i>.
+                The <a href="https://github.com/LeonardoPantani/UNIPI-SNH">source code</a> is licensed <a href="https://www.gnu.org/licenses/gpl-3.0.html#license-text">GPL-3.0</a>.
+            </p>
         </div>
-      </footer>
+    </footer>
 
     <!-- Generic JavaScript -->
     <script src="/assets/javascript/generic.js"></script>
 </body>
+
 </html>

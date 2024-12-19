@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 require_once __DIR__ . '/../models/User.php';
@@ -18,11 +19,10 @@ class HomeController
 
         $logger = getLogger('home');
 
-        $logger->info('This is a debug message', ['users' => $users], ['extra information'=> 'Nothing']);
+        $logger->info('This is a debug message', ['users' => $users], ['extra information' => 'Nothing']);
 
         # echo sendEmail("leonardo.pantani@gmail.com", "This is a test", "<h1>Hello</h1><p>How are you?</p>");
 
         include __DIR__ . '/../views/home.php';
     }
 }
-?>

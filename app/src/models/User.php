@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+use PDO;
 
 require_once __DIR__ . '/../libs/utils/db/db_connect.php';
 
@@ -9,23 +11,18 @@ class User
 
     public function __construct()
     {
-        global $conn; 
-        $this->conn = $conn;
+        $this->conn = db_connect();
     }
 
     public function getAllUsers()
     {
         $sql = "SELECT * FROM users";
-        $result = $this->conn->query($sql);
+        
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
 
-        if ($result->num_rows > 0) {
-            $users = [];
-            while ($row = $result->fetch_assoc()) {
-                $users[] = $row;
-            }
-            return $users;
-        }
-        return [];
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $users ?: [];
     }
 }
-?>

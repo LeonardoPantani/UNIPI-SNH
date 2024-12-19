@@ -5,4 +5,3 @@ use App\Controllers\HomeController;
 
 $controller = new HomeController();
 $controller->index();
-?>

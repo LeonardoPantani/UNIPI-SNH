@@ -4,6 +4,7 @@ FROM mysql:9.1.0
 RUN microdnf install binutils
 
 COPY ./init.sql /docker-entrypoint-initdb.d
+COPY ./mock.sql /docker-entrypoint-initdb.d
 
 COPY <<-'EOT' /usr/sbin/mysqld.my
     {

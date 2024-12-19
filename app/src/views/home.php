@@ -8,12 +8,12 @@ ob_start();
 <h1>Benvenuto nella Homepage</h1>
 <p>Questa è la pagina principale dell'applicazione.</p>
 
+<h4>Lista di utenti</h4>
 <?php
-if(count($users)) {
-    foreach($users as &$value) {
+if (count($users)) {
+    foreach ($users as &$value) {
         echo $value["username"] . "<br>";
     }
-    
 } else {
     echo "Non ci sono utenti";
 }
