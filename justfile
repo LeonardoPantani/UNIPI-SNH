@@ -270,7 +270,7 @@ exec *args='': up
 		db)
 			[ -n "$command" ] \
 				&& docker exec -it "${container_name}" $command \
-				|| docker exec -it "${container_name}" /bin/bash -c 'mysql -u root -proot'
+				|| docker exec -it "${container_name}" /bin/bash -c 'mysql -u root -proot snh_db'
 			;;
 		*)
 			echo 'Error: unknown container'
