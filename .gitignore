@@ -1,2 +1,4 @@
 specs/
 **/*.env
+vendor/
+**/composer.lock
