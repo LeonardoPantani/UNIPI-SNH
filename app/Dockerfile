@@ -36,3 +36,5 @@ RUN composer update --no-cache --working-dir=libs
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 RUN sed -i "s|^\(.*\)\(DocumentRoot\) .*|\1\2 ${APACHE_DOCUMENT_ROOT}|g" /etc/apache2/sites-available/*.conf
+
+RUN chown -R www-data:www-data .
