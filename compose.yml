@@ -7,7 +7,8 @@ services:
   ports:
    - '127.0.0.1:3306:3306'
   volumes:
-   - db_volume:/var/lib/mysql
+   - db_data:/var/lib/mysql
+   - db_keyring:/var/lib/mysql-keyring
   healthcheck:
    test: ['CMD', 'mysqladmin', 'ping', '-h', '127.0.0.1', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
    start_period: 5s
@@ -44,4 +45,5 @@ services:
   tty: true
 
 volumes:
-  db_volume:
+  db_data:
+  db_keyring:
