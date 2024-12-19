@@ -25,7 +25,7 @@ function getLogger(string $component): Logger
 
     // Create a new logger for the given component
     $logger = new Logger($component);
-    
+
     // Add a handler to write logs to the file
     $logger->pushHandler(new StreamHandler($logFile, Logger::DEBUG));
 

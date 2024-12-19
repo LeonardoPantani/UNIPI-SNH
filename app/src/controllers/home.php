@@ -18,7 +18,7 @@ class HomeController
 
         $logger = getLogger('home');
 
-        $logger->debug('This is a debug message');
+        $logger->info('This is a debug message', ['users' => $users], ['extra information'=> 'Nothing']);
 
         # echo sendEmail("leonardo.pantani@gmail.com", "This is a test", "<h1>Hello</h1><p>How are you?</p>");
 
