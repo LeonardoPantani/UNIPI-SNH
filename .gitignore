@@ -2,3 +2,4 @@ specs/
 **/*.env
 vendor/
 **/composer.lock
+doc/specs.pdf
