@@ -15,7 +15,10 @@ if (count($users)) {
 } else {
     echo "Non ci sono utenti";
 }
+
 ?>
+<h3>QUI SOTTO VEDRAI I DATI DI $_SESSION</h3>
+<?php var_dump($_SESSION); ?>
 
 <?php
 // CODICE DELLA PAGINA FINISCE QUI

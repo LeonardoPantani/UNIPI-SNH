@@ -103,7 +103,7 @@
                                     </span>
                                     <strong>Register</strong>
                                 </a>
-                                <a class="button is-light" href="#TODO">
+                                <a class="button is-light" href="./login.php">
                                     <span class="icon">
                                         <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                     </span>

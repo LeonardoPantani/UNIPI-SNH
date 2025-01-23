@@ -20,7 +20,7 @@ class HomeController
 
         $logger->info('This is a debug message', ['users' => $users], ['extra information' => 'Nothing']);
 
-        echo sendEmail("leonardo.pantani@gmail.com", "This is a test", "<h1>Hello</h1><p>How are you?</p>");
+        #echo sendEmail("leonardo.pantani@gmail.com", "This is a test", "<h1>Hello</h1><p>How are you?</p>");
 
         include __DIR__ . '/../views/home.php';
     }

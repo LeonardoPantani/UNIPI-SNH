@@ -24,15 +24,15 @@ abstract class DBConnection {
         return $conn;
     }
 
-    protected static function db_fetchOne(string $sql, array ... $params) : object {
+    protected static function db_fetchOne(string $sql, string ... $params) : ?object {
         $conn = self::db_connect();
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute($params);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    protected static function db_fetchAll(string $sql, array ... $params) : array {
+    protected static function db_fetchAll(string $sql, string ... $params) : array {
         $conn = self::db_connect();
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute($params);
@@ -40,12 +40,20 @@ abstract class DBConnection {
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
-    protected static function db_getOutcome(string $sql, array ... $params) : bool {
+    protected static function db_getOutcome(string $sql, string ... $params) : bool {
         $conn = self::db_connect();
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute($params);
 
         return $res;
+    }
+
+    protected static function db_numRows(string $sql, string ... $params) : int {
+        $conn = self::db_connect();
+        $stmt = $conn->prepare($sql);
+        $res = $stmt->execute($params);
+
+        return count($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []);
     }
 
     private static function db_disconnect(PDO $conn) : void {

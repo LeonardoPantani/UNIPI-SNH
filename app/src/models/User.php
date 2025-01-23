@@ -6,10 +6,7 @@ require_once __DIR__ . '/../models/DBConnection.php';
 
 use App\Models\DBConnection;
 
-class User extends DBConnection
-{
-    private $conn;
-
+class User extends DBConnection {
     private string $uuid;
     private string $email;
     private string $username;
@@ -57,6 +54,15 @@ class User extends DBConnection
     private static function getRoleByName($role_name) : int {
         return self::db_fetchOne("SELECT id FROM role WHERE name = ?", $role_name)["role_id"];
     }
+
+    public static function usernameExists($username): bool {
+        return true;
+        return self::db_numRows("SELECT id FROM users WHERE username = ?", $username) > 0;
+    }
+
+    public static function authenticate($username, $password) : ?object {
+        return self::db_fetchOne("SELECT id FROM users WHERE username = ? AND password_hash = ?", $username, $password);
+    }    
 
     public static function addUser($email, $username, $password) : bool {
         return self::db_getOutcome(
