@@ -5,9 +5,11 @@ namespace App\Controllers;
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../libs/utils/validator/validator.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
+require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
 
 use App\Models\User;
 use App\Utils\Validator;
+use App\Utils\ViewManager;
 
 class LoginController
 {
@@ -23,6 +25,7 @@ class LoginController
         );
     }
 
+    // GET /storyforge/login.php
     public function new()
     {
         $users = User::getAllUsers();
@@ -34,13 +37,11 @@ class LoginController
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        $username_pattern = Validator::USERNAME_REGEX_HTML;
-
-        include __DIR__ . '/../views/login_view.php';
+        ViewManager::render("login", ["flash" => $flash, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
+    // POST /storyforge/login.php
     public function login() {
-        $flash = array();
         $logger = getLogger('login');
         $logger->info('POST /storyforge/login.php');
 
@@ -50,6 +51,20 @@ class LoginController
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to login but is already authenticated", ['username' => $username]);
             $_SESSION['flash']['error'] = 'You are already authenticated.';
+            $this->new();
+            return;
+        }
+
+        if(!Validator::usernameValidation($username)) {
+            $logger->info('Invalid username');
+            $_SESSION['flash']['error'] = 'Username length must be at least '. Validator::USERNAME_MIN_LENGTH .' chars and less than '. Validator::USERNAME_MAX_LENGTH . ' and can only contain letters, numbers, dashes and underscores.';
+            $this->new();
+            return;
+        }
+
+        if(!Validator::passwordValidation($password)) {
+            $logger->info('Invalid password');
+            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
             $this->new();
             return;
         }
@@ -72,7 +87,7 @@ class LoginController
 
         session_regenerate_id(true);
         $_SESSION["user"] = $user->getId();
-        $_SESSION['flash']['success'] = 'Authenticated as '. $user->getUsername();
+        $_SESSION['flash']['success'] = 'Authenticated as <b>'. $user->getUsername() . '</b>.';
 
         header("Location: ". "/");
     }

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-require_once __DIR__ . '/../models/DBConnection.php';
+require_once __DIR__ . '/../libs/utils/db/DBConnection.php';
 
-use App\Models\DBConnection;
+use App\Utils\DBConnection;
 
 class User extends DBConnection {
     private int $id;
@@ -54,7 +54,7 @@ class User extends DBConnection {
     }
 
     public static function newUserInstance($email, $username, $password) : User {
-        return new User(null, $email, $username, $password, null, self::getRoleByName("nonpremium"));
+        return new User(null, null, $email, $username, $password, null, self::getRoleByName("nonpremium"));
     }
 
     private static function getRoleByName($role_name) : int {

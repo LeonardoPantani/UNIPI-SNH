@@ -8,11 +8,15 @@ require_once __DIR__ . '/../libs/utils/mail/sendmail.php';
 
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 
+require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
+
 use App\Models\User;
+use App\Utils\ViewManager;
 
 class HomeController
 {
-    public function index()
+    // GET /storyforge/
+    public function new()
     {
         $users = User::getAllUsers();
 
@@ -25,6 +29,6 @@ class HomeController
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        include __DIR__ . '/../views/home_view.php';
+        ViewManager::render("home", ["session" => $_SESSION, "flash" => $flash, "users" => $users]);
     }
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($title) ? $title : 'App'; ?></title>
+    <title><?= isset($title) ? $title : 'App'; ?></title>
 
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="/assets/stylesheets/main.css">
@@ -118,8 +118,8 @@
     </header>
 
     <main>
-        <?php if(isset($flash)) :?>
-            <?php foreach($flash as $key => $msg): ?>
+        <?php if(isset($vars["flash"])) :?>
+            <?php foreach($vars["flash"] as $key => $msg): ?>
                 <?php $class = ($key === 'success') ? 'is-success' : 'is-danger' ?>
 
                 <div class="container pt-5" style="width: 30%">
@@ -133,7 +133,11 @@
 
         <section class="section">
             <div class="container">
-                <?php echo $content; ?>
+                <div class="columns is-centered">
+                    <div class="column is-half">
+                        <?= $content; ?>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

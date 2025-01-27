@@ -6,9 +6,11 @@ require_once __DIR__ . '/../libs/utils/validator/validator.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 require_once __DIR__ . '/../libs/utils/mail/sendmail.php';
 require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
 
 use App\Models\User;
 use App\Utils\Validator;
+use App\Utils\ViewManager;
 
 class UserController {
     private array $server;
@@ -31,14 +33,11 @@ class UserController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        $username_pattern = Validator::USERNAME_REGEX_HTML;
-
-        include __DIR__ . '/../views/registration_view.php';
+        ViewManager::render("registration", ["flash" => $flash, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
     // POST /storyforge/registration.php
     function create() {
-        $flash = array();
         $logger = getLogger('registration');
         $logger->info('POST /storyforge/registration.php');
 
@@ -49,49 +48,43 @@ class UserController {
 
         if(!Validator::emailValidation($email)) {
             $logger->info('Invalid email');
-            $flash['error'] = 'Invalid email';
-            include __DIR__ . '/../views/registration_view.php';
-
+            $_SESSION['flash']['error'] = 'Invalid email';
+            $this->new();
             return;
         }
 
         if(!Validator::usernameValidation($username)) {
             $logger->info('Invalid username');
-            $flash['error'] = 'Username length must be at least '. Validator::USERNAME_MIN_LENGTH .' chars but less than '. Validator::USERNAME_MAX_LENGTH . '. Username field only accepts letters, numbers, dashes and underscores.';
-            include __DIR__ . '/../views/registration_view.php';
-
+            $_SESSION['flash']['error'] = 'Username length must be at least '. Validator::USERNAME_MIN_LENGTH .' chars and less than '. Validator::USERNAME_MAX_LENGTH . ' and can only contain letters, numbers, dashes and underscores.';
+            $this->new();
             return;
         }
 
         if(!Validator::passwordValidation($password)) {
             $logger->info('Invalid password');
-            $flash['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
-            include __DIR__ . '/../views/registration_view.php';
-
+            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $this->new();
             return;
         }
 
         if($password !== $password_confirm) {
             $logger->info('Invalid confirm password');
-            $flash['error'] = 'Mismatch between password and password confirm';
-            include __DIR__ . '/../views/registration_view.php';
-
+            $_SESSION['flash']['error'] = 'Mismatch between password and password confirm';
+            $this->new();
             return;
         }
 
         if(User::usernameExists($username)) {
             $logger->info('Username already taken');
-            $flash['error'] = 'Username already taken';
-            include __DIR__ . '/../views/registration_view.php';
-
+            $_SESSION['flash']['error'] = 'Username already taken';
+            $this->new();
             return;
         }
 
         if(User::emailExists($email)) {
             $logger->info('Email already taken');
-            $flash['error'] = 'Email already taken';
-            include __DIR__ . '/../views/registration_view.php';
-
+            $_SESSION['flash']['error'] = 'Email already taken';
+            $this->new();
             return;
         }
 
@@ -100,9 +93,8 @@ class UserController {
 
         if(!$res) {
             $logger->info('Database error during user registration');
-            $flash['error'] = 'Invalid user data';
-            include __DIR__ . '/../views/registration_view.php';
-
+            $_SESSION['flash']['error'] = 'Invalid user data';
+            $this->new();
             return;
         }
 
@@ -118,8 +110,7 @@ class UserController {
         sendEmail($email, $subject, $body)
         */
 
-        $_SESSION['flash']['success'] = 'User created!';
+        $_SESSION['flash']['success'] = 'User <b>'.$username.'</b> created!';
         header("Location: ". "login.php");
     }
-
 }

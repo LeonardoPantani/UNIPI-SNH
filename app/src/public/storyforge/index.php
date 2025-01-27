@@ -5,4 +5,4 @@ use App\Controllers\HomeController;
 session_start();
 
 $controller = new HomeController();
-$controller->index();
+$controller->new();

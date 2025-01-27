@@ -3,22 +3,23 @@ $title = "Homepage";
 ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
 ?>
-<h1>Benvenuto nella Homepage</h1>
-<p>Questa è la pagina principale dell'applicazione.</p>
+<h1 class="title">Welcome on the Homepage</h1>
+<p class="subtitle">This is the main page of the app.</p>
 
-<h4>Lista di utenti</h4>
+<h4>Users list</h4>
 <?php
-if (count($users)) {
-    foreach ($users as &$value) {
+if (count($vars["users"])) {
+    foreach ($vars["users"] as &$value) {
         echo $value->getUsername() . "<br>";
     }
 } else {
-    echo "Non ci sono utenti";
+    echo "No users";
 }
 
 ?>
-<h3>QUI SOTTO VEDRAI I DATI DI $_SESSION</h3>
-<?php var_dump($_SESSION); ?>
+
+<h3>$vars["session"] content:</h3>
+<?php var_dump($vars["session"]); ?>
 
 <?php
 // CODICE DELLA PAGINA FINISCE QUI
