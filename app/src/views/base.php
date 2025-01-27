@@ -90,7 +90,7 @@
                                     </span>
                                     <span><strong>TEST</strong></span>
                                 </a>
-                                <a class="button is-danger" href="./logout.php">
+                                <a class="button is-danger" id="logout-button">
                                     <span class="icon">
                                         <i class="fa-solid fa-door-open"></i>
                                     </span>

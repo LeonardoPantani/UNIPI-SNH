@@ -28,6 +28,9 @@ class UserController {
         $logger = getLogger('registration');
         $logger->info('GET /storyforge/registration.php');
 
+        $flash = $_SESSION['flash'] ?? [];
+        unset($_SESSION['flash']);
+
         include __DIR__ . '/../views/registration_view.php';
     }
 

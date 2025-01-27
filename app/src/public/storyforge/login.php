@@ -7,7 +7,7 @@ session_start();
 $controller = new LoginController($_SERVER, $_GET, $_POST);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $controller->index();
+    $controller->new();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller->login();
 } else {

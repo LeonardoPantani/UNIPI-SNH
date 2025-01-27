@@ -22,6 +22,9 @@ class HomeController
 
         #echo sendEmail("leonardo.pantani@gmail.com", "This is a test", "<h1>Hello</h1><p>How are you?</p>");
 
+        $flash = $_SESSION['flash'] ?? [];
+        unset($_SESSION['flash']);
+
         include __DIR__ . '/../views/home.php';
     }
 }

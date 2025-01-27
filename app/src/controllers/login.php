@@ -22,7 +22,7 @@ class LoginController
         );
     }
 
-    public function index()
+    public function new()
     {
         $users = User::getAllUsers();
 
@@ -36,16 +36,19 @@ class LoginController
         include __DIR__ . '/../views/login.php';
     }
 
-    public function login()
-    {
+    public function login() {
+        $flash = array();
         $logger = getLogger('login');
+        $logger->info('POST /storyforge/login.php');
 
         $username = $this->params["POST"]["username"];
         $password = $this->params["POST"]["password"];
 
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to login but is already authenticated", ['username' => $username]);
-            header("Location: ". "login.php?e=3");
+            $flash['error'] = 'You are already authenticated.';
+            include __DIR__ . '/../views/login.php';
+
             return;
         }
 
@@ -53,26 +56,34 @@ class LoginController
 
         if(is_null($user)) {
             $logger->info("A user used an invalid username", ['username' => $username]);
-            header("Location: ". "login.php?e=1");
+            $flash['error'] = 'Invalid username or password.';
+            include __DIR__ . '/../views/login.php';
+
             return;
         }
 
         if(!password_verify($password, $user->getPasswordHash())) {
             $logger->info("User with username specified a wrong password", ['username' => $username]);
-            header("Location: ". "login.php?e=1");
+            $flash['error'] = 'Invalid username or password.';
+            include __DIR__ . '/../views/login.php';
+
             return;
         }
 
         session_regenerate_id(true);
         $_SESSION["user"] = $user->getId();
+        $_SESSION['flash']['success'] = 'Authenticated as '. $user->getUsername();
 
         header("Location: ". "/");
     }
 
     public function logout() {
+        $logger = getLogger('logout');
+
         if(!isset($_SESSION["user"])) {
-            $logger->info("User tried to login but is not authenticated");
-            header("Location: ". "login.php");
+            $logger->info("User tried to logout but is not authenticated");
+            $flash['error'] = 'You are not authenticated.';
+            include __DIR__ . '/../views/login.php';
 
             return;
         }

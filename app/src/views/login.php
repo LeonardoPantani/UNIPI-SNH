@@ -5,19 +5,6 @@ ob_start();
 ?>
 <h1 class="title">Accedi</h1>
 
-<?php
-if(isset($_SESSION["user"])) $_GET['e'] = 3;
-
-if (!empty($_GET['e'])) {
-    $errors = [
-        1 => 'Errore: Username o password errati.',
-        2 => 'Errore: Il tuo account è bloccato. Contatta l\'amministratore.',
-        3 => 'Errore: Sei già autenticato.'
-    ];
-    echo '<p class="has-text-danger">' . ($errors[$_GET['e']] ?? 'Errore sconosciuto. Riprova.') . '</p>';
-}
-?>
-
 <form action="./login.php" method="POST">
     <div class="field">
         <label class="label" for="username">Username</label>
