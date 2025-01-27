@@ -153,7 +153,9 @@
 
     <!-- Generic JavaScript -->
     <script src="/assets/javascript/generic.js"></script>
+    <!-- Flash Message System JavaScript -->
     <script src="/assets/javascript/flash.js"></script>
+    <?php if(file_exists(__DIR__ . "/../public/assets/javascript/".strtolower($title).".js")) { ?><script src="/assets/javascript/<?= strtolower($title) ?>.js"></script><?php } ?>
 </body>
 
 </html>

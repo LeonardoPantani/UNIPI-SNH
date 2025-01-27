@@ -1,9 +1,9 @@
 <?php
-$title = "Register";
+$title = "Registration";
 ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
 ?>
-<h1 class="title">Register</h1>
+<h1 class="title">Registration</h1>
 <form action="./registration.php" method="POST">
     <div class="field">
         <label class="label" for="email">Email</label>
