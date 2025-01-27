@@ -118,6 +118,19 @@
     </header>
 
     <main>
+        <?php if(isset($flash)) :?>
+            <?php foreach($flash as $key => $msg): ?>
+                <?php $class = ($key === 'success') ? 'is-success' : 'is-danger' ?>
+
+                <div class="container pt-5" style="width: 30%">
+                    <div class="notification <?= $class ?>">
+                        <button class="delete"></button>
+                        <?= $msg ?>
+                    </div>
+                </div> 
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <section class="section">
             <div class="container">
                 <?php echo $content; ?>
@@ -136,6 +149,7 @@
 
     <!-- Generic JavaScript -->
     <script src="/assets/javascript/generic.js"></script>
+    <script src="/assets/javascript/flash.js"></script>
 </body>
 
 </html>
