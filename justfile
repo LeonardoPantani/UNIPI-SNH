@@ -214,7 +214,7 @@ logs:
 		exit 1
 	fi
 
-	docker compose logs "${container_name}" | less
+	docker compose logs -f "${container_name}"
 
 # run a command inside a container
 [positional-arguments]
