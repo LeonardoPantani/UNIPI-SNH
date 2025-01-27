@@ -31,6 +31,8 @@ class UserController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
+        $username_pattern = Validator::USERNAME_REGEX_HTML;
+
         include __DIR__ . '/../views/registration_view.php';
     }
 
@@ -55,7 +57,7 @@ class UserController {
 
         if(!Validator::usernameValidation($username)) {
             $logger->info('Invalid username');
-            $flash['error'] = 'Username length must be at least '. Validator::USERNAME_MIN_LENGTH .' chars but less than '. Validator::USERNAME_MAX_LENGTH;
+            $flash['error'] = 'Username length must be at least '. Validator::USERNAME_MIN_LENGTH .' chars but less than '. Validator::USERNAME_MAX_LENGTH . '. Username field only accepts letters, numbers, dashes and underscores.';
             include __DIR__ . '/../views/registration_view.php';
 
             return;

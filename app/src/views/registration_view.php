@@ -16,7 +16,7 @@ ob_start();
     <div class="field">
         <label class="label" for="username">Username</label>
         <div class="control">
-            <input class="input" type="text" id="username" name="username" maxlength="50" required placeholder="Inserisci il tuo username">
+            <input pattern="<?= $username_pattern ?>" class="input" type="text" id="username" name="username" maxlength="50" required placeholder="Inserisci il tuo username">
         </div>
     </div>
 

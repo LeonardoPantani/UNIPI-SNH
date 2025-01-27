@@ -3,10 +3,11 @@
 namespace App\Controllers;
 
 require_once __DIR__ . '/../models/User.php';
-
+require_once __DIR__ . '/../libs/utils/validator/validator.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 
 use App\Models\User;
+use App\Utils\Validator;
 
 class LoginController
 {
@@ -33,6 +34,8 @@ class LoginController
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
+        $username_pattern = Validator::USERNAME_REGEX_HTML;
+
         include __DIR__ . '/../views/login_view.php';
     }
 
@@ -46,9 +49,8 @@ class LoginController
 
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to login but is already authenticated", ['username' => $username]);
-            $flash['error'] = 'You are already authenticated.';
-            include __DIR__ . '/../views/login_view.php';
-
+            $_SESSION['flash']['error'] = 'You are already authenticated.';
+            $this->new();
             return;
         }
 
@@ -56,17 +58,15 @@ class LoginController
 
         if(is_null($user)) {
             $logger->info("A user used an invalid username", ['username' => $username]);
-            $flash['error'] = 'Invalid username or password.';
-            include __DIR__ . '/../views/login_view.php';
-
+            $_SESSION['flash']['error'] = 'Invalid username or password.';
+            $this->new();
             return;
         }
 
         if(!password_verify($password, $user->getPasswordHash())) {
             $logger->info("User with username specified a wrong password", ['username' => $username]);
-            $flash['error'] = 'Invalid username or password.';
-            include __DIR__ . '/../views/login_view.php';
-
+            $_SESSION['flash']['error'] = 'Invalid username or password.';
+            $this->new();
             return;
         }
 
@@ -82,9 +82,8 @@ class LoginController
 
         if(!isset($_SESSION["user"])) {
             $logger->info("User tried to logout but is not authenticated");
-            $flash['error'] = 'You are not authenticated.';
-            include __DIR__ . '/../views/login_view.php';
-
+            $_SESSION['flash']['error'] = 'You are not authenticated.';
+            $this->new();
             return;
         }
 
