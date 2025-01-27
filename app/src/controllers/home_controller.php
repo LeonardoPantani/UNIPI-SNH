@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 require_once __DIR__ . '/../models/User.php';
 
-require_once __DIR__ . '/../libs/utils/mail/send_mail.php';
+require_once __DIR__ . '/../libs/utils/mail/sendmail.php';
 
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 
@@ -25,6 +25,6 @@ class HomeController
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        include __DIR__ . '/../views/home.php';
+        include __DIR__ . '/../views/home_view.php';
     }
 }

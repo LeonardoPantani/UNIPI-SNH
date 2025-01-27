@@ -23,4 +23,4 @@ if (count($users)) {
 <?php
 // CODICE DELLA PAGINA FINISCE QUI
 $content = ob_get_clean();
-include __DIR__ . '/base.php';
+include __DIR__ . '/base_view.php';

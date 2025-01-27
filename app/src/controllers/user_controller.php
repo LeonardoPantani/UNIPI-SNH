@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 require_once __DIR__ . '/../libs/utils/validator/validator.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
-require_once __DIR__ . '/../libs/utils/mail/send_mail.php';
+require_once __DIR__ . '/../libs/utils/mail/sendmail.php';
 require_once __DIR__ . '/../models/User.php';
 
 use App\Models\User;

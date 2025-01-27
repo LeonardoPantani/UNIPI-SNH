@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../controllers/login.php';
+require_once __DIR__ . '/../../controllers/session_controller.php';
 
 use App\Controllers\LoginController;
 session_start();

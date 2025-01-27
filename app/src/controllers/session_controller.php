@@ -33,7 +33,7 @@ class LoginController
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        include __DIR__ . '/../views/login.php';
+        include __DIR__ . '/../views/login_view.php';
     }
 
     public function login() {
@@ -47,7 +47,7 @@ class LoginController
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to login but is already authenticated", ['username' => $username]);
             $flash['error'] = 'You are already authenticated.';
-            include __DIR__ . '/../views/login.php';
+            include __DIR__ . '/../views/login_view.php';
 
             return;
         }
@@ -57,7 +57,7 @@ class LoginController
         if(is_null($user)) {
             $logger->info("A user used an invalid username", ['username' => $username]);
             $flash['error'] = 'Invalid username or password.';
-            include __DIR__ . '/../views/login.php';
+            include __DIR__ . '/../views/login_view.php';
 
             return;
         }
@@ -65,7 +65,7 @@ class LoginController
         if(!password_verify($password, $user->getPasswordHash())) {
             $logger->info("User with username specified a wrong password", ['username' => $username]);
             $flash['error'] = 'Invalid username or password.';
-            include __DIR__ . '/../views/login.php';
+            include __DIR__ . '/../views/login_view.php';
 
             return;
         }
@@ -83,7 +83,7 @@ class LoginController
         if(!isset($_SESSION["user"])) {
             $logger->info("User tried to logout but is not authenticated");
             $flash['error'] = 'You are not authenticated.';
-            include __DIR__ . '/../views/login.php';
+            include __DIR__ . '/../views/login_view.php';
 
             return;
         }
