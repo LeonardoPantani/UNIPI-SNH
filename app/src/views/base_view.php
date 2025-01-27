@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= isset($title) ? $title : 'App'; ?></title>
+    <title><?= isset($title) ? 'StoryForge - ' . $title : 'StoryForge'; ?></title>
 
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="/assets/stylesheets/main.css">
@@ -151,9 +151,7 @@
         </div>
     </footer>
 
-    <!-- Generic JavaScript -->
     <script src="/assets/javascript/generic.js"></script>
-    <!-- Flash Message System JavaScript -->
     <script src="/assets/javascript/flash.js"></script>
     <?php if(file_exists(__DIR__ . "/../public/assets/javascript/".strtolower($title).".js")) { ?><script src="/assets/javascript/<?= strtolower($title) ?>.js"></script><?php } ?>
 </body>

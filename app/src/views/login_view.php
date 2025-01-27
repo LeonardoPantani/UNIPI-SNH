@@ -8,16 +8,36 @@ ob_start();
 <form action="./login.php" method="POST">
     <div class="field">
         <label class="label" for="username">Username</label>
-        <div class="control">
-            <input pattern="<?= $vars["username_pattern"] ?>" class="input" type="text" id="username" name="username" minlength="<?= $vars["username_minlength"] ?>" maxlength="<?= $vars["username_maxlength"] ?>" required placeholder="Your username">
+        <div class="control has-icons-left has-icons-right">
+            <input autofocus pattern="<?= $vars["username_pattern"] ?>" class="input" type="text" id="username" name="username" minlength="<?= $vars["username_minlength"] ?>" maxlength="<?= $vars["username_maxlength"] ?>" required placeholder="Your username">
+            <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+            </span>
+            <span class="icon is-small is-right is-invisible" id="username-icon-ok">
+                <i class="fas fa-check"></i>
+            </span>
+            <span class="icon is-small is-right is-invisible" id="username-icon-error">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
         </div>
+        <p class="help is-danger is-hidden" id="username-message-error">Username must be at least <?= $vars["username_minlength"] ?> characters long and can only contain letters, numbers, hyphens (-), and underscores (_).</p>
     </div>
 
     <div class="field">
         <label class="label" for="password">Password</label>
-        <div class="control">
+        <div class="control has-icons-left has-icons-right">
             <input class="input" type="password" id="password" name="password" minlength="<?= $vars["password_minlength"] ?>" required placeholder="Your password">
+            <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+            </span>
+            <span class="icon is-small is-right is-invisible" id="password-icon-ok">
+                <i class="fas fa-check"></i>
+            </span>
+            <span class="icon is-small is-right is-invisible" id="password-icon-error">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
         </div>
+        <p class="help is-danger is-hidden" id="password-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long.</p>
     </div>
 
     <div class="field">
@@ -26,6 +46,11 @@ ob_start();
         </div>
     </div>
 </form>
+
+<script type="text/javascript">
+    const USERNAME_REGEX = /^<?= $vars["username_pattern"] ?>$/;
+    const PASSWORD_MIN_LENGTH = <?= $vars["password_minlength"] ?>;
+</script>
 
 <?php
 // CODICE DELLA PAGINA FINISCE QUI

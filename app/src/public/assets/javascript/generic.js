@@ -19,5 +19,5 @@ document.addEventListener('DOMContentLoaded', () => {
           window.location.href = './logout.php';
       }
     });
-  })
+  });
 });

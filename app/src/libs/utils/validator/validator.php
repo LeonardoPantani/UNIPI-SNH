@@ -8,10 +8,10 @@ class Validator {
     public const int USERNAME_MAX_LENGTH = 20;
     public const string USERNAME_REGEX_HTML = "[a-zA-Z0-9\-_]{".self::USERNAME_MIN_LENGTH.",".self::USERNAME_MAX_LENGTH."}"; # all letters, digits and these characters: -_
     public const string USERNAME_REGEX = "/^".self::USERNAME_REGEX_HTML."$/";
-    public const string EMAIL_REGEX = "/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/";
+    public const string EMAIL_REGEX = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/";
 
     public static function emailValidation(string $email) : bool {
-        return preg_match(self::EMAIL_REGEX, $email);
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
     public static function passwordValidation(string $password) : bool {
