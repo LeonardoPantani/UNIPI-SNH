@@ -24,12 +24,12 @@ abstract class DBConnection {
         return $conn;
     }
 
-    protected static function db_fetchOne(string $sql, string ... $params) : ?object {
+    protected static function db_fetchOne(string $sql, string ... $params) : array {
         $conn = self::db_connect();
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute($params);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
     }
 
     protected static function db_fetchAll(string $sql, string ... $params) : array {
@@ -54,6 +54,14 @@ abstract class DBConnection {
         $res = $stmt->execute($params);
 
         return count($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []);
+    }
+
+    protected static function db_contains(string $sql, string ... $params) : bool {
+        $conn = self::db_connect();
+        $stmt = $conn->prepare($sql);
+        $res = $stmt->execute($params);
+
+        return ((int) $stmt->fetchColumn()) > 0;
     }
 
     private static function db_disconnect(PDO $conn) : void {

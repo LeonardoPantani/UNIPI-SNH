@@ -83,21 +83,21 @@
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                            <?php if (1 == 2) { ?>
+                            <?php if (isset($_SESSION["user"])) { ?>
                                 <a class="button is-primary" href="#TODO">
                                     <span class="icon">
                                         <i class="fa-solid fa-circle-user"></i>
                                     </span>
                                     <span><strong>TEST</strong></span>
                                 </a>
-                                <a class="button is-danger" href="#TODO">
+                                <a class="button is-danger" href="./logout.php">
                                     <span class="icon">
                                         <i class="fa-solid fa-door-open"></i>
                                     </span>
                                     <span>Log out</span>
                                 </a>
                             <?php } else { ?>
-                                <a class="button is-primary" href="#TODO">
+                                <a class="button is-primary" href="./registration.php">
                                     <span class="icon">
                                         <i class="fa-solid fa-pen-fancy"></i>
                                     </span>

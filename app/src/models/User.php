@@ -7,12 +7,17 @@ require_once __DIR__ . '/../models/DBConnection.php';
 use App\Models\DBConnection;
 
 class User extends DBConnection {
-    private string $uuid;
+    private int $id;
+    private ?string $uuid;
     private string $email;
     private string $username;
-    private string $password;
-    private string $created_at;
+    private string $password_hash;
+    private ?string $created_at;
     private int $role_id;
+
+    public function getId(): int {
+        return $this->id;
+    }
 
     public function getUuid(): string {
         return $this->uuid;
@@ -26,8 +31,8 @@ class User extends DBConnection {
         return $this->username;
     }
 
-    public function getPassword(): string {
-        return $this->password;
+    public function getPasswordHash(): string {
+        return $this->password_hash;
     }
 
     public function getCreatedAt(): string {
@@ -38,11 +43,12 @@ class User extends DBConnection {
         return $this->role_id;
     }
 
-    private function __construct(?string $uuid, string $email, string $username, string $password, ?string $created_at, int $role_id) {
+    private function __construct(?int $id, ?string $uuid, string $email, string $username, string $password_hash, ?string $created_at, int $role_id) {
+        $this->id = $id;
         $this->uuid = $uuid;
         $this->email = $email;
         $this->username = $username;
-        $this->password = $password;
+        $this->password_hash = $password_hash;
         $this->created_at = $created_at;
         $this->role_id = $role_id;
     }
@@ -52,22 +58,42 @@ class User extends DBConnection {
     }
 
     private static function getRoleByName($role_name) : int {
-        return self::db_fetchOne("SELECT id FROM role WHERE name = ?", $role_name)["role_id"];
+        return self::db_fetchOne("SELECT id FROM role WHERE name = ?", $role_name)["id"];
     }
 
     public static function usernameExists($username): bool {
-        return true;
-        return self::db_numRows("SELECT id FROM users WHERE username = ?", $username) > 0;
+        return self::db_contains("SELECT id FROM users WHERE username = ?", $username);
     }
 
-    public static function authenticate($username, $password) : ?object {
-        return self::db_fetchOne("SELECT id FROM users WHERE username = ? AND password_hash = ?", $username, $password);
+    public static function emailExists($email) : bool {
+        return self::db_contains("SELECT id FROM users WHERE email = ?", $email);
+    }
+
+    public static function getUserByUsername($username) : ?User {
+        $row = self::db_fetchOne(
+            "SELECT * FROM users WHERE username = ?",
+            $username
+        );
+
+        if(count($row) <= 0) {
+            return null;
+        }
+
+        return new User(
+            (int) $row['id'],
+            $row['uuid'],
+            $row['email'],
+            $row['username'],
+            $row['password_hash'],
+            $row['created_at'],
+            $row['role_id']
+        );
     }    
 
-    public static function addUser($email, $username, $password) : bool {
+    public static function addUser($email, $username, $password_hash) : bool {
         return self::db_getOutcome(
-            "INSERT INTO users (UUID(), email, username, password_hash, NOW(), role_id) VALUES (?, ?, ?, ?)",
-            $email, $username, password_hash($password, PASSWORD_DEFAULT)
+            "INSERT INTO users (uuid, email, username, password_hash, created_at, role_id) VALUES (UUID(), ?, ?, ?, NOW(), ?)",
+            $email, $username, $password_hash, self::getRoleByName("nonpremium")
         );
     }
 
@@ -75,6 +101,7 @@ class User extends DBConnection {
         $res = self::db_fetchAll("SELECT * FROM users");
     
         return array_map(fn($row) => new User(
+            (int) $row['id'],
             $row['uuid'],
             $row['email'],
             $row['username'],

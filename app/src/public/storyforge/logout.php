@@ -7,9 +7,7 @@ session_start();
 $controller = new LoginController($_SERVER, $_GET, $_POST);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $controller->index();
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $controller->login();
+    $controller->logout();
 } else {
     http_response_code(405);
     echo "Method not allowed.";

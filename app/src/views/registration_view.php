@@ -1,24 +1,18 @@
 <?php
-$title = "Login";
+$title = "Registrazione";
 ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
 ?>
-<h1 class="title">Accedi</h1>
+<h1 class="title">Registrazione</h1>
 
-<?php
-if(isset($_SESSION["user"])) $_GET['e'] = 3;
+<form action="./registration.php" method="POST">
+    <div class="field">
+        <label class="label" for="username">Email</label>
+        <div class="control">
+            <input class="input" type="email" id="email" name="email" required placeholder="Inserisci la tua email">
+        </div>
+    </div>
 
-if (!empty($_GET['e'])) {
-    $errors = [
-        1 => 'Errore: Username o password errati.',
-        2 => 'Errore: Il tuo account è bloccato. Contatta l\'amministratore.',
-        3 => 'Errore: Sei già autenticato.'
-    ];
-    echo '<p class="has-text-danger">' . ($errors[$_GET['e']] ?? 'Errore sconosciuto. Riprova.') . '</p>';
-}
-?>
-
-<form action="./login.php" method="POST">
     <div class="field">
         <label class="label" for="username">Username</label>
         <div class="control">
@@ -34,8 +28,15 @@ if (!empty($_GET['e'])) {
     </div>
 
     <div class="field">
+        <label class="label" for="password_confirm">Conferma password</label>
         <div class="control">
-            <button class="button is-primary" type="submit">Accedi</button>
+            <input class="input" type="password" id="password_confirm" name="password_confirm" required placeholder="Conferma la tua password">
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="control">
+            <button class="button is-primary" type="submit">Registrati</button>
         </div>
     </div>
 </form>
