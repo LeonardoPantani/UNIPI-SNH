@@ -28,25 +28,27 @@ CREATE TABLE file_form (
     path VARCHAR(300) NOT NULL
 ) ENGINE=InnoDB;
 
+/*
+BINARY and INTEGER have some problems.
+  1) BINARY is not BOOLEAN. By definition, BINARY is similar to VARCHAR/CHAR except 
+     that it stores byte strings rather than character strings, so we cannot use it to store
+     integers or boolean values.
+  2) if we decide to use booleans to store the info about novel form, we need to change this boolean type when 
+     a new novel form's table is added (boolean cannot store more that 2 states). 
+  3) if we decide to use integers to store the info about novel form, we need also to remember how these integer
+     values are mapped to the *_form tables (e.g. '0' means 'text_form' and '1' means 'file_form'). How can we 
+     remember this relationships when we access the data directly from the db client?
+Using ENUM("text_form", "file_form") we can set the range of accepted values (can we do the same thing with INTEGER?).
+*/
 CREATE TABLE novel (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     uuid CHAR(36) CHARACTER SET ascii NOT NULL,
     title VARCHAR(100) NOT NULL,
-    form_type BINARY NOT NULL, -- 0 per testo, 1 per file
-    form_text_id INTEGER, -- id della tabella text_form (se form_type = 0)
-    form_file_id INTEGER, -- id della tabella file_form (se form_type = 1)
+    premium BOOLEAN NOT NULL, -- 0 is non-premium, >1 is premium
+    form_type ENUM("text_form", "file_form") NOT NULL,
+    form_id INTEGER NOT NULL, -- id which belongs to one of the *_form tables
     created_at TIMESTAMP NOT NULL,
-    FOREIGN KEY (form_text_id) REFERENCES text_form(id),
-    FOREIGN KEY (form_file_id) REFERENCES file_form(id),
-    CHECK ((form_type = 0 AND form_text_id IS NOT NULL AND form_file_id IS NULL) OR 
-           (form_type = 1 AND form_file_id IS NOT NULL AND form_text_id IS NULL))
-) ENGINE=InnoDB;
-
-CREATE TABLE novel_user (
-    novel_id INTEGER NOT NULL, -- id della novel
-    user_id INTEGER NOT NULL, -- id dell'utente
-    PRIMARY KEY (novel_id, user_id),
-    FOREIGN KEY (novel_id) REFERENCES novel(id),
+    user_id INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE=InnoDB;
 
