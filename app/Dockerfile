@@ -30,8 +30,8 @@ RUN docker-php-ext-install pdo pdo_mysql \
 RUN docker-php-ext-install mysqli \
 	&& docker-php-ext-enable mysqli
 
-# copy app files
-COPY ./src/ ${APACHE_APP_ROOT}
+# copy composer.json
+COPY ./src/libs/composer.json ${APACHE_APP_ROOT}/libs/
 
 # install php libraries from composer.json
 RUN composer update --no-cache --working-dir=libs
@@ -39,6 +39,10 @@ RUN composer update --no-cache --working-dir=libs
 # setting ServerName so that Apache does not complain
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+# change root from '/' to '/storyforge' in every apache configuration file
 RUN sed -i "s|^\(.*\)\(DocumentRoot\) .*|\1\2 ${APACHE_DOCUMENT_ROOT}|g" /etc/apache2/sites-available/*.conf
+
+# copy app files
+COPY ./src/ ${APACHE_APP_ROOT}
 
 RUN chown -R www-data:www-data .
