@@ -71,7 +71,7 @@
                             <hr class="navbar-divider">
                             <a class="navbar-item">
                                 <span class="icon">
-                                    <i class="fa-solid fa-pen-nib"></i>
+                                    <i class="fa-solid fa-pen-fancy"></i>
                                 </span>
                                 <span>D</span>
                             </a>
@@ -81,37 +81,50 @@
 
                 <!-- Navbar lato destro -->
                 <div class="navbar-end">
+                    <?php if (isset($_SESSION["user"])) { ?>
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">
+                                <span class="icon">
+                                    <i class="fa-solid fa-circle-user"></i>
+                                </span>
+                                <span>Account</span>
+                            </a>
+
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item" href="./add_novel.php">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-pen-nib"></i>
+                                    </span>
+                                    <span>Add novel</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="navbar-item">
+                            <a class="button is-danger" id="logout-button">
+                                <span class="icon">
+                                    <i class="fa-solid fa-door-open"></i>
+                                </span>
+                                <span>Log out</span>
+                            </a>
+                        </div>
+                    <?php } else { ?>
                     <div class="navbar-item">
                         <div class="buttons">
-                            <?php if (isset($_SESSION["user"])) { ?>
-                                <a class="button is-primary" href="#TODO">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-circle-user"></i>
-                                    </span>
-                                    <span><strong>TEST</strong></span>
-                                </a>
-                                <a class="button is-danger" id="logout-button">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-door-open"></i>
-                                    </span>
-                                    <span>Log out</span>
-                                </a>
-                            <?php } else { ?>
-                                <a class="button is-primary" href="./registration.php">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-pen-fancy"></i>
-                                    </span>
-                                    <strong>Register</strong>
-                                </a>
-                                <a class="button is-light" href="./login.php">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                                    </span>
-                                    <span>Log in</span>
-                                </a>
-                            <?php } ?>
+                            <a class="button is-primary" href="./registration.php">
+                                <span class="icon">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                                <strong>Register</strong>
+                            </a>
+                            <a class="button is-light" href="./login.php">
+                                <span class="icon">
+                                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                </span>
+                                <span>Log in</span>
+                            </a>
                         </div>
                     </div>
+                    <?php } ?>
                 </div>
             </div>
         </nav>
@@ -153,7 +166,12 @@
 
     <script src="/assets/javascript/generic.js"></script>
     <script src="/assets/javascript/flash.js"></script>
-    <?php if(file_exists(__DIR__ . "/../public/assets/javascript/".strtolower($title).".js")) { ?><script src="/assets/javascript/<?= strtolower($title) ?>.js"></script><?php } ?>
+    <?php 
+        $filename = str_replace(" ", "_", strtolower($title));
+        if(file_exists(__DIR__ . "/../public/assets/javascript/".$filename.".js")) { 
+    ?>
+        <script src="/assets/javascript/<?= $filename ?>.js"></script>
+    <?php } ?>
 </body>
 
 </html>

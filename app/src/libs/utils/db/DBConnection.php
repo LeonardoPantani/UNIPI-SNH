@@ -49,6 +49,18 @@ abstract class DBConnection {
         return $res;
     }
 
+    protected static function db_getLastInsertId(string $sql, string ... $params) : int {
+        $conn = self::db_connect();
+        $stmt = $conn->prepare($sql);
+        $res = $stmt->execute($params);
+
+        if(!$res) {
+            return -1;
+        }
+
+        return $conn->lastInsertId();
+    }
+
     protected static function db_numRows(string $sql, string ... $params) : int {
         $conn = self::db_connect();
         $stmt = $conn->prepare($sql);
