@@ -13,7 +13,8 @@ abstract class DBConnection {
         $psw = $psw ?? $_ENV["DB_PASSWORD"];
         $name = $name ?? $_ENV["DB_NAME"];
 
-        $dsn = "mysql:host=$host;dbname=$name;charset=utf8";
+        // NOTE: PHP uses 'latin1' charset, whereas MySQL uses 'utf8' or 'utf8mb4' charset.
+        $dsn = "mysql:host=$host;dbname=$name;charset=latin1";
 
         try {
             $conn = new PDO($dsn, $user, $psw, array(PDO::ATTR_TIMEOUT => 1, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
