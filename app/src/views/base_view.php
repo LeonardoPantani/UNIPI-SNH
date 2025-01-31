@@ -131,18 +131,32 @@
     </header>
 
     <main>
-        <?php if(isset($vars["flash"])) :?>
-            <?php foreach($vars["flash"] as $key => $msg): ?>
-                <?php $class = ($key === 'success') ? 'is-success' : 'is-danger' ?>
+            <?php foreach($vars["flash"] as $key => $msg):
+                $class = match ($key) {
+                    'success' => 'is-success',
+                    'danger'  => 'is-danger',
+                    'warning' => 'is-warning',
+                    'info'    => 'is-info',
+                    default   => 'is-light'
+                };
 
-                <div class="container pt-5" style="width: 30%">
-                    <div class="notification <?= $class ?>">
-                        <button class="delete"></button>
-                        <?= $msg ?>
-                    </div>
-                </div> 
-            <?php endforeach; ?>
-        <?php endif; ?>
+                $icon = match ($key) {
+                    'success' => 'fas fa-check-circle',
+                    'danger'  => 'fas fa-exclamation-triangle',
+                    'warning' => 'fas fa-exclamation-circle',
+                    'info'    => 'fas fa-info-circle',
+                    default   => ''
+                };
+            ?>
+
+            <div class="container pt-5" style="width: 30%">
+                <div class="notification <?= $class ?>">
+                    <button class="delete"></button>
+                    <span class="icon"><i class="<?= $icon ?>"></i></span>
+                    <?= $msg ?>
+                </div>
+            </div> 
+        <?php endforeach; ?>
 
         <section class="section">
             <div class="container">

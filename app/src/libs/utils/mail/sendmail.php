@@ -21,8 +21,7 @@ require __DIR__ . '/../../vendor/autoload.php';
  * 
  * @return bool|string True if the email is sent successfully, or an error message on failure.
  */
-function sendEmail($to, $subject, $body)
-{
+function sendEmail(string $to, string $subject, string $body, string $username = "") {
     $mail = new PHPMailer(true);
 
     try {
@@ -37,7 +36,7 @@ function sendEmail($to, $subject, $body)
 
         // Sender settings
         $mail->setFrom(getenv('MAIL_ADDRESS'), "StoryForge");
-        $mail->addAddress($to);
+        $username == "" ? $mail->addAddress($to, $username) : $mail->addAddress($to);
 
         // Content
         $mail->isHTML(true);
@@ -47,6 +46,6 @@ function sendEmail($to, $subject, $body)
         $mail->send();
         return true;
     } catch (Exception $e) {
-        return "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        return "Mailer Error: {$mail->ErrorInfo}";
     }
 }

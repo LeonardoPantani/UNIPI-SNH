@@ -40,9 +40,12 @@ ob_start();
         <p class="help is-danger is-hidden" id="password-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long.</p>
     </div>
 
-    <div class="field">
+    <div class="field is-grouped">
         <div class="control">
             <button class="button is-primary" type="submit">Log in</button>
+        </div>
+        <div class="control">
+            <a class="button is-secondary" href="./forgot_password.php">Forgot Password</a>
         </div>
     </div>
 </form>
