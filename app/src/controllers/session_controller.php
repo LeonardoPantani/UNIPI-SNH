@@ -51,7 +51,7 @@ class LoginController
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to login but is already authenticated", ['username' => $username]);
             $_SESSION['flash']['error'] = 'You are already authenticated.';
-            $this->new();
+            header("Location: ". "./");
             return;
         }
 

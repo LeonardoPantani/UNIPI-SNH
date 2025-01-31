@@ -33,7 +33,7 @@ class ForgotPasswordController {
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to access the password reset page but is already authenticated");
             $_SESSION['flash']['error'] = 'You are already authenticated.';
-            header("Location: ". "login.php");
+            header("Location: ". "./");
             
             return;
         }
@@ -52,7 +52,7 @@ class ForgotPasswordController {
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to reset its password but is already authenticated");
             $_SESSION['flash']['error'] = 'You are already authenticated.';
-            header("Location: ". "login.php");
+            header("Location: ". "./");
 
             return;
         }
@@ -97,7 +97,7 @@ class ForgotPasswordController {
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to access the password creation page but is already authenticated");
             $_SESSION['flash']['error'] = 'You are already authenticated.';
-            header("Location: ". "login.php");
+            header("Location: ". "./");
 
             return;
         }
@@ -116,7 +116,7 @@ class ForgotPasswordController {
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to reset their password but is already authenticated");
             $_SESSION['flash']['error'] = 'You are already authenticated.';
-            header("Location: ". "login.php");
+            header("Location: ". "./");
 
             return;
         }
