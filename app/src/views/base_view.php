@@ -133,19 +133,19 @@
     <main>
             <?php foreach($vars["flash"] as $key => $msg):
                 $class = match ($key) {
-                    'success' => 'is-success',
-                    'danger'  => 'is-danger',
-                    'warning' => 'is-warning',
-                    'info'    => 'is-info',
-                    default   => 'is-light'
+                    'success'   => 'is-success',
+                    'error'     => 'is-danger',
+                    'warning'   => 'is-warning',
+                    'info'      => 'is-info',
+                    default     => 'is-dark'
                 };
 
                 $icon = match ($key) {
-                    'success' => 'fas fa-check-circle',
-                    'danger'  => 'fas fa-exclamation-triangle',
-                    'warning' => 'fas fa-exclamation-circle',
-                    'info'    => 'fas fa-info-circle',
-                    default   => ''
+                    'success'   => 'fas fa-check-circle',
+                    'error'     => 'fas fa-exclamation-triangle',
+                    'warning'   => 'fas fa-exclamation-circle',
+                    'info'      => 'fas fa-info-circle',
+                    default     => ''
                 };
             ?>
 
