@@ -98,19 +98,9 @@ class UserController {
             return;
         }
 
-        /*
-        $subject = 'Registrazione confermata'
-        $body = '
-            <h1>Buongiorno</h1>
-            <br>
+        sendEmail($email, "Welcome to StoryForge!", "welcome", ["username" => $username]);
 
-            <p>La registrazione è confermata.</p>
-            <p>Saluti</p>
-        '
-        sendEmail($email, $subject, $body)
-        */
-
-        $_SESSION['flash']['success'] = 'User <b>'.$username.'</b> created!';
+        $_SESSION['flash']['success'] = 'User <strong>'.$username.'</strong> created!';
         header("Location: ". "login.php");
     }
 }

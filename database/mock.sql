@@ -31,6 +31,6 @@ VALUES
 -- Inserting password challenges
 INSERT INTO password_challenge (user_id, random_string, expire_at)
 VALUES
-(1, 'randomstring1', NOW() + INTERVAL 1 DAY),
-(2, 'randomstring2', NOW() + INTERVAL 1 DAY),
-(3, 'randomstring3', NOW() + INTERVAL 1 DAY);
+(1, '5TUP1', NOW() + INTERVAL 1 MONTH),
+(2, 'D0C0G', NOW() + INTERVAL 1 MONTH),
+(3, 'L10N3', NOW() + INTERVAL 1 MONTH);

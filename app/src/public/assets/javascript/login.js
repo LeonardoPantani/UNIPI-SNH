@@ -31,13 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const value = elem.value.trim();
             checkIcon.classList.add('is-invisible');
             exclamationIcon.classList.add('is-invisible');
-            helpText.classList.add('is-hidden');
+            helpText.classList.add('is-invisible');
             elem.classList.remove('is-danger', 'is-success');
             if (!value) return;
     
             if (value.length < PASSWORD_MIN_LENGTH) {
                 exclamationIcon.classList.remove('is-invisible');
-                helpText.classList.remove('is-hidden');
+                helpText.classList.remove('is-invisible');
                 elem.classList.add('is-danger');
             } else {
                 checkIcon.classList.remove('is-invisible');

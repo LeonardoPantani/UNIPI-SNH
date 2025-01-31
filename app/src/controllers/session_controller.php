@@ -87,7 +87,7 @@ class LoginController
 
         session_regenerate_id(true);
         $_SESSION["user"] = $user->getId();
-        $_SESSION['flash']['success'] = 'Authenticated as <b>'. $user->getUsername() . '</b>.';
+        $_SESSION['flash']['success'] = 'Authenticated as <strong>'. $user->getUsername() . '</strong>.';
 
         header("Location: ". "/");
     }

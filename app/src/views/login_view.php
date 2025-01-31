@@ -37,7 +37,7 @@ ob_start();
                 <i class="fas fa-exclamation-triangle"></i>
             </span>
         </div>
-        <p class="help is-danger is-hidden" id="password-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long.</p>
+        <p class="help is-danger is-invisible" id="password-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long.</p>
     </div>
 
     <div class="field is-grouped">

@@ -17,11 +17,12 @@ require __DIR__ . '/../../vendor/autoload.php';
  * 
  * @param string $to Recipient email address.
  * @param string $subject Subject of the email.
- * @param string $body HTML content of the email.
+ * @param string $template_name Name of template HTML.
+ * @param array  $placeholders Array to replace variables into.
  * 
  * @return bool|string True if the email is sent successfully, or an error message on failure.
  */
-function sendEmail(string $to, string $subject, string $body, string $username = "") {
+function sendEmail(string $to, string $subject, string $template_name = "default", array $placeholders = []) {
     $mail = new PHPMailer(true);
 
     try {
@@ -36,12 +37,20 @@ function sendEmail(string $to, string $subject, string $body, string $username =
 
         // Sender settings
         $mail->setFrom(getenv('MAIL_ADDRESS'), "StoryForge");
-        $username == "" ? $mail->addAddress($to, $username) : $mail->addAddress($to);
+        $mail->addAddress($to);
 
         // Content
         $mail->isHTML(true);
         $mail->Subject = $subject;
-        $mail->Body = $body;
+
+        // Loading template
+        $template = file_get_contents(__DIR__ . "/templates/".$template_name."_template.html");
+
+        // Replacing variables set inside template
+        foreach ($placeholders as $key => $value) {
+            $template = str_replace("{{" . $key . "}}", $value, $template);
+        }
+        $mail->Body = $template;
 
         $mail->send();
         return true;

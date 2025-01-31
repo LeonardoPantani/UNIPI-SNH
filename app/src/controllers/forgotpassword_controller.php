@@ -5,9 +5,11 @@ namespace App\Controllers;
 require_once __DIR__ . '/../libs/utils/validator/validator.php';
 require_once __DIR__ . '/../libs/utils/db/DBConnection.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
+require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/ForgotPassword.php';
 require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
 
+use App\Models\User;
 use App\Models\ForgotPassword;
 use App\Utils\ViewManager;
 use App\Utils\Validator;
@@ -105,7 +107,12 @@ class ForgotPasswordController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("create_password", ["flash" => $flash, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        $code = "";
+        if(isset($this->params['GET']['code'])) {
+            $code = $this->params['GET']['code'];
+        }
+
+        ViewManager::render("create_password", ["flash" => $flash, "code" => $code, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
     // POST /storyforge/create_password.php
@@ -127,13 +134,56 @@ class ForgotPasswordController {
         if(!isset($code, $password, $password_confirm)) {
             $logger->info("User tried to reset their password without setting all parameters");
             $_SESSION['flash']['error'] = 'Compile all fields.';
-            $this->new();
-
+            $this->choose_new_password();
             return;
         }
 
+        if(!Validator::passwordValidation($password)) {
+            $logger->info('Invalid password');
+            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $this->choose_new_password();
+            return;
+        }
 
-        $_SESSION['flash']['info'] = 'This feature is not yet implemented.';
-        header("Location: ". "/");
+        if($password != $password_confirm) {
+            $logger->info('Invalid confirm password');
+            $_SESSION['flash']['error'] = 'Mismatch between password and password confirm';
+            $this->choose_new_password();
+            return;
+        }
+
+        $user_id = ForgotPassword::get_userid_by_code($code);
+        if(empty($user_id)) { // invalid code
+            $logger->info('Invalid code');
+            $_SESSION['flash']['error'] = 'The verification code you entered is not correct';
+            $this->choose_new_password();
+            return;
+        }
+        $user_id = $user_id["user_id"];
+
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        $res = User::updateUserPassword($user_id, $password_hash);
+        if(!$res) {
+            $logger->info('Database error during password change');
+            $_SESSION['flash']['error'] = 'Oops. Something went wrong on our end.';
+            $this->choose_new_password();
+            return;
+        }
+
+        $res = ForgotPassword::delete_code($user_id);
+        if(!$res) {
+            $logger->info('Database error during password change');
+        }
+
+        $user = User::getUserById($user_id);
+        if($user != null) {
+            $is_sent = sendEmail($user->getEmail(), "Password reset completed", "password_changed", ["username" => $user->getUsername()]);
+            if($is_sent !== true) {
+                $logger->info('Unable to send email notification for password change');
+            }
+        }
+
+        $_SESSION['flash']['success'] = 'Your password has been correctly updated.';
+        header("Location: ". "./login.php");
     }
 }

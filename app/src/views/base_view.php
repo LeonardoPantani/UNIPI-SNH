@@ -131,31 +131,27 @@
     </header>
 
     <main>
-            <?php foreach($vars["flash"] as $key => $msg):
-                $class = match ($key) {
-                    'success'   => 'is-success',
-                    'error'     => 'is-danger',
-                    'warning'   => 'is-warning',
-                    'info'      => 'is-info',
-                    default     => 'is-dark'
-                };
+        <?php foreach($vars["flash"] as $key => $msg):
+            $class = match ($key) {
+                'success'   => 'is-success',
+                'error'     => 'is-danger',
+                'warning'   => 'is-warning',
+                'info'      => 'is-info',
+                default     => 'is-dark'
+            };
+        ?>
 
-                $icon = match ($key) {
-                    'success'   => 'fas fa-check-circle',
-                    'error'     => 'fas fa-exclamation-triangle',
-                    'warning'   => 'fas fa-exclamation-circle',
-                    'info'      => 'fas fa-info-circle',
-                    default     => ''
-                };
-            ?>
-
-            <div class="container pt-5" style="width: 30%">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-6-tablet is-10-mobile">
                 <div class="notification <?= $class ?>">
                     <button class="delete"></button>
-                    <span class="icon"><i class="<?= $icon ?>"></i></span>
                     <?= $msg ?>
                 </div>
-            </div> 
+                </div>
+            </div>
+        </div>
+
         <?php endforeach; ?>
 
         <section class="section">

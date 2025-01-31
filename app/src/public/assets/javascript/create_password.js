@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const codeInputs = document.querySelectorAll('.code-input');
+    const hiddenCode = document.getElementById('code');
+
+    // autocompiling code if constant is present
+    if(CODE !== "") {
+        let i = 0;
+        codeInputs.forEach(field => {
+            field.value = CODE[i];
+            i++;
+        });
+        hiddenCode.value = CODE;
+        updateHiddenCode();
+    }  
+
     document.getElementById('password').addEventListener('blur', () => {
         checkPassword();
         checkPasswordConfirm();
@@ -6,9 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('password_confirm').addEventListener('blur', () => {
         checkPasswordConfirm();
     });
-
-    const codeInputs = document.querySelectorAll('.code-input');
-    const hiddenCode = document.getElementById('code');
     
     function handleCodeInput(e) {
         const input = e.target;

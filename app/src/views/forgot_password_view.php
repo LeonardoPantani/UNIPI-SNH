@@ -28,9 +28,6 @@ ob_start();
         <div class="control">
             <button class="button is-primary" type="submit">Send email</button>
         </div>
-        <div class="control">
-            <a class="button is-secondary" href="./create_password.php">[DEBUG] Create new Password (final step)</a>
-        </div>
     </div>
 </form>
 

@@ -53,23 +53,23 @@ class User extends DBConnection {
         $this->role_id = $role_id;
     }
 
-    public static function newUserInstance($email, $username, $password) : User {
+    public static function newUserInstance(string $email, string $username, string $password) : User {
         return new User(null, null, $email, $username, $password, null, self::getRoleByName("nonpremium"));
     }
 
-    private static function getRoleByName($role_name) : int {
+    private static function getRoleByName(string $role_name) : int {
         return self::db_fetchOne("SELECT id FROM role WHERE name = ?", $role_name)["id"];
     }
 
-    public static function usernameExists($username): bool {
+    public static function usernameExists(string $username): bool {
         return self::db_contains("SELECT id FROM users WHERE username = ?", $username);
     }
 
-    public static function emailExists($email) : bool {
+    public static function emailExists(string $email) : bool {
         return self::db_contains("SELECT id FROM users WHERE email = ?", $email);
     }
 
-    public static function getUserByUsername($username) : ?User {
+    public static function getUserByUsername(string $username) : ?User {
         $row = self::db_fetchOne(
             "SELECT * FROM users WHERE username = ?",
             $username
@@ -88,13 +88,38 @@ class User extends DBConnection {
             $row['created_at'],
             $row['role_id']
         );
-    }    
+    }   
+    
+    public static function getUserById(int $id) : ?User {
+        $row = self::db_fetchOne(
+            "SELECT * FROM users WHERE id = ?",
+            $id
+        );
 
-    public static function addUser($email, $username, $password_hash) : bool {
+        if(count($row) <= 0) {
+            return null;
+        }
+
+        return new User(
+            (int) $row['id'],
+            $row['uuid'],
+            $row['email'],
+            $row['username'],
+            $row['password_hash'],
+            $row['created_at'],
+            $row['role_id']
+        );
+    }
+
+    public static function addUser(string $email, string $username, string $password_hash) : bool {
         return self::db_getOutcome(
             "INSERT INTO users (uuid, email, username, password_hash, created_at, role_id) VALUES (UUID(), ?, ?, ?, NOW(), ?)",
             $email, $username, $password_hash, self::getRoleByName("nonpremium")
         );
+    }
+
+    public static function updateUserPassword(int $user_id, string $new_password_hash) : bool {
+        return self::db_getOutcome("UPDATE users SET password_hash = ? WHERE id = ?", $new_password_hash, $user_id);
     }
 
     public static function getAllUsers(): array {

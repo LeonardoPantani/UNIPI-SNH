@@ -15,10 +15,10 @@ ob_start();
         <label class="label">Verification code</label>
         <div class="control">
             <div class="is-flex is-justify-content-center minicode">
-                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-5" maxlength="1" data-index="0">
-                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-5" maxlength="1" data-index="1">
-                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-5" maxlength="1" data-index="2">
-                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-5" maxlength="1" data-index="3">
+                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="0">
+                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="1">
+                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="2">
+                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="3">
                 <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized" maxlength="1" data-index="4">
             </div>
             <input type="hidden" name="code" id="code">
@@ -82,6 +82,7 @@ ob_start();
 </form>
 
 <script type="text/javascript">
+    const CODE = "<?= $vars["code"]; ?>";
     const PASSWORD_MIN_LENGTH = <?= $vars["password_minlength"] ?>;
 </script>
 
