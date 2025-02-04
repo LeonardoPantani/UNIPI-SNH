@@ -14,6 +14,9 @@
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="/assets/stylesheets/fontawesome/css/all.min.css">
+
+    <!-- footer -->
+    <link rel="stylesheet" href="/assets/stylesheets/footer.css">
 </head>
 
 <body>
@@ -165,7 +168,7 @@
         </section>
     </main>
 
-    <footer class="footer">
+    <footer class="footer bottom-sticky-footer">
         <div class="content has-text-centered">
             <p>
                 <strong>StoryForge</strong> by <i>Leonardo Pantani, Christian Sabella & Gioele Dimilta</i>.
