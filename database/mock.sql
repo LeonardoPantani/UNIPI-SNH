@@ -8,7 +8,8 @@ INSERT INTO users (uuid, email, username, password_hash, created_at, role_id)
 VALUES
 ('d14d3baf-52b6-4d9b-9c7c-857b5095b704', 'admin@example.com',      'adminuser',      '$2y$10$BfCsmfbxxjk/aUxWoI8JhelfGV.g4NWtnhWZ6S9GH/rD4bt5zxHlu', NOW(), 1), -- password: ciaobello
 ('2f5d7cfa-88f2-4a34-ae3b-48d62248e875', 'premium@example.com',    'premiumuser',    '$2y$10$7yDti.6HAR4dVrCBdf/m5.9uvHajuidSFUrJi4EstGWKiJofG8pXe', NOW(), 2), -- password: ciaobello
-('0bb07b4e-4a7f-45f8-bc0f-9c2b2f7b7e83', 'nonpremium@example.com', 'nonpremiumuser', '$2y$10$qN5wlm6z/bUHDzTlJtmx8uNWU.VxOtqDGFRK9Ocs9z2XpQ/gV95Sa', NOW(), 3); -- password: ciaobello
+('0bb07b4e-4a7f-45f8-bc0f-9c2b2f7b7e83', 'nonpremium@example.com', 'nonpremiumuser', '$2y$10$qN5wlm6z/bUHDzTlJtmx8uNWU.VxOtqDGFRK9Ocs9z2XpQ/gV95Sa', NOW(), 3), -- password: ciaobello
+('fee41807-0991-4a00-aaab-7c6ac09ce127', 'leonardo.pantani@gmail.com', 'leonardo',   '$2y$10$rJXgkYhqdKwKwINb0qo5WO2wfCACOsM7TqtrcqTGBeScU6ln4BojS', NOW(), 1); -- password: leonardo
 
 -- Inserting text contents
 INSERT INTO text_form (content)
