@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     elem.addEventListener('click', function(event) {
       event.preventDefault();
       if (confirm("Are you sure you want to log out?")) {
-          window.location.href = './logout.php';
+          window.location.href = '/storyforge/logout.php';
       }
     });
   });

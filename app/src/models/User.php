@@ -43,6 +43,10 @@ class User extends DBConnection {
         return $this->role_id;
     }
 
+    public function getRoleName() : string {
+        return self::getRoleNameById($this->role_id);
+    }
+
     private function __construct(?int $id, ?string $uuid, string $email, string $username, string $password_hash, ?string $created_at, int $role_id) {
         $this->id = $id;
         $this->uuid = $uuid;
@@ -55,6 +59,10 @@ class User extends DBConnection {
 
     public static function newUserInstance(string $email, string $username, string $password) : User {
         return new User(null, null, $email, $username, $password, null, self::getRoleByName("nonpremium"));
+    }
+
+    private static function getRoleNameById(int $role_id) : string {
+        return self::db_fetchOne("SELECT name FROM role WHERE id = ?", $role_id)["name"];
     }
 
     private static function getRoleByName(string $role_name) : int {

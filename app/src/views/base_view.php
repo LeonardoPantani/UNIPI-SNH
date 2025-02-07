@@ -37,12 +37,14 @@
 
             <div id="test" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item">
-                        <span class="icon">
-                            <i class="fa-solid fa-book"></i>
-                        </span>
-                        <span>Test</span>
-                    </a>
+                    <? if(isset($_SESSION["user"]) && $_SESSION["role"] == "admin") { ?>
+                        <a class="navbar-item" href="/storyforge/admin/panel.php">
+                            <span class="icon">
+                                <i class="fa-solid fa-toolbox"></i>
+                            </span>
+                            <span>Admin Panel</span>
+                        </a>
+                    <?php } ?>
 
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
@@ -90,11 +92,11 @@
                                 <span class="icon">
                                     <i class="fa-solid fa-circle-user"></i>
                                 </span>
-                                <span>Account</span>
+                                <span><?= $_SESSION["username"] ?></span>
                             </a>
 
                             <div class="navbar-dropdown">
-                                <a class="navbar-item" href="./add_novel.php">
+                                <a class="navbar-item" href="/storyforge/add_novel.php">
                                     <span class="icon">
                                         <i class="fa-solid fa-pen-nib"></i>
                                     </span>
@@ -113,13 +115,13 @@
                     <?php } else { ?>
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a class="button is-primary" href="./registration.php">
+                            <a class="button is-primary" href="/storyforge/registration.php">
                                 <span class="icon">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
                                 <strong>Register</strong>
                             </a>
-                            <a class="button is-light" href="./login.php">
+                            <a class="button is-light" href="/storyforge/login.php">
                                 <span class="icon">
                                     <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                 </span>
@@ -160,7 +162,7 @@
         <section class="section">
             <div class="container">
                 <div class="columns is-centered">
-                    <div class="column is-half">
+                    <div class="column is-three-quarters">
                         <?= $content; ?>
                     </div>
                 </div>
