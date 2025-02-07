@@ -27,6 +27,8 @@ services:
   ports:
    - '127.0.0.1:8080:80'
    - '127.0.0.1:8443:443'
+  volumes:
+   - app_uploads:/var/www/html/uploads
   depends_on:
     db:
       condition: service_healthy
@@ -47,3 +49,4 @@ services:
 volumes:
   db_data:
   db_keyring:
+  app_uploads:
