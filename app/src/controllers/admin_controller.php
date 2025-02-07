@@ -69,11 +69,12 @@ class AdminController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("admin_edituser", ["flash" => $flash, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH]);
+        ViewManager::render("admin_edituser", ["flash" => $flash, "roles" => User::getRoles(), "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH]);
     }
 
     // POST /admin/edit_user.php
     function request_user_edit() {
-
+        http_response_code(501);
+        echo "Not implemented.";
     }
 }

@@ -23,6 +23,19 @@ ob_start();
         </div>
     </div>
 
+    <div class="field">
+        <label class="label" for="role">Role</label>
+        <div class="select">
+            <select id="role" name="role">
+                <option disabled selected>-- Select an option --</option>
+                
+                <? foreach($vars["roles"] as $role): ?>
+                    <option value="<?= $role["id"] ?>"><?= $role["name"] ?></option>
+                <? endforeach; ?>
+            </select>
+        </div>
+    </div>
+
 
     <div class="field is-grouped">
         <div class="control">

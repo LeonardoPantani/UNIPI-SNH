@@ -49,7 +49,7 @@ abstract class DBConnection {
         return $conn->rollBack();
     }
 
-    protected static function db_fetchOne(string $sql, array $params, PDO $conn = null) : array {
+    protected static function db_fetchOne(string $sql, ?array $params, PDO $conn = null) : array {
         if(is_null($conn)) {
             $conn = self::db_connect();
         }
@@ -60,7 +60,7 @@ abstract class DBConnection {
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
     }
 
-    protected static function db_fetchAll(string $sql, array $params, PDO $conn = null) : array {
+    protected static function db_fetchAll(string $sql, ?array $params, PDO $conn = null) : array {
         if(is_null($conn)) {
             $conn = self::db_connect();
         }
@@ -71,7 +71,7 @@ abstract class DBConnection {
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
-    protected static function db_getOutcome(string $sql, array $params, PDO $conn = null) : bool {
+    protected static function db_getOutcome(string $sql, ?array $params, PDO $conn = null) : bool {
         if(is_null($conn)) {
             $conn = self::db_connect();
         }
@@ -82,7 +82,7 @@ abstract class DBConnection {
         return $res;
     }
 
-    protected static function db_getLastInsertId(string $sql, array $params, PDO $conn = null) : int {
+    protected static function db_getLastInsertId(string $sql, ?array $params, PDO $conn = null) : int {
         if(is_null($conn)) {
             $conn = self::db_connect();
         }
@@ -97,7 +97,7 @@ abstract class DBConnection {
         return $conn->lastInsertId();
     }
 
-    protected static function db_numRows(string $sql, array $params, PDO $conn = null) : int {
+    protected static function db_numRows(string $sql, ?array $params, PDO $conn = null) : int {
         if(is_null($conn)) {
             $conn = self::db_connect();
         }
@@ -108,7 +108,7 @@ abstract class DBConnection {
         return count($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []);
     }
 
-    protected static function db_contains(string $sql, array $params, PDO $conn = null) : bool {
+    protected static function db_contains(string $sql, ?array $params, PDO $conn = null) : bool {
         if(is_null($conn)) {
             $conn = self::db_connect();
         }

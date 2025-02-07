@@ -61,6 +61,10 @@ class User extends DBConnection {
         return new User(null, null, $email, $username, $password, null, self::getRoleByName("nonpremium"));
     }
 
+    public static function getRoles() : array {
+        return self::db_fetchAll("SELECT * FROM role", null) ? : [];
+    }
+
     private static function getRoleNameById(int $role_id) : string {
         return self::db_fetchOne(
             "SELECT name FROM role WHERE id = ?", 

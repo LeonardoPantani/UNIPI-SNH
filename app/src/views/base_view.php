@@ -34,6 +34,13 @@
 
             <div id="test" class="navbar-menu">
                 <div class="navbar-start">
+                    <a class="navbar-item" href="/storyforge/add_novel.php">
+                        <span class="icon">
+                            <i class="fa-solid fa-pen-nib"></i>
+                        </span>
+                        <span>Create Novel</span>
+                    </a>
+
                     <? if(isset($_SESSION["user"]) && $_SESSION["role"] == "admin") { ?>
                         <a class="navbar-item" href="/storyforge/admin/panel.php">
                             <span class="icon">
@@ -42,44 +49,8 @@
                             <span>Admin Panel</span>
                         </a>
                     <?php } ?>
-
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            <span class="icon">
-                                <i class="fa-solid fa-gear"></i>
-                            </span>
-                            <span>More</span>
-                        </a>
-
-                        <div class="navbar-dropdown">
-                            <a class="navbar-item">
-                                <span class="icon">
-                                    <i class="fa-solid fa-question"></i>
-                                </span>
-                                <span>A</span>
-                            </a>
-                            <a class="navbar-item">
-                                <span class="icon">
-                                    <i class="fa-solid fa-money-bill"></i>
-                                </span>
-                                <span>B</span>
-                            </a>
-                            <a class="navbar-item">
-                                <span class="icon">
-                                    <i class="fa-solid fa-envelope"></i>
-                                </span>
-                                <span>C</span>
-                            </a>
-                            <hr class="navbar-divider">
-                            <a class="navbar-item">
-                                <span class="icon">
-                                    <i class="fa-solid fa-pen-fancy"></i>
-                                </span>
-                                <span>D</span>
-                            </a>
-                        </div>
-                    </div>
                 </div>
+                
 
                 <!-- Navbar lato destro -->
                 <div class="navbar-end">
@@ -93,11 +64,11 @@
                             </a>
 
                             <div class="navbar-dropdown">
-                                <a class="navbar-item" href="/storyforge/add_novel.php">
+                                <a class="navbar-item" href="/storyforge/settings.php">
                                     <span class="icon">
-                                        <i class="fa-solid fa-pen-nib"></i>
+                                        <i class="fa-solid fa-gear"></i>
                                     </span>
-                                    <span>Add novel</span>
+                                    <span>Settings</span>
                                 </a>
                             </div>
                         </div>

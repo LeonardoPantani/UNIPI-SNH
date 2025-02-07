@@ -20,7 +20,7 @@ class AdminService extends DBConnection {
     }
 
     public static function newAdminServiceInstance(string $name, ?string $url = null, ?string $description = null, ?string $icon = null) : AdminService {
-        return new AdminService($name, $url ? : "", $description ? : "This service does not have any description yet.", $icon ? : "terminal");
+        return new AdminService($name, $url ? : "", $description ? : "This service does not have a description yet.", $icon ? : "terminal");
     }
 
     /**
