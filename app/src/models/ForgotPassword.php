@@ -18,16 +18,26 @@ class ForgotPassword extends DBConnection {
     }
 
     public static function get_userid_by_code($random_string) : array {
-        return self::db_fetchOne("SELECT user_id FROM password_challenge WHERE random_string = ?", $random_string);
+        return self::db_fetchOne(
+            "SELECT user_id FROM password_challenge WHERE random_string = ?", 
+            [$random_string]
+        );
     }
 
     public static function delete_code($user_id) : bool {
-        return self::db_getOutcome("DELETE FROM password_challenge WHERE user_id = ?", $user_id);
+        return self::db_getOutcome(
+            "DELETE FROM password_challenge WHERE user_id = ?", 
+            [$user_id]
+        );
     }
 
     public static function send_mail($email) : int {
         // verifying that email exists and obtaining id and username
-        $result = self::db_fetchOne("SELECT id, username FROM users WHERE email = ?", $email);
+        $result = self::db_fetchOne(
+            "SELECT id, username FROM users WHERE email = ?", 
+            [$email]
+        );
+
         if(empty($result)) {
             return 0;
         }
@@ -36,7 +46,10 @@ class ForgotPassword extends DBConnection {
 
         $need_update = false;
         // want to see if user has already a pending reset request
-        $pendingRequest = self::db_fetchOne("SELECT expire_at FROM password_challenge WHERE user_id = ?", $user_id);
+        $pendingRequest = self::db_fetchOne(
+            "SELECT expire_at FROM password_challenge WHERE user_id = ?", 
+            [$user_id]
+        );
 
         if(!empty($pendingRequest)) {
             if(strtotime($pendingRequest["expire_at"]) < strtotime("now")) { // there is a expired pending request, I update its row with the new one
@@ -53,11 +66,16 @@ class ForgotPassword extends DBConnection {
         }
 
         if(!$need_update)
-            self::db_getOutcome("INSERT INTO password_challenge (user_id, random_string, expire_at) VALUES (?, ?, ?)",
-                $user_id, $random_string, date('Y-m-d H:i:s', strtotime("+".self::INTERVAL)));
+            self::db_getOutcome(
+                "INSERT INTO password_challenge (user_id, random_string, expire_at) VALUES (?, ?, ?)",
+                [$user_id, $random_string, date('Y-m-d H:i:s', strtotime("+".self::INTERVAL))]
+            );
         else
-            self::db_getOutcome("UPDATE password_challenge SET random_string = ?, expire_at = ? WHERE user_id = ?",
-                $random_string, date('Y-m-d H:i:s', strtotime("+".self::INTERVAL)), $user_id);
+            self::db_getOutcome(
+                "UPDATE password_challenge SET random_string = ?, expire_at = ? WHERE user_id = ?",
+                [$random_string, date('Y-m-d H:i:s', strtotime("+".self::INTERVAL)), $user_id]
+            );
+            
         return 0;
     }
 

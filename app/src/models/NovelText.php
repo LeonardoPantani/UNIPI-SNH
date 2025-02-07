@@ -30,7 +30,7 @@ class NovelText extends Novel {
 
         $form_id = self::db_getLastInsertId(
             "INSERT INTO text_form (content) VALUES (?)",
-            $content
+            [$content]
         );
 
         if($form_id < 1) {

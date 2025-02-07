@@ -77,14 +77,14 @@ abstract class Novel extends DBConnection {
 
         return self::db_getOutcome(
             "INSERT INTO novel (uuid, title, premium, form_type, form_id, created_at, user_id) VALUES (UUID(), ?, ?, ?, ?, NOW(), ?)",
-            $title, $premium, $form_type, $form_id, $user_id
+            [$title, $premium, $form_type, $form_id, $user_id]
         );
     }
 
     public static function getNovelByUuid(string $uuid) : ?Novel {
         $novel_row = self::db_fetchOne(
             "SELECT * FROM novel WHERE uuid = ?",
-            $uuid
+            [$uuid]
         );
 
         $novel_row['premium'] = ((int) $novel_row['premium']) > 0;
@@ -97,7 +97,7 @@ abstract class Novel extends DBConnection {
             case (string) self::TEXT_FORM:
                 $form_row = self::db_fetchOne(
                     "SELECT id, content FROM text_form WHERE id = ?",
-                    $novel_row['form_id']
+                    [$novel_row['form_id']]
                 );
 
                 $novel = new NovelText(
@@ -110,7 +110,7 @@ abstract class Novel extends DBConnection {
             case (string) self::FILE_FORM:
                 $form_row = self::db_fetchOne(
                     "SELECT id, path FROM file_form WHERE id = ?",
-                    $novel_row['form_id']
+                    [$novel_row['form_id']]
                 );
 
                 $novel = new NovelFile(
@@ -132,7 +132,7 @@ abstract class Novel extends DBConnection {
             SELECT n.id, n.uuid, n.title, n.premium, n.created_at, n.user_id, t.id as form_id, t.content as form_content 
             FROM novel n 
             INNER JOIN text_form t ON (n.form_type = ? AND n.form_id = t.id)
-        ", self::TEXT_FORM);
+        ", [self::TEXT_FORM]);
         
         $novels_text = array_map(fn($row) => new NovelText(
             (int) $row['id'],
@@ -149,7 +149,7 @@ abstract class Novel extends DBConnection {
             SELECT n.id, n.uuid, n.title, n.premium, n.created_at, n.user_id, t.id as form_id, t.path as form_path 
             FROM novel n 
             INNER JOIN file_form t ON (n.form_type = ? AND n.form_id = t.id)
-        ", self::FILE_FORM);
+        ", [self::FILE_FORM]);
 
         $novels_file = array_map(fn($row) => new NovelFile(
             (int) $row['id'],

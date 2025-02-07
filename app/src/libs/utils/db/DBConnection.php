@@ -25,32 +25,68 @@ abstract class DBConnection {
         return $conn;
     }
 
-    protected static function db_fetchOne(string $sql, string ... $params) : array {
-        $conn = self::db_connect();
+    public static function newDBInstance() : PDO {
+        return self::db_connect();
+    }
+
+    public static function db_transaction(PDO $conn) : bool {
+        try {
+            return $conn->beginTransaction();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public static function db_isTransactionActive(PDO $conn) : bool {
+        return $conn->inTransaction();
+    }
+
+    public static function db_commit(PDO $conn) : bool {
+        return $conn->commit();
+    }
+
+    public static function db_rollback(PDO $conn) : bool {
+        return $conn->rollBack();
+    }
+
+    protected static function db_fetchOne(string $sql, array $params, PDO $conn = null) : array {
+        if(is_null($conn)) {
+            $conn = self::db_connect();
+        }
+
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute($params);
 
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
     }
 
-    protected static function db_fetchAll(string $sql, string ... $params) : array {
-        $conn = self::db_connect();
+    protected static function db_fetchAll(string $sql, array $params, PDO $conn = null) : array {
+        if(is_null($conn)) {
+            $conn = self::db_connect();
+        }
+        
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute($params);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
-    protected static function db_getOutcome(string $sql, string ... $params) : bool {
-        $conn = self::db_connect();
+    protected static function db_getOutcome(string $sql, array $params, PDO $conn = null) : bool {
+        if(is_null($conn)) {
+            $conn = self::db_connect();
+        }
+        
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute($params);
 
         return $res;
     }
 
-    protected static function db_getLastInsertId(string $sql, string ... $params) : int {
-        $conn = self::db_connect();
+    protected static function db_getLastInsertId(string $sql, array $params, PDO $conn = null) : int {
+        if(is_null($conn)) {
+            $conn = self::db_connect();
+        }
+
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute($params);
 
@@ -61,16 +97,22 @@ abstract class DBConnection {
         return $conn->lastInsertId();
     }
 
-    protected static function db_numRows(string $sql, string ... $params) : int {
-        $conn = self::db_connect();
+    protected static function db_numRows(string $sql, array $params, PDO $conn = null) : int {
+        if(is_null($conn)) {
+            $conn = self::db_connect();
+        }
+
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute($params);
 
         return count($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []);
     }
 
-    protected static function db_contains(string $sql, string ... $params) : bool {
-        $conn = self::db_connect();
+    protected static function db_contains(string $sql, array $params, PDO $conn = null) : bool {
+        if(is_null($conn)) {
+            $conn = self::db_connect();
+        }
+
         $stmt = $conn->prepare($sql);
         $res = $stmt->execute($params);
 

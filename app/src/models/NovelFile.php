@@ -4,6 +4,8 @@ namespace App\Models;
 
 require_once __DIR__ . '/Novel.php';
 
+use PDO;
+use PDOException;
 use App\Models\Novel;
 
 class NovelFile extends Novel {
@@ -30,7 +32,7 @@ class NovelFile extends Novel {
         
         $form_id = self::db_getLastInsertId(
             "INSERT INTO file_form (path) VALUES (?)",
-            $path
+            [$path]
         );
 
         if($form_id < 1) {
