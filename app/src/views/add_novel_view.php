@@ -42,7 +42,7 @@ ob_start();
 
     <div id="novel_file" class="field" style="display: none">
         <label class="label" for="file">File</label>
-        <input class="input" type="file" id="file" name="file" placeholder="Novel file">
+        <input class="input" type="file" id="file" name="file" accept="application/pdf" placeholder="Novel file">
     </div>
 
     <div class="field">

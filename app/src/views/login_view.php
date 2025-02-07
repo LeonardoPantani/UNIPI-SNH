@@ -44,7 +44,10 @@ ob_start();
         <div class="control">
             <button class="button is-primary" type="submit">Log in</button>
         </div>
-        <div class="control">
+        <div class="py-2">
+			<p>or</p>
+		</div>
+		<div class="control">
             <a class="button is-secondary" href="./forgot_password.php">Forgot Password</a>
         </div>
     </div>
