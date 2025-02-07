@@ -27,18 +27,48 @@ class NovelFile extends Novel {
         return $this->form_path;
     }
 
-    public static function addNovelFile(string $title, bool $isPremium, string $path, int $user_id) : bool {
-        //TODO: add transaction
-        
+    public static function addNovelFile(string $title, bool $isPremium, string $path, int $user_id, PDO $conn = null) : bool {
+        $isLocal = false;
+
+        if(is_null($conn)) {
+            $isLocal = true;
+            $conn = self::newDBInstance();
+        }
+
+        if(!self::db_isTransactionActive($conn)) {
+            if(!self::db_transaction($conn)) {
+                return false;
+            }
+        }
+
         $form_id = self::db_getLastInsertId(
             "INSERT INTO file_form (path) VALUES (?)",
-            [$path]
+            [$path],
+            $conn
         );
 
         if($form_id < 1) {
+            if($isLocal) {
+                self::db_rollback($conn);
+            }
+
             return false;
         }
 
-        return self::addNovel($title, $isPremium, self::FILE_FORM, $form_id, $user_id);
+        $res = self::addNovel($title, $isPremium, self::FILE_FORM, $form_id, $user_id);
+
+        if(!$res) {
+            if($isLocal) {
+                self::db_rollback($conn);
+            }
+
+            return false;
+        }
+
+        if($isLocal) {
+            self::db_commit($conn);
+        }
+        
+        return true;
     }
 }

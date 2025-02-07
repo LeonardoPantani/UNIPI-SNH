@@ -72,12 +72,13 @@ abstract class Novel extends DBConnection {
         return $this->user_id;
     }
 
-    protected static function addNovel(string $title, bool $isPremium, string $form_type, int $form_id, int $user_id): bool {
+    protected static function addNovel(string $title, bool $isPremium, string $form_type, int $form_id, int $user_id, PDO $conn = null): bool {
         $premium = ($isPremium) ? 1 : 0;
 
         return self::db_getOutcome(
             "INSERT INTO novel (uuid, title, premium, form_type, form_id, created_at, user_id) VALUES (UUID(), ?, ?, ?, ?, NOW(), ?)",
-            [$title, $premium, $form_type, $form_id, $user_id]
+            [$title, $premium, $form_type, $form_id, $user_id],
+            $conn
         );
     }
 
