@@ -12,17 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
             switch (el.target.value) {
                 case 'text':
                     form.removeAttribute('enctype')
-                    file_div.setAttribute('style', 'display: none')
-                    file_input.setAttribute('disabled', true);
-                    text_div.removeAttribute('style')
+                    file_div.classList.add('is-hidden')
+                    file_input.setAttribute('disabled', true)
+                    text_div.classList.remove('is-hidden')
                     text_input.removeAttribute('disabled')
                     break;
 
                 case 'file':
                     form.setAttribute('enctype', 'multipart/form-data')
-                    text_div.setAttribute('style', 'display: none')
-                    text_input.setAttribute('disabled', true);
-                    file_div.removeAttribute('style')
+                    text_div.classList.add('is-hidden')
+                    text_input.setAttribute('disabled', true)
+                    file_div.classList.remove('is-hidden')
                     file_input.removeAttribute('disabled')
                     break;
 

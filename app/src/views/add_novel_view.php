@@ -35,12 +35,12 @@ ob_start();
         </div>
     </div>
 
-    <div id="novel_text" class="field" style="display: none">
+    <div id="novel_text" class="field is-hidden">
         <label class="label" for="content">Content</label>
         <input class="input" type="text" id="content" name="content" placeholder="Novel content">
     </div>
 
-    <div id="novel_file" class="field" style="display: none">
+    <div id="novel_file" class="field is-hidden">
         <label class="label" for="file">File</label>
         <input class="input" type="file" id="file" name="file" accept="application/pdf" placeholder="Novel file">
     </div>

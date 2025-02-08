@@ -11,6 +11,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller->login();
 } else {
-    http_response_code(405);
-    echo "Method not allowed.";
+    header("Location: /storyforge/errors/405.php");
 }

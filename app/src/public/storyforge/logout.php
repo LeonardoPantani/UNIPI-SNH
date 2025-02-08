@@ -9,6 +9,5 @@ $controller = new LoginController($_SERVER, $_GET, $_POST);
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $controller->logout();
 } else {
-    http_response_code(405);
-    echo "Method not allowed.";
+    header("Location: /storyforge/errors/405.php");
 }
