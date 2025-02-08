@@ -103,7 +103,7 @@
         </nav>
     </header>
 
-    <main>
+    <section style="position: absolute; left: 35%; right: 35%; top: 3%; margin-inline: auto; z-index: 31">
         <?php foreach($vars["flash"] as $key => $msg):
             $class = match ($key) {
                 'success'   => 'is-success',
@@ -114,19 +114,15 @@
             };
         ?>
 
-        <div class="container">
-            <div class="columns is-centered">
-                <div class="column is-6-tablet is-10-mobile">
                 <div class="notification <?= $class ?>">
                     <button class="delete"></button>
                     <?= $msg ?>
-                </div>
-                </div>
-            </div>
         </div>
 
         <?php endforeach; ?>
+    </section>
 
+    <main class="hero is-fullheight pt-5">
         <section class="section">
             <div class="container">
                 <div class="columns is-centered">
@@ -136,9 +132,8 @@
                 </div>
             </div>
         </section>
-    </main>
 
-    <footer class="footer">
+        <footer class="footer mt-auto">
         <div class="content has-text-centered">
             <p>
                 <strong>StoryForge</strong> by <i>Leonardo Pantani, Christian Sabella & Gioele Dimilta</i>.
@@ -146,6 +141,7 @@
             </p>
         </div>
     </footer>
+    </main>
 
     <script src="/assets/javascript/generic.js"></script>
     <script src="/assets/javascript/flash.js"></script>
