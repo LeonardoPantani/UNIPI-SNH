@@ -135,6 +135,25 @@ class User extends DBConnection {
         );
     }
 
+    public static function getUsersByPartialUsername($partial_username) : array {
+        $formatted_username = '%' . $partial_username . '%';
+
+        $res = self::db_fetchAll(
+            "SELECT * FROM users WHERE username LIKE ?", 
+            [$formatted_username]
+        );
+    
+        return array_map(fn($row) => new User(
+            (int) $row['id'],
+            $row['uuid'],
+            $row['email'],
+            $row['username'],
+            $row['password_hash'],
+            $row['created_at'],
+            $row['role_id']
+        ), $res);
+    }
+
     public static function addUser(string $email, string $username, string $password_hash) : bool {
         return self::db_getOutcome(
             "INSERT INTO users (uuid, email, username, password_hash, created_at, role_id) VALUES (UUID(), ?, ?, ?, NOW(), ?)",

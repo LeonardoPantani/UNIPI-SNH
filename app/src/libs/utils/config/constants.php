@@ -9,3 +9,6 @@
     
     const ADMIN_PATH            = '/admin';               // /storyforge/admin/panel.php
     const ADMIN_EDIT_USER_PATH  = '/admin/services/edit'; // /storyforge/admin/edit_user_service.php
+    
+    const API_V1_PATH           = '/api/v1';
+    const API_SEARCH_USERS_PATH = API_V1_PATH . '/users';

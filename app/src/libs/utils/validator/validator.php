@@ -8,6 +8,7 @@ class Validator {
     public const int USERNAME_MAX_LENGTH = 20;
     public const string USERNAME_REGEX_HTML = "[a-zA-Z0-9\-_]{".self::USERNAME_MIN_LENGTH.",".self::USERNAME_MAX_LENGTH."}"; # all letters, digits and these characters: -_
     public const string USERNAME_REGEX = "/^".self::USERNAME_REGEX_HTML."$/";
+    public const string PARTIAL_USERNAME_REGEX = "/^[a-zA-Z0-9\-_]{1,".self::USERNAME_MAX_LENGTH."}$/";
     public const string EMAIL_REGEX = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/";
 
     public static function emailValidation(string $email) : bool {
@@ -20,5 +21,9 @@ class Validator {
 
     public static function usernameValidation($username) : bool {
         return preg_match(self::USERNAME_REGEX, $username);
+    }
+
+    public static function partialUsernameValidation($partial_username) : bool {
+        return preg_match(self::PARTIAL_USERNAME_REGEX, $partial_username);
     }
 }

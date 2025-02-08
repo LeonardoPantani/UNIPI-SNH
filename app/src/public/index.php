@@ -186,6 +186,22 @@
             
             break;
 
+        // POST /api/v1/users
+        case (bool) preg_match('/^\/api\/v1\/users\/?$/', $request):
+            $controller = new ApiController($_SERVER, $_GET, $_POST);
+
+            switch($method) {
+                case 'POST':
+                    $controller->searchUsers();
+                    break;
+
+                default:
+                    $controller = new ErrorPageController();
+                    $controller->error(405);
+            }
+
+            break;
+
         default:
             $controller = new ErrorPageController();
             $controller->error(404);
