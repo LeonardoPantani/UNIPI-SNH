@@ -6,6 +6,7 @@ require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../libs/utils/validator/validator.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
+require_once __DIR__ . '/../libs/utils/config/constants.php';
 
 use App\Models\User;
 use App\Utils\Validator;
@@ -25,7 +26,7 @@ class LoginController
         );
     }
 
-    // GET /storyforge/login.php
+    // GET /login
     public function new()
     {
         $users = User::getAllUsers();
@@ -40,7 +41,7 @@ class LoginController
         ViewManager::render("login", ["flash" => $flash, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
-    // POST /storyforge/login.php
+    // POST /login
     public function login() {
         $logger = getLogger('login');
         $logger->info('POST /storyforge/login.php');
@@ -51,7 +52,7 @@ class LoginController
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to login but is already authenticated", ['username' => $username]);
             $_SESSION['flash']['error'] = 'You are already authenticated.';
-            header("Location: ". "./");
+            header('Location: ' . ROOT_PATH);
             return;
         }
 
@@ -91,7 +92,7 @@ class LoginController
         $_SESSION["role"] = $user->getRoleName();
         $_SESSION['flash']['success'] = 'Authenticated as <strong>'. $_SESSION["username"] . '</strong>.';
 
-        header("Location: ". "/");
+        header('Location: ' . ROOT_PATH);
     }
 
     public function logout() {
@@ -113,6 +114,6 @@ class LoginController
         session_unset();
         session_destroy();
 
-        header("Location: ". "/");
+        header('Location: ' . ROOT_PATH);
     }
 }

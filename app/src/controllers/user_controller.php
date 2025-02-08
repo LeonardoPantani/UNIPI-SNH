@@ -5,6 +5,7 @@ namespace App\Controllers;
 require_once __DIR__ . '/../libs/utils/validator/validator.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 require_once __DIR__ . '/../libs/utils/mail/sendmail.php';
+require_once __DIR__ . '/../libs/utils/config/constants.php';
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
 
@@ -25,10 +26,10 @@ class UserController {
         );
     }
 
-    // GET /storyforge/registration.php
+    // GET /registration
     function new() {
         $logger = getLogger('registration');
-        $logger->info('GET /storyforge/registration.php');
+        $logger->info('GET /registration');
 
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
@@ -36,10 +37,10 @@ class UserController {
         ViewManager::render("registration", ["flash" => $flash, "email_pattern" => Validator::EMAIL_REGEX, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
-    // POST /storyforge/registration.php
+    // POST /registration
     function create() {
         $logger = getLogger('registration');
-        $logger->info('POST /storyforge/registration.php');
+        $logger->info('POST /registration');
 
         $email            = $this->params['POST']['email'];
         $username         = $this->params['POST']['username'];
@@ -101,6 +102,6 @@ class UserController {
         sendEmail($email, "Welcome to StoryForge!", "welcome", ["username" => $username]);
 
         $_SESSION['flash']['success'] = 'User <strong>'.$username.'</strong> created!';
-        header("Location: ". "login.php");
+        header('Location: ' . LOGIN_PATH);
     }
 }

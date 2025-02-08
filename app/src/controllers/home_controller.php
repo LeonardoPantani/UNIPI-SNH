@@ -14,7 +14,7 @@ use App\Utils\ViewManager;
 
 class HomeController
 {
-    // GET /storyforge/
+    // GET /
     public function new()
     {
         $users = User::getAllUsers();

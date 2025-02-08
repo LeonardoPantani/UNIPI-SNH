@@ -16,6 +16,9 @@ RUN apt-get update && apt-get install -y \
 	unzip \
 	ssl-cert
 
+# apache2 RewriteEngine
+RUN a2enmod rewrite
+
 # apache2 mod_ssl
 RUN a2enmod ssl
 
@@ -38,15 +41,6 @@ RUN composer update --no-cache --working-dir=libs
 
 # setting ServerName so that Apache does not complain
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-
-# Redirect error pages to /storyforge/errors/x.php
-RUN echo 'ErrorDocument 400 /storyforge/errors/400.php' >> /etc/apache2/apache2.conf && \
-    echo 'ErrorDocument 401 /storyforge/errors/401.php' >> /etc/apache2/apache2.conf && \
-    echo 'ErrorDocument 403 /storyforge/errors/403.php' >> /etc/apache2/apache2.conf && \
-    echo 'ErrorDocument 404 /storyforge/errors/404.php' >> /etc/apache2/apache2.conf && \
-	echo 'ErrorDocument 403 /storyforge/errors/405.php' >> /etc/apache2/apache2.conf && \
-    echo 'ErrorDocument 500 /storyforge/errors/500.php' >> /etc/apache2/apache2.conf && \
-	echo 'ErrorDocument 500 /storyforge/errors/501.php' >> /etc/apache2/apache2.conf
 
 # change root from '/' to '/storyforge' in every apache configuration file
 RUN sed -i "s|^\(.*\)\(DocumentRoot\) .*|\1\2 ${APACHE_DOCUMENT_ROOT}|g" /etc/apache2/sites-available/*.conf

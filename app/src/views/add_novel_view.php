@@ -1,10 +1,12 @@
 <?php
+require_once __DIR__ . '/../libs/utils/config/constants.php';
+
 $title = "Add novel";
 ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
 ?>
 <h1 class="title">Create a novel</h1>
-<form action="./add_novel.php" method="POST">
+<form action="<?= ADD_NOVEL_PATH ?>" method="POST">
     <div class="field">
         <label class="label" for="premium">It is a premium novel?</label>
         <div class="control">

@@ -2,16 +2,12 @@
 
 namespace App\Controllers;
 
-require_once __DIR__ . '/../libs/utils/db/DBConnection.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
 
 use App\Utils\ViewManager;
 
 class ErrorPageController {
-    private array $server;
-    private array $params;
-
     private const array ERROR_MESSAGES = [
         400 => "Oops! Something went wrong, but it was not your fault... probably.",
         401 => "Looks like you need a password to enter this party.",
@@ -22,19 +18,9 @@ class ErrorPageController {
         501 => "This feature is still a work in progress. Stay tuned!"
     ];
 
-    public function __construct(array $server, array $params_get, array $params_post) {
-        $this->server = $server;
-
-        $this->params = array(
-            'GET'  => $params_get,
-            'POST' => $params_post
-        );
-    }
-
-    // GET /errors/X.php
     function error(int $error_code = 500) {
-        $logger = getLogger(' error page');
-        $logger->info('GET /errors/'.$error_code.'.php');
+        $logger = getLogger('error page');
+        $logger->info('error '.$error_code);
 
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);

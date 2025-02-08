@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../libs/utils/config/constants.php';
+
 $title = "Error";
 ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
@@ -17,7 +19,7 @@ ob_start();
 
 <div class="field">
     <div class="control">
-        <a class="button is-secondary" href="/storyforge/">Back to Homepage</a>
+        <a class="button is-secondary" href="<?= ROOT_PATH ?>">Back to Homepage</a>
     </div>
 </div>
 

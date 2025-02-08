@@ -28,7 +28,7 @@ ob_start();
             </div>
             <footer class="card-footer">
                 <? if($s->getUrl() != ""): ?>
-                    <a href="/storyforge/admin/<?= $s->getUrl() ?>_service.php" class="card-footer-item">Click to access this service</a>
+                    <a href="<?= $s->getUrl() ? "/admin/services/" . $s->getUrl() : "" ?>" class="card-footer-item">Click to access this service</a>
                 <? else: ?>
                     <span class="card-footer-item has-text-white">This service is not active</span>
                 <? endif; ?>

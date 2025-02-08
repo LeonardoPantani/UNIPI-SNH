@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../libs/utils/config/constants.php';
+
 $title = "Forgot Password";
 ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
@@ -6,7 +8,7 @@ ob_start();
 <h1 class="title">Forgot password</h1>
 <h2 class="subtitle">No problem! Enter your email to change it.</h2>
 
-<form action="./forgot_password.php" method="POST">
+<form action="<?= FORGOT_PASSWORD_PATH ?>" method="POST">
     <div class="field">
         <label class="label" for="email">Email</label>
         <div class="control has-icons-left has-icons-right">

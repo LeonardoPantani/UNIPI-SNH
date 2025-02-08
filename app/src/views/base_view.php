@@ -1,3 +1,7 @@
+<?php
+    require_once __DIR__ . '/../libs/utils/config/constants.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,7 +38,7 @@
 
             <div id="test" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="/storyforge/add_novel.php">
+                    <a class="navbar-item" href="<?= ADD_NOVEL_PATH ?>">
                         <span class="icon">
                             <i class="fa-solid fa-pen-nib"></i>
                         </span>
@@ -42,7 +46,7 @@
                     </a>
 
                     <? if(isset($_SESSION["user"]) && $_SESSION["role"] == "admin") { ?>
-                        <a class="navbar-item" href="/storyforge/admin/panel.php">
+                        <a class="navbar-item" href="<?= ADMIN_PATH ?>">
                             <span class="icon">
                                 <i class="fa-solid fa-toolbox"></i>
                             </span>
@@ -64,7 +68,7 @@
                             </a>
 
                             <div class="navbar-dropdown">
-                                <a class="navbar-item" href="/storyforge/settings.php">
+                                <a class="navbar-item" href="<?= SETTINGS_PATH ?>">
                                     <span class="icon">
                                         <i class="fa-solid fa-gear"></i>
                                     </span>
@@ -83,13 +87,13 @@
                     <?php } else { ?>
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a class="button is-primary" href="/storyforge/registration.php">
+                            <a class="button is-primary" href="<?= REGISTRATION_PATH ?>">
                                 <span class="icon">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
                                 <strong>Register</strong>
                             </a>
-                            <a class="button is-light" href="/storyforge/login.php">
+                            <a class="button is-light" href="<?= LOGIN_PATH ?>">
                                 <span class="icon">
                                     <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                 </span>
@@ -114,9 +118,9 @@
             };
         ?>
 
-                <div class="notification <?= $class ?>">
-                    <button class="delete"></button>
-                    <?= $msg ?>
+        <div class="notification <?= $class ?>">
+            <button class="delete"></button>
+            <?= $msg ?>
         </div>
 
         <?php endforeach; ?>
@@ -134,13 +138,13 @@
         </section>
 
         <footer class="footer mt-auto">
-        <div class="content has-text-centered">
-            <p>
-                <strong>StoryForge</strong> by <i>Leonardo Pantani, Christian Sabella & Gioele Dimilta</i>.
-                The <a href="https://github.com/LeonardoPantani/UNIPI-SNH">source code</a> is licensed <a href="https://www.gnu.org/licenses/gpl-3.0.html#license-text">GPL-3.0</a>.
-            </p>
-        </div>
-    </footer>
+            <div class="content has-text-centered">
+                <p>
+                    <strong>StoryForge</strong> by <i>Leonardo Pantani, Christian Sabella & Gioele Dimilta</i>.
+                    The <a href="https://github.com/LeonardoPantani/UNIPI-SNH">source code</a> is licensed <a href="https://www.gnu.org/licenses/gpl-3.0.html#license-text">GPL-3.0</a>.
+                </p>
+            </div>
+        </footer>
     </main>
 
     <script src="/assets/javascript/generic.js"></script>

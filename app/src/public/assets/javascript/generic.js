@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const logout_path = '/logout'
   const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 
-  $navbarBurgers.forEach( el => {
+  $navbarBurgers.forEach(el => {
     el.addEventListener('click', () => {
       const target = el.dataset.target;
       const $target = document.getElementById(target);
@@ -13,10 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   (document.querySelectorAll('#logout-button') || []).forEach((elem) => {
-    elem.addEventListener('click', function(event) {
+    elem.addEventListener('click', function (event) {
       event.preventDefault();
       if (confirm("Are you sure you want to log out?")) {
-          window.location.href = '/storyforge/logout.php';
+        window.location.href = logout_path;
       }
     });
   });

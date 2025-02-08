@@ -8,6 +8,7 @@ require_once __DIR__ . '/../libs/utils/log/logger.php';
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/ForgotPassword.php';
 require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
+require_once __DIR__ . '/../libs/utils/config/constants.php';
 
 use App\Models\User;
 use App\Models\ForgotPassword;
@@ -27,15 +28,15 @@ class ForgotPasswordController {
         );
     }
 
-    // GET /storyforge/forgot_password.php
+    // GET /password/reset
     function new() {
         $logger = getLogger('forgot password');
-        $logger->info('GET /storyforge/forgot_password.php');
+        $logger->info('GET /password/reset');
 
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to access the password reset page but is already authenticated");
             $_SESSION['flash']['error'] = 'You are already authenticated.';
-            header("Location: ". "./");
+            header('Location: ' . ROOT_PATH);
             
             return;
         }
@@ -46,15 +47,15 @@ class ForgotPasswordController {
         ViewManager::render("forgot_password", ["flash" => $flash, "email_pattern" => Validator::EMAIL_REGEX]);
     }
 
-    // POST /storyforge/forgot_password.php
+    // POST /password/reset
     function validate_reset_request() {
         $logger = getLogger('validate reset request');
-        $logger->info('POST /storyforge/forgot_password.php');
+        $logger->info('POST /password/reset');
 
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to reset its password but is already authenticated");
             $_SESSION['flash']['error'] = 'You are already authenticated.';
-            header("Location: ". "./");
+            header('Location: ' . ROOT_PATH);
 
             return;
         }
@@ -91,15 +92,15 @@ class ForgotPasswordController {
         $this->new();
     }
 
-    // GET /storyforge/create_password.php
+    // GET /password/reset/:token
     function choose_new_password() {
         $logger = getLogger('choose new password');
-        $logger->info('GET /storyforge/create_password.php');
+        $logger->info('GET /password/reset/:token');
 
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to access the password creation page but is already authenticated");
             $_SESSION['flash']['error'] = 'You are already authenticated.';
-            header("Location: ". "./");
+            header('Location: ' . ROOT_PATH);
 
             return;
         }
@@ -115,15 +116,15 @@ class ForgotPasswordController {
         ViewManager::render("create_password", ["flash" => $flash, "code" => $code, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
-    // POST /storyforge/create_password.php
+    // POST /password/reset/:token
     function set_new_password() {
         $logger = getLogger('set new password');
-        $logger->info('POST /storyforge/create_password.php');
+        $logger->info('POST /password/reset/:token');
 
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to reset their password but is already authenticated");
             $_SESSION['flash']['error'] = 'You are already authenticated.';
-            header("Location: ". "./");
+            header('Location: ' . ROOT_PATH);
 
             return;
         }
@@ -184,6 +185,6 @@ class ForgotPasswordController {
         }
 
         $_SESSION['flash']['success'] = 'Your password has been correctly updated.';
-        header("Location: ". "./login.php");
+        header('Location: ' . LOGIN_PATH);
     }
 }

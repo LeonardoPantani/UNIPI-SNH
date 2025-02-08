@@ -1,10 +1,12 @@
 <?php
+require_once __DIR__ . '/../libs/utils/config/constants.php';
+
 $title = "Registration";
 ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
 ?>
 <h1 class="title">Registration</h1>
-<form action="./registration.php" method="POST">
+<form action="<?= REGISTRATION_PATH ?>" method="POST">
     <div class="field">
         <label class="label" for="email">Email</label>
         <div class="control has-icons-left has-icons-right">

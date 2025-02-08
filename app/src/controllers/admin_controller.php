@@ -27,10 +27,10 @@ class AdminController {
         );
     }
 
-    // GET /admin/panel
+    // GET /admin
     function panel() {
         $logger = getLogger('admin panel');
-        $logger->info('GET /admin/panel.php');
+        $logger->info('GET /admin');
 
         if(!isset($_SESSION["user"]) || (isset($_SESSION["user"]) && $_SESSION["role"] != "admin")) {
             $logger->info("User tried to access the admin panel while not being authenticated");
@@ -44,7 +44,7 @@ class AdminController {
         unset($_SESSION['flash']);
 
         $admin_services = array(
-            AdminService::newAdminServiceInstance("Edit User Role", "edit_user", "This service allows you to change the role of a user.", "wand-sparkles"),
+            AdminService::newAdminServiceInstance("Edit User Role", "edit", "This service allows you to change the role of a user.", "wand-sparkles"),
             AdminService::newAdminServiceInstance("Placeholder"),
             AdminService::newAdminServiceInstance("Placeholder 2"),
             AdminService::newAdminServiceInstance("Placeholder 3"),
@@ -53,10 +53,10 @@ class AdminController {
         ViewManager::render("admin_panel", ["flash" => $flash, "admin_services" => $admin_services]);
     }
 
-    // GET /admin/edit_user.php
+    // GET /admin/services/edit
     function edit_user() {
         $logger = getLogger('edit user');
-        $logger->info('GET /admin/edit_user.php');
+        $logger->info('GET /admin/services/edit');
 
         if(!isset($_SESSION["user"]) || (isset($_SESSION["user"]) && $_SESSION["role"] != "admin")) {
             $logger->info("User tried to access the admin panel while not being authenticated");

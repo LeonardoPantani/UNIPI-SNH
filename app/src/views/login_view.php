@@ -1,11 +1,13 @@
 <?php
+require_once __DIR__ . '/../libs/utils/config/constants.php';
+
 $title = "Login";
 ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
 ?>
 <h1 class="title">Login</h1>
 
-<form action="./login.php" method="POST">
+<form action="<?= LOGIN_PATH ?>" method="POST">
     <div class="field">
         <label class="label" for="username">Username</label>
         <div class="control has-icons-left has-icons-right">

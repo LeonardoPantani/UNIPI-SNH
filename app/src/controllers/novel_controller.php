@@ -8,6 +8,7 @@ require_once __DIR__ . '/../models/NovelText.php';
 require_once __DIR__ . '/../models/NovelFile.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
+require_once __DIR__ . '/../libs/utils/config/constants.php';
 
 use App\Models\Novel;
 use App\Models\NovelText;
@@ -31,15 +32,15 @@ class NovelController {
         );
     }
 
-    // GET /storyforge/add_novel.php
+    // GET /novel/add
     function new() {
         $logger = getLogger('add novel');
-        $logger->info('GET /storyforge/add_novel.php');
+        $logger->info('GET /novel/add');
 
         if(!isset($_SESSION["user"])) {
             $logger->info("User tried to add a novel but is not authenticated");
             $_SESSION['flash']['error'] = 'You are not authenticated.';
-            header("Location: ". "login.php");
+            header('Location: '. LOGIN_PATH);
             
             return;
         }
@@ -50,15 +51,15 @@ class NovelController {
         ViewManager::render("add_novel", ["flash" => $flash]);
     }
 
-    // POST /storyforge/add_novel.php
+    // POST /novel/add
     function create() {
         $logger = getLogger('add novel');
-        $logger->info('POST /storyforge/add_novel.php');
+        $logger->info('POST /novel/add');
 
         if(!isset($_SESSION["user"])) {
             $logger->info("User tried to add a novel but is not authenticated");
             $_SESSION['flash']['error'] = 'You are not authenticated.';
-            header("Location: ". "login.php");
+            header('Location: ' . LOGIN_PATH);
 
             return;
         }
@@ -191,6 +192,6 @@ class NovelController {
         }
 
         $_SESSION['flash']['success'] = 'Novel created!';
-        header("Location: ". "/");
+        header('Location: ' . ROOT_PATH);
     }
 }
