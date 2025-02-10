@@ -74,7 +74,7 @@ class AdminController {
 
     // POST /admin/edit_user.php
     function request_user_edit() {
-        http_response_code(501);
-        echo "Not implemented.";
+        $controller = new ErrorPageController();
+        $controller->error(501);
     }
 }

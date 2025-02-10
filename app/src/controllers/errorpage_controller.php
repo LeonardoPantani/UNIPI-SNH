@@ -26,6 +26,6 @@ class ErrorPageController {
         unset($_SESSION['flash']);
 
         http_response_code($error_code);
-        ViewManager::render("error_page", ["flash" => $flash, "error_code" => $error_code, "error_message" => self::ERROR_MESSAGES[$error_code] ? : "But all is not lost."]);
+        ViewManager::render("error_page", ["flash" => $flash, "error_code" => $error_code, "error_message" => self::ERROR_MESSAGES[$error_code] ? : "The server had a little meltdown. Please try again."]);
     }
 }
