@@ -105,11 +105,7 @@ ob_start();
     </div>
 </form>
 
-<script type="text/javascript">
-    const EMAIL_REGEX = <?= $vars["email_pattern"] ?>;
-    const USERNAME_REGEX = /^<?= $vars["username_pattern"] ?>$/;
-    const PASSWORD_MIN_LENGTH = <?= $vars["password_minlength"] ?>;
-</script>
+<script type="text/javascript" nonce="<?= $nonce ?>" src="/assets/javascript/utils.js"></script>
 
 <?php
 // CODICE DELLA PAGINA FINISCE QUI

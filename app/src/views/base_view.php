@@ -11,13 +11,19 @@
     <title><?= isset($title) ? 'StoryForge - ' . $title : 'StoryForge'; ?></title>
 
     <!-- Bulma CSS -->
-    <link rel="stylesheet" href="/assets/stylesheets/main.css">
+    <link rel="stylesheet" href="/assets/stylesheets/bulma.min.css">
+
+    <!-- Minireset -->
+    <link rel="stylesheet" href="/assets/stylesheets/minireset.css">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="/assets/stylesheets/fontawesome/css/all.min.css">
+
+    <!-- Notification -->
+    <link rel="stylesheet" href="/assets/stylesheets/notification.css">
 </head>
 
 <body>
@@ -107,7 +113,7 @@
         </nav>
     </header>
 
-    <section style="position: absolute; left: 35%; right: 35%; top: 3%; margin-inline: auto; z-index: 31">
+    <section class="upper-notification">
         <?php foreach($vars["flash"] as $key => $msg):
             $class = match ($key) {
                 'success'   => 'is-success',
@@ -147,13 +153,13 @@
         </footer>
     </main>
 
-    <script src="/assets/javascript/generic.js"></script>
-    <script src="/assets/javascript/flash.js"></script>
+    <script type="text/javascript" nonce="<?= $nonce ?>" src="/assets/javascript/generic.js"></script>
+    <script type="text/javascript" nonce="<?= $nonce ?>" src="/assets/javascript/flash.js"></script>
     <?php 
         $filename = str_replace(" ", "_", strtolower($title));
         if(file_exists(__DIR__ . "/../public/assets/javascript/".$filename.".js")) { 
     ?>
-        <script src="/assets/javascript/<?= $filename ?>.js"></script>
+        <script type="text/javascript" nonce="<?= $nonce ?>" src="/assets/javascript/<?= $filename ?>.js"></script>
     <?php } ?>
 </body>
 

@@ -36,9 +36,7 @@ ob_start();
     </div>
 </form>
 
-<script type="text/javascript">
-    const EMAIL_REGEX = <?= $vars["email_pattern"] ?>;
-</script>
+<script type="text/javascript" nonce="<?= $nonce ?>" src="/assets/javascript/utils.js"></script>
 
 <?php
 // CODICE DELLA PAGINA FINISCE QUI

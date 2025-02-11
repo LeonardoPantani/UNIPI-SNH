@@ -1,0 +1,8 @@
+.upper-notification {
+    position: absolute;
+    left: 35%;
+    right: 35%;
+    top: 3%;
+    margin-inline: auto;
+    z-index: 31;
+}
