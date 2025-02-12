@@ -39,7 +39,7 @@ ob_start();
 
     <div id="novel_text" class="field is-hidden">
         <label class="label" for="content">Content</label>
-        <input class="input" type="text" id="content" name="content" placeholder="Novel content">
+        <textarea class="textarea" id="content" name="content" placeholder="Novel content"></textarea>
     </div>
 
     <div id="novel_file" class="field is-hidden">

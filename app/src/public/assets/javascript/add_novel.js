@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el.target.value) {
             let text_div = document.getElementById('novel_text')
             let file_div = document.getElementById('novel_file')
-            let text_input = text_div.querySelector('input')
+            let text_input = text_div.querySelector('textarea')
             let file_input = file_div.querySelector('input')
 
             switch (el.target.value) {
