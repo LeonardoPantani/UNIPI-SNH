@@ -88,11 +88,11 @@ abstract class Novel extends DBConnection {
             [$uuid]
         );
 
-        $novel_row['premium'] = ((int) $novel_row['premium']) > 0;
-
         if(count($novel_row) <= 0) {
             return null;
         }
+
+        $novel_row['premium'] = ((int) $novel_row['premium']) > 0;
 
         switch ($novel_row['form_type']) {
             case (string) self::TEXT_FORM:
@@ -150,6 +150,46 @@ abstract class Novel extends DBConnection {
             SELECT n.id, n.uuid, n.title, n.premium, n.created_at, n.user_id, t.id as form_id, t.path as form_path 
             FROM novel n 
             INNER JOIN file_form t ON (n.form_type = ? AND n.form_id = t.id)
+        ", [self::FILE_FORM]);
+
+        $novels_file = array_map(fn($row) => new NovelFile(
+            (int) $row['id'],
+            $row['uuid'],
+            $row['title'],
+            ((int) $row['premium']) > 0,
+            $row['created_at'],
+            $row['user_id'],
+            $row['form_id'],
+            $row['form_path']
+        ), $novels_file);
+
+        return array_merge($novels_text, $novels_file);
+    }
+
+    public static function getAllNonPremiumNovels() : array {
+        $novels_text = self::db_fetchAll("
+            SELECT n.id, n.uuid, n.title, n.premium, n.created_at, n.user_id, t.id as form_id, t.content as form_content 
+            FROM novel n 
+            INNER JOIN text_form t ON (n.form_type = ? AND n.form_id = t.id)
+            WHERE n.premium = 0
+        ", [self::TEXT_FORM]);
+        
+        $novels_text = array_map(fn($row) => new NovelText(
+            (int) $row['id'],
+            $row['uuid'],
+            $row['title'],
+            ((int) $row['premium']) > 0,
+            $row['created_at'],
+            $row['user_id'],
+            $row['form_id'],
+            $row['form_content']
+        ), $novels_text);
+
+        $novels_file = self::db_fetchAll("
+            SELECT n.id, n.uuid, n.title, n.premium, n.created_at, n.user_id, t.id as form_id, t.path as form_path 
+            FROM novel n 
+            INNER JOIN file_form t ON (n.form_type = ? AND n.form_id = t.id)
+            WHERE n.premium = 0
         ", [self::FILE_FORM]);
 
         $novels_file = array_map(fn($row) => new NovelFile(

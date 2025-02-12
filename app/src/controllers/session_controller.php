@@ -90,7 +90,7 @@ class LoginController
         $_SESSION["user"] = $user->getId();
         $_SESSION["username"] = $user->getUsername();
         $_SESSION["role"] = $user->getRoleName();
-        $_SESSION['flash']['success'] = 'Authenticated as <strong>'. $_SESSION["username"] . '</strong>.';
+        $_SESSION['flash']['success'] = 'Authenticated as '. $_SESSION["username"] . '.';
 
         header('Location: ' . ROOT_PATH);
     }

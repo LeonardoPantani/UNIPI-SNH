@@ -6,6 +6,7 @@ require_once __DIR__ . '/../libs/utils/db/DBConnection.php'; //IMPORTANT - DO NO
 require_once __DIR__ . '/../models/Novel.php';
 require_once __DIR__ . '/../models/NovelText.php';
 require_once __DIR__ . '/../models/NovelFile.php';
+require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
 require_once __DIR__ . '/../libs/utils/config/constants.php';
@@ -13,6 +14,7 @@ require_once __DIR__ . '/../libs/utils/config/constants.php';
 use App\Models\Novel;
 use App\Models\NovelText;
 use App\Models\NovelFile;
+use App\Models\User;
 use App\Utils\ViewManager;
 
 class NovelController {
@@ -193,5 +195,130 @@ class NovelController {
 
         $_SESSION['flash']['success'] = 'Novel created!';
         header('Location: ' . ROOT_PATH);
+    }
+
+    // GET /novels
+    function showAll() {
+        $logger = getLogger('show novels');
+        $logger->info('GET /novels');
+
+        if(!isset($_SESSION["user"])) {
+            $logger->info("User tried to access to the novels page but is not authenticated");
+            $_SESSION['flash']['error'] = 'You are not authenticated.';
+            header('Location: ' . LOGIN_PATH);
+
+            return;
+        }
+
+        $user = User::getUserById($_SESSION['user']);
+        $novels = ($user->getRoleName() === 'premium')
+            ? Novel::getAllNovels() 
+            : Novel::getAllNonPremiumNovels();
+
+        $novels_text = array();
+        $novels_file = array();
+        foreach($novels as $novel) {
+            $item = [
+                "title"     => $novel->getTitle(),
+                "isPremium" => $novel->getIsPremium(),
+                "url"       => show_novel_path($novel->getUuid())
+            ];
+            
+            switch(get_class($novel)) {
+                case 'App\Models\NovelText':
+                    array_push($novels_text, $item);
+                    break;
+    
+                case 'App\Models\NovelFile':
+                    array_push($novels_file, $item);
+                    break;
+
+                default:
+                    $logger->info("unknown novel form");
+                    $_SESSION['flash']['error'] = 'Internal server error';
+                    header('Location: ' . ROOT_PATH);
+    
+                    return;
+            }
+        }
+
+        $flash = $_SESSION['flash'] ?? [];
+        unset($_SESSION['flash']);
+
+        ViewManager::render("show_all_novels", ["flash" => $flash, "novels_text" => $novels_text, "novels_file" => $novels_file]);
+    }
+
+    // GET /novels/:uuid
+    function show() {
+        $logger = getLogger('show a novel');
+        $logger->info('GET /novels/:uuid');
+
+        if(!isset($_SESSION["user"])) {
+            $logger->info("User tried to access to a novel page but is not authenticated");
+            $_SESSION['flash']['error'] = 'You are not authenticated.';
+            header('Location: ' . LOGIN_PATH);
+
+            return;
+        }
+
+        $uuid = $this->params['GET']['uuid'];
+
+        $user = User::getUserById($_SESSION['user']);
+        $novel = Novel::getNovelByUuid($uuid);
+
+        if(is_null($novel)) {
+            $logger->info("novel not found");
+            $_SESSION['flash']['error'] = 'Novel not found';
+            header('Location: ' . SHOW_NOVELS_PATH);
+
+            return;
+        }
+
+        if($novel->getIsPremium() && $user->getRoleName() !== 'premium') {
+            $logger->info("User tried to access a premium novel without permissions");
+            $_SESSION['flash']['error'] = 'You \'re not allowed to see premium novels';
+            header('Location: ' . SHOW_NOVELS_PATH);
+
+            return;
+        }
+
+        $novel_user = User::getUserById($novel->getUserId());
+
+        $flash = $_SESSION['flash'] ?? [];
+        unset($_SESSION['flash']);
+
+        switch(get_class($novel)) {
+            case 'App\Models\NovelText':
+                ViewManager::render('show_text_novel', [
+                    "flash"      => $flash, 
+                    "novel_user" => ["username" => $novel_user->getUsername()],
+                    "novel"      => ["title" => $novel->getTitle(), "formContent" => $novel->getFormContent()]
+                ]);
+
+                break;
+
+            case 'App\Models\NovelFile':
+                $path = $novel->getFormPath();
+
+                if(!file_exists($path)) {
+                    $logger->info("file $path not found");
+                    $_SESSION['flash']['error'] = 'Novel PDF not found';
+                    header('Location: ' . SHOW_NOVELS_PATH);
+
+                    return;
+                }
+
+                header('Content-Type: application/pdf');
+                readfile($path);
+
+                break;
+
+            default:
+                $logger->info("unknown novel form");
+                $_SESSION['flash']['error'] = 'Nove not found';
+                header('Location: ' . SHOW_NOVELS_PATH);
+
+                return;
+        }
     }
 }

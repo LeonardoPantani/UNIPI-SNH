@@ -44,6 +44,13 @@
 
             <div id="test" class="navbar-menu">
                 <div class="navbar-start">
+                    <a class="navbar-item" href="<?= SHOW_NOVELS_PATH ?>">
+                        <span class="icon">
+                            <i class="fa-solid fa-book"></i>
+                        </span>
+                        <span>Show Novels</span>
+                    </a>
+
                     <a class="navbar-item" href="<?= ADD_NOVEL_PATH ?>">
                         <span class="icon">
                             <i class="fa-solid fa-pen-nib"></i>

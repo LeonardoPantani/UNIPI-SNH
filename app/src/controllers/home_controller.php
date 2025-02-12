@@ -30,6 +30,6 @@ class HomeController
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("home", ["session" => $_SESSION, "flash" => $flash, "users" => $users, "novels" => $novels]);
+        ViewManager::render("home", ["flash" => $flash]);
     }
 }

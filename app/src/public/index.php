@@ -150,6 +150,42 @@
             
             break;
 
+        // GET /novels
+        case (bool) preg_match('/^\/novels\/?$/', $request):
+            $controller = new NovelController($_SERVER, $_GET, $_POST, $_FILES);
+
+            switch($method) {
+                case 'GET':
+                    $controller->showAll();
+                    break;
+
+                default:
+                    $controller = new ErrorPageController();
+                    $controller->error(405);
+            }
+            
+            break;
+
+        // GET /novels/:uuid
+        case (bool) preg_match('/^\/novels\/([0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})\/?$/', $request, $matches):
+            $params = [
+                "uuid" => $matches[1]
+            ];
+
+            $controller = new NovelController($_SERVER, array_merge($_GET, $params), $_POST, $_FILES);
+
+            switch($method) {
+                case 'GET':
+                    $controller->show();
+                    break;
+
+                default:
+                    $controller = new ErrorPageController();
+                    $controller->error(405);
+            }
+            
+            break;
+
         // GET /admin
         case (bool) preg_match('/^\/admin\/?$/', $request):
             $controller = new AdminController($_SERVER, $_GET, $_POST);
