@@ -3,7 +3,15 @@ $title = "Show Novels";
 ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
 ?>
-<h1 class="title">Novels</h1>
+<div class="columns is-centered is-vcentered my-0">
+    <div class="column is-3 pl-3 pr-0 py-1">
+        <img src="/assets/images/logo_extended.webp" alt="Logo">
+    </div>
+    <div class="column is-2 px-0 py-1"> 
+        <h1 class="title is-3">'s Novels</h1>
+    </div>
+    <div class="column is-7"></div>
+</div>
 
 <?php if(count($vars["novels_text"]) > 0 || count($vars["novels_file"]) > 0) : ?>
     <p class="subtitle">Discover new novels from other users.</p>
@@ -21,7 +29,6 @@ ob_start();
                 if (count($vars["novels_text"]) > 0) :
                     foreach ($vars["novels_text"] as $novel) :
                         $url = $novel["url"];
-                        $premium = ($novel["isPremium"]) ? "PREMIUM" : "NON PREMIUM";
                         $novel_title = $novel["title"];
             ?>
             <div class="icon-text">
@@ -45,7 +52,7 @@ ob_start();
                     endforeach;
                 else:
             ?>
-                <p>Empty list</p>
+                <p>No text novels found.</p>
             <?php
                 endif; 
             ?>
@@ -63,7 +70,6 @@ ob_start();
                 if (count($vars["novels_file"]) > 0) :
                     foreach ($vars["novels_file"] as $novel) :
                         $url = $novel["url"];
-                        $premium = ($novel["isPremium"]) ? "PREMIUM" : "NON PREMIUM";
                         $novel_title = $novel["title"];
             ?>
             <div class="icon-text">
@@ -87,7 +93,7 @@ ob_start();
                     endforeach;
                 else:
             ?>
-                <p>Empty list</p>
+                <p>No file novels found.</p>
             <?php
                 endif; 
             ?>
