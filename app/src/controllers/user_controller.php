@@ -101,7 +101,7 @@ class UserController {
 
         sendEmail($email, "Welcome to StoryForge!", "welcome", ["username" => $username]);
 
-        $_SESSION['flash']['success'] = 'User <strong>'.$username.'</strong> created!';
+        $_SESSION['flash']['success'] = 'User '.$username.' created!';
         header('Location: ' . LOGIN_PATH);
     }
 }
