@@ -186,6 +186,22 @@
             
             break;
 
+            // GET /user/novels
+            case (bool) preg_match('/^\/user\/novels\/?$/', $request):
+                $controller = new NovelController($_SERVER, $_GET, $_POST, $_FILES);
+    
+                switch($method) {
+                    case 'GET':
+                        $controller->showUser();
+                        break;
+    
+                    default:
+                        $controller = new ErrorPageController();
+                        $controller->error(405);
+                }
+                
+                break;
+
         // GET /admin
         case (bool) preg_match('/^\/admin\/?$/', $request):
             $controller = new AdminController($_SERVER, $_GET, $_POST);

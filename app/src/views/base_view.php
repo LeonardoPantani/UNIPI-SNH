@@ -81,6 +81,13 @@
                             </a>
 
                             <div class="navbar-dropdown">
+                                <a class="navbar-item" href="<?= SHOW_USER_NOVELS_PATH ?>">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </span>
+                                    <span>My Novels</span>
+                                </a>
+
                                 <a class="navbar-item" href="<?= SETTINGS_PATH ?>">
                                     <span class="icon">
                                         <i class="fa-solid fa-gear"></i>

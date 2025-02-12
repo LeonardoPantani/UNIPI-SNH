@@ -6,8 +6,9 @@
     const LOGOUT_PATH           = '/logout';              // /storyforge/logout.php
     const FORGOT_PASSWORD_PATH  = '/password/reset';      // /storyforge/forgot_password.php
     const ADD_NOVEL_PATH        = '/novel/add';           // /storyforge/add_novel.php
-    const SETTINGS_PATH         = '/settings';            // /storyforge/settings.php
+    const SETTINGS_PATH         = '/user/settings';       // /storyforge/settings.php
     const SHOW_NOVELS_PATH      = '/novels';
+    const SHOW_USER_NOVELS_PATH = '/user/novels';
     
     const ADMIN_PATH            = '/admin';               // /storyforge/admin/panel.php
     const ADMIN_EDIT_USER_PATH  = '/admin/services/edit'; // /storyforge/admin/edit_user_service.php

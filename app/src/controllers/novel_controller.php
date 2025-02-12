@@ -194,7 +194,7 @@ class NovelController {
         }
 
         $_SESSION['flash']['success'] = 'Novel created!';
-        header('Location: ' . ROOT_PATH);
+        header('Location: ' . SHOW_USER_NOVELS_PATH);
     }
 
     // GET /novels
@@ -262,8 +262,9 @@ class NovelController {
         }
 
         $uuid = $this->params['GET']['uuid'];
+        $user_id = $_SESSION['user'];
 
-        $user = User::getUserById($_SESSION['user']);
+        $user = User::getUserById($user_id);
         $novel = Novel::getNovelByUuid($uuid);
 
         if(is_null($novel)) {
@@ -274,7 +275,8 @@ class NovelController {
             return;
         }
 
-        if($novel->getIsPremium() && $user->getRoleName() !== 'premium') {
+        // check premium permission only if the novel doesn't belong to the current user
+        if($novel->getUserId() !== $user_id && ($novel->getIsPremium() && $user->getRoleName() !== 'premium')) {
             $logger->info("User tried to access a premium novel without permissions");
             $_SESSION['flash']['error'] = 'You \'re not allowed to see premium novels';
             header('Location: ' . SHOW_NOVELS_PATH);
@@ -320,5 +322,54 @@ class NovelController {
 
                 return;
         }
+    }
+
+    // GET /user/novels
+    function showUser() {
+        $logger = getLogger('show user novels');
+        $logger->info('GET /user/novels');
+
+        if(!isset($_SESSION["user"])) {
+            $logger->info("User tried to access to his novels page but is not authenticated");
+            $_SESSION['flash']['error'] = 'You are not authenticated.';
+            header('Location: ' . LOGIN_PATH);
+
+            return;
+        }
+
+        $user_id = $_SESSION['user'];
+        $novels = Novel::getAllNovelsByUserId($user_id); 
+
+        $novels_text = array();
+        $novels_file = array();
+        foreach($novels as $novel) {
+            $item = [
+                "title"     => $novel->getTitle(),
+                "isPremium" => $novel->getIsPremium(),
+                "url"       => show_novel_path($novel->getUuid())
+            ];
+            
+            switch(get_class($novel)) {
+                case 'App\Models\NovelText':
+                    array_push($novels_text, $item);
+                    break;
+    
+                case 'App\Models\NovelFile':
+                    array_push($novels_file, $item);
+                    break;
+
+                default:
+                    $logger->info("unknown novel form");
+                    $_SESSION['flash']['error'] = 'Internal server error';
+                    header('Location: ' . ROOT_PATH);
+    
+                    return;
+            }
+        }
+
+        $flash = $_SESSION['flash'] ?? [];
+        unset($_SESSION['flash']);
+
+        ViewManager::render("show_user_novels", ["flash" => $flash, "novels_text" => $novels_text, "novels_file" => $novels_file]);
     }
 }
