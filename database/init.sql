@@ -15,6 +15,7 @@ CREATE TABLE users (
     password_hash VARCHAR(256) NOT NULL,
     created_at TIMESTAMP NOT NULL,
     role_id INTEGER NOT NULL, -- table role id
+    UNIQUE(uuid),
     FOREIGN KEY (role_id) REFERENCES role(id)
 ) ENGINE=InnoDB;
 
@@ -49,6 +50,8 @@ CREATE TABLE novel (
     form_id INTEGER NOT NULL, -- id which belongs to one of the *_form tables
     created_at TIMESTAMP NOT NULL,
     user_id INTEGER NOT NULL,
+    UNIQUE(uuid),
+    UNIQUE(title, user_id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE=InnoDB;
 
