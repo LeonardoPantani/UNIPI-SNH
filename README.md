@@ -106,6 +106,23 @@ i file di log, eseguire
 ```
 docker cp snh_app:/var/www/html/logs .
 ```
+Per visualizzare in tempo reale il contenuto di un file di log (e.g. `file.log`), eseguire
+```
+docker exec -it snh_app less --follow-name +F logs/file.log
+```
+È possibile inoltre sfruttare il comando `less` per aprire tutti i file di log e navigare tra essi. Eseguire
+```
+docker exec -it snh_app less --follow-name +F logs/*
+```
+ed usare i seguenti comandi per controllare `less`.
+```
+:n   # file successivo
+:p   # file precedente
+F    # contenuto aggiornato in tempo reale (i.e. follow) 
+g    # vai all'inizio
+G    # vai alla fine
+h    # help
+```
 
 ## justfile
 I comandi di Docker possono essere eseguiti anche attraverso [just](https://github.com/casey/just). 

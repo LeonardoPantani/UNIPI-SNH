@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y \
 	git \
 	zip \
 	unzip \
-	ssl-cert
+	ssl-cert \
+	less
 
 # apache2 RewriteEngine
 RUN a2enmod rewrite
