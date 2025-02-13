@@ -19,7 +19,7 @@ class ForgotPassword extends DBConnection {
 
     public static function get_userid_by_code($random_string) : array {
         return self::db_fetchOne(
-            "SELECT user_id FROM password_challenge WHERE random_string = ?", 
+            "SELECT user_id FROM password_challenge WHERE random_string = ? AND expire_at > NOW()", 
             [$random_string]
         );
     }

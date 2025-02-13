@@ -60,14 +60,14 @@ class ForgotPasswordController {
             return;
         }
 
-        $email = $this->params['POST']['email'];
-        if(!isset($email)) {
+        if(!isset($this->params['POST']['email'])) {
             $logger->info("User tried to reset their password without setting their email");
             $_SESSION['flash']['error'] = 'Insert your email.';
             $this->new();
 
             return;
         }
+        $email = $this->params['POST']['email'];
 
         $requestStatus = ForgotPassword::send_mail($email);
 
@@ -93,7 +93,7 @@ class ForgotPasswordController {
     }
 
     // GET /password/reset/:token
-    function choose_new_password() {
+    function choose_new_password($params = "") {
         $logger = getLogger('choose new password');
         $logger->info('GET /password/reset/:token');
 
@@ -108,12 +108,7 @@ class ForgotPasswordController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        $code = "";
-        if(isset($this->params['GET']['code'])) {
-            $code = $this->params['GET']['code'];
-        }
-
-        ViewManager::render("create_password", ["flash" => $flash, "code" => $code, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("create_password", ["flash" => $flash, "code" => isset($params['token']) ? $params['token'] : "", "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
     // POST /password/reset/:token

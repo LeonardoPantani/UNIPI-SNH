@@ -129,7 +129,7 @@
             break;
 
         // GET|POST /password/reset/:token
-        case (bool) preg_match('/^\/password\/reset\/([0-9a-z]{5})\/?$/', $request, $matches):
+        case (bool) preg_match('/^\/password\/reset\/([0-9a-zA-Z]{5})\/?$/', $request, $matches):
             $params = [
                 "token" => $matches[1]
             ];
@@ -138,7 +138,7 @@
 
             switch($method) {
                 case 'GET':
-                    $controller->choose_new_password();
+                    $controller->choose_new_password($params);
                     break;
 
                 case 'POST':

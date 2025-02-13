@@ -2,16 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const codeInputs = document.querySelectorAll('.code-input');
     const hiddenCode = document.getElementById('code');
 
-    // autocompiling code if constant is present
-    if(CODE !== "") {
-        let i = 0;
-        codeInputs.forEach(field => {
-            field.value = CODE[i];
-            i++;
-        });
-        hiddenCode.value = CODE;
-        updateHiddenCode();
-    }  
+    updateHiddenCode();
 
     document.getElementById('password').addEventListener('blur', () => {
         checkPassword();
@@ -104,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 allSelected = true;
                 codeInputs.forEach(input => {
-                    input.classList.add('is-selected');
+                    input.classList.add('has-background-link');
                     input.value = input.value.trim();
                 });
                 codeInputs[0].focus();
@@ -114,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 codeInputs.forEach(input => {
                     input.value = '';
-                    input.classList.remove('is-selected');
+                    input.classList.remove('has-background-link');
                 });
                 codeInputs[0].focus();
                 allSelected = false;
@@ -125,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('input', () => {
             if (allSelected) {
                 allSelected = false;
-                codeInputs.forEach(input => input.classList.remove('is-selected'));
+                codeInputs.forEach(input => input.classList.remove('has-background-link'));
             }
         });
     });
