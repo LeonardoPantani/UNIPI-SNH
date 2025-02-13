@@ -12,30 +12,42 @@ ob_start();
 
 <div class="container">
   <div class="columns is-multiline">
-    <?php foreach($vars["admin_services"] as $s): ?>
-      <div class="column is-one-third">
-        <div class="card">
-            <header class="card-header">
-                <p class="card-header-title"><?= $s->getName() ?></p>
-                <span class="card-header-icon">
-                    <i class="fas fa-<?= $s->getIcon() ?>" aria-hidden="true"></i>
-                </span>
-            </header>
-            <div class="card-content">
-                <div class="content">
-                    <?= $s->getDescription() ?>
-                </div>
-            </div>
-            <footer class="card-footer">
-                <? if($s->getUrl() != ""): ?>
-                    <a href="<?= $s->getUrl() ? "/admin/services/" . $s->getUrl() : "" ?>" class="card-footer-item">Click to access this service</a>
-                <? else: ?>
-                    <span class="card-footer-item has-text-white">This service is not active</span>
-                <? endif; ?>
-            </footer>
-        </div>
+    <div class="column is-one-third">
+      <div class="card">
+          <header class="card-header">
+              <p class="card-header-title">Edit User Role</p>
+              <span class="card-header-icon">
+                  <i class="fas fa-wand-sparkles" aria-hidden="true"></i>
+              </span>
+          </header>
+          <div class="card-content">
+              <div class="content">
+                This service allows you to change the role of a user.
+              </div>
+          </div>
+          <footer class="card-footer">
+              <a href="<?= ADMIN_EDIT_USER_PATH ?>" class="card-footer-item">Click to access this service</a>
+          </footer>
       </div>
-    <?php endforeach; ?>
+    </div>
+    <div class="column is-one-third">
+      <div class="card">
+          <header class="card-header">
+              <p class="card-header-title">Placeholder</p>
+              <span class="card-header-icon">
+                  <i class="fas fa-terminal" aria-hidden="true"></i>
+              </span>
+          </header>
+          <div class="card-content">
+              <div class="content">
+                This service does not have a description yet.
+              </div>
+          </div>
+          <footer class="card-footer">
+            <span class="card-footer-item has-text-white">This service is not active</span>
+          </footer>
+      </div>
+    </div>
   </div>
 </div>
 

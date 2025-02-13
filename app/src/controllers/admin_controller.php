@@ -6,13 +6,13 @@ require_once __DIR__ . '/../libs/utils/validator/validator.php';
 require_once __DIR__ . '/../libs/utils/db/DBConnection.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 require_once __DIR__ . '/../models/User.php';
-require_once __DIR__ . '/../models/AdminService.php';
 require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
+require_once __DIR__ . '/../controllers/errorpage_controller.php';
 
 use App\Models\User;
-use App\Models\AdminService;
 use App\Utils\ViewManager;
 use App\Utils\Validator;
+use App\Controllers\ErrorPageController;
 
 class AdminController {
     private array $server;
@@ -34,8 +34,8 @@ class AdminController {
 
         if(!isset($_SESSION["user"]) || (isset($_SESSION["user"]) && $_SESSION["role"] != "admin")) {
             $logger->info("User tried to access the admin panel while not being authenticated");
-            http_response_code(404);
-            echo "Not found.";
+            $controller = new ErrorPageController();
+            $controller->error(404);
             
             return;
         }
@@ -43,14 +43,7 @@ class AdminController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        $admin_services = array(
-            AdminService::newAdminServiceInstance("Edit User Role", "edit", "This service allows you to change the role of a user.", "wand-sparkles"),
-            AdminService::newAdminServiceInstance("Placeholder"),
-            AdminService::newAdminServiceInstance("Placeholder 2"),
-            AdminService::newAdminServiceInstance("Placeholder 3"),
-        );
-
-        ViewManager::render("admin_panel", ["flash" => $flash, "admin_services" => $admin_services]);
+        ViewManager::render("admin_panel", ["flash" => $flash]);
     }
 
     // GET /admin/services/edit
@@ -60,8 +53,8 @@ class AdminController {
 
         if(!isset($_SESSION["user"]) || (isset($_SESSION["user"]) && $_SESSION["role"] != "admin")) {
             $logger->info("User tried to access the admin panel while not being authenticated");
-            http_response_code(404);
-            echo "Not found.";
+            $controller = new ErrorPageController();
+            $controller->error(404);
             
             return;
         }
@@ -72,7 +65,7 @@ class AdminController {
         ViewManager::render("admin_edituser", ["flash" => $flash, "roles" => User::getRoles(), "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH]);
     }
 
-    // POST /admin/edit_user.php
+    // POST /admin/services/edit
     function request_user_edit() {
         $controller = new ErrorPageController();
         $controller->error(501);
