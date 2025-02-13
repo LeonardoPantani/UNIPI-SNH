@@ -7,7 +7,7 @@ ob_start();
 <h2 class="subtitle">Created by <strong><?= $vars["novel_user"]["username"] ?></strong></h2>
 
 <div class="content">
-    <p><?= $vars["novel"]["formContent"] ?></p>
+    <p class="allow-new-line-text"><?= $vars["novel"]["formContent"] ?></p>
 </div>
 <?php
 // CODICE DELLA PAGINA FINISCE QUI

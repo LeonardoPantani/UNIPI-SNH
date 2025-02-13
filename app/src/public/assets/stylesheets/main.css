@@ -6,3 +6,7 @@
     margin-inline: auto;
     z-index: 31;
 }
+
+.allow-new-line-text {
+    white-space: pre-line;
+}

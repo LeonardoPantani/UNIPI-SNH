@@ -22,8 +22,8 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="/assets/stylesheets/fontawesome/css/all.min.css">
 
-    <!-- Notification -->
-    <link rel="stylesheet" href="/assets/stylesheets/notification.css">
+    <!-- Main -->
+    <link rel="stylesheet" href="/assets/stylesheets/main.css">
 </head>
 
 <body>
