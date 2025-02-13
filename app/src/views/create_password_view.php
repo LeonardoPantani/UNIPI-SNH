@@ -4,18 +4,19 @@ ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
 ?>
 <h1 class="title">Create a memorable password</h1>
-<form action="<?= FORGOT_PASSWORD_PATH ?>/<?= isset($vars["code"]) ? $vars["code"]: "AAAAA" ?>" method="POST">
+
+<form action="<?= create_password_path($vars["code"]) ?>" method="POST">
     <div class="field">
         <label class="label">Verification code</label>
         <div class="control">
             <div class="is-flex is-justify-content-center minicode">
-                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="0" value="<?= isset($vars["code"][0]) ? $vars["code"][0] : "A" ?>">
-                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="1" value="<?= isset($vars["code"][1]) ? $vars["code"][1] : "A" ?>">
-                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="2" value="<?= isset($vars["code"][2]) ? $vars["code"][2] : "A" ?>">
-                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="3" value="<?= isset($vars["code"][3]) ? $vars["code"][3] : "A" ?>">
-                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized" maxlength="1" data-index="4" value="<?= isset($vars["code"][4]) ? $vars["code"][4] : "A" ?>">
+                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="0" value="<?= $vars["code"][0] ?>">
+                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="1" value="<?= $vars["code"][1] ?>">
+                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="2" value="<?= $vars["code"][2] ?>">
+                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized mr-3" maxlength="1" data-index="3" value="<?= $vars["code"][3] ?>">
+                <input type="text" class="code-input input is-size-4 has-text-centered has-width-3rem has-height-3rem is-capitalized"      maxlength="1" data-index="4" value="<?= $vars["code"][4] ?>">
             </div>
-            <input type="hidden" name="code" id="code" value="<?= isset($vars["code"]) ? $vars["code"]: "AAAAA" ?>">
+            <input type="hidden" name="code" id="code" value="<?= $vars["code"] ?>" disabled>
         </div>
         <p class="help code-field-message">To continue, please provide the <b>5 characters long</b> code that you received via e-mail.</p>
     </div>

@@ -44,7 +44,7 @@ class ForgotPasswordController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("forgot_password", ["flash" => $flash, "email_pattern" => Validator::EMAIL_REGEX]);
+        ViewManager::render("forgot_password", ["flash" => $flash]);
     }
 
     // POST /password/reset
@@ -93,7 +93,7 @@ class ForgotPasswordController {
     }
 
     // GET /password/reset/:token
-    function choose_new_password($params = "") {
+    function choose_new_password() {
         $logger = getLogger('choose new password');
         $logger->info('GET /password/reset/:token');
 
@@ -108,7 +108,7 @@ class ForgotPasswordController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("create_password", ["flash" => $flash, "code" => isset($params['token']) ? $params['token'] : "", "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("create_password", ["flash" => $flash, "code" => $this->params['GET']['code'], "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
     // POST /password/reset/:token
@@ -124,7 +124,7 @@ class ForgotPasswordController {
             return;
         }
 
-        $code                = $this->params['POST']['code'];
+        $code                = $this->params['GET']['code'];
         $password            = $this->params['POST']['password'];
         $password_confirm    = $this->params['POST']['password_confirm'];
         if(!isset($code, $password, $password_confirm)) {

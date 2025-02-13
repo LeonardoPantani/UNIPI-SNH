@@ -21,3 +21,7 @@
     function show_novel_path($uuid) {
         return SHOW_NOVELS_PATH . "/$uuid";
     }
+
+    function create_password_path($code) {
+        return FORGOT_PASSWORD_PATH . "/$code";
+    }

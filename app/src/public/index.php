@@ -128,17 +128,17 @@
 
             break;
 
-        // GET|POST /password/reset/:token
-        case (bool) preg_match('/^\/password\/reset\/([0-9a-zA-Z]{5})\/?$/', $request, $matches):
+        // GET|POST /password/reset/:code
+        case (bool) preg_match('/^\/password\/reset\/([0-9A-Z]{5})\/?$/', $request, $matches):
             $params = [
-                "token" => $matches[1]
+                "code" => $matches[1]
             ];
 
-            $controller = new ForgotPasswordController($_SERVER, $_GET, $_POST);
+            $controller = new ForgotPasswordController($_SERVER, array_merge($_GET, $params), $_POST);
 
             switch($method) {
                 case 'GET':
-                    $controller->choose_new_password($params);
+                    $controller->choose_new_password();
                     break;
 
                 case 'POST':
