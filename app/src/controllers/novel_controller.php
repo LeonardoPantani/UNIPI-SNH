@@ -18,24 +18,10 @@ use App\Models\User;
 use App\Utils\ViewManager;
 
 class NovelController {
-    const string UPLOADS_PATH = __DIR__ . '/../uploads/';
-
-    private array $server;
-    private array $params;
-    private array $files;
-
-    public function __construct(array $server, array $params_get, array $params_post, array $files) {
-        $this->server = $server;
-        $this->files = $files;
-
-        $this->params = array(
-            'GET'  => $params_get,
-            'POST' => $params_post
-        );
-    }
+    private const string UPLOADS_PATH = __DIR__ . '/../uploads/';
 
     // GET /novel/add
-    function new() {
+    public function new() {
         $logger = getLogger('add novel');
         $logger->info('GET /novel/add');
 
@@ -54,7 +40,7 @@ class NovelController {
     }
 
     // POST /novel/add
-    function create() {
+    public function create($params_post, $params_file) {
         $logger = getLogger('add novel');
         $logger->info('POST /novel/add');
 
@@ -66,16 +52,16 @@ class NovelController {
             return;
         }
 
-        $title = $this->params['POST']['title'];
-        $form  = $this->params['POST']['novel_form'];
-        $isPremium = ((int) $this->params['POST']['premium']) > 0;
-        $user_id = $_SESSION['user'];
+        $title     = $params_post['title'];
+        $form      = $params_post['novel_form'];
+        $isPremium = ((int) $params_post['premium']) > 0;
+        $user_id   = $_SESSION['user'];
 
         // TODO: Validator
 
         switch($form) {
             case 'text':
-                $content = $this->params['POST']['content'];
+                $content = $params_post['content'];
                 $res = NovelText::addNovelText($title, $isPremium, $content, $user_id);
 
                 if(!$res) {
@@ -89,7 +75,7 @@ class NovelController {
                 break;
 
             case 'file':
-                $file = $this->files['file'];
+                $file = $params_file['file'];
                 $tmp_filename = $file['tmp_name'];
 
                 // check mime type
@@ -249,7 +235,7 @@ class NovelController {
     }
 
     // GET /novels/:uuid
-    function show() {
+    function show($params_path) {
         $logger = getLogger('show a novel');
         $logger->info('GET /novels/:uuid');
 
@@ -261,7 +247,7 @@ class NovelController {
             return;
         }
 
-        $uuid = $this->params['GET']['uuid'];
+        $uuid    = $params_path['uuid'];
         $user_id = $_SESSION['user'];
 
         $user = User::getUserById($user_id);

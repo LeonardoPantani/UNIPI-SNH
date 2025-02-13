@@ -16,20 +16,8 @@ use App\Utils\ViewManager;
 use App\Utils\Validator;
 
 class ForgotPasswordController {
-    private array $server;
-    private array $params;
-
-    public function __construct(array $server, array $params_get, array $params_post) {
-        $this->server = $server;
-
-        $this->params = array(
-            'GET'  => $params_get,
-            'POST' => $params_post
-        );
-    }
-
     // GET /password/reset
-    function new() {
+    public function new() {
         $logger = getLogger('forgot password');
         $logger->info('GET /password/reset');
 
@@ -48,7 +36,7 @@ class ForgotPasswordController {
     }
 
     // POST /password/reset
-    function validate_reset_request() {
+    public function validate_reset_request($params_post) {
         $logger = getLogger('validate reset request');
         $logger->info('POST /password/reset');
 
@@ -60,14 +48,14 @@ class ForgotPasswordController {
             return;
         }
 
-        if(!isset($this->params['POST']['email'])) {
+        if(!isset($params_post['email'])) {
             $logger->info("User tried to reset their password without setting their email");
             $_SESSION['flash']['error'] = 'Insert your email.';
             $this->new();
 
             return;
         }
-        $email = $this->params['POST']['email'];
+        $email = $params_post['email'];
 
         $requestStatus = ForgotPassword::send_mail($email);
 
@@ -92,10 +80,10 @@ class ForgotPasswordController {
         $this->new();
     }
 
-    // GET /password/reset/:token
-    function choose_new_password() {
+    // GET /password/reset/:code
+    public function choose_new_password($params_path) {
         $logger = getLogger('choose new password');
-        $logger->info('GET /password/reset/:token');
+        $logger->info('GET /password/reset/:code');
 
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to access the password creation page but is already authenticated");
@@ -105,16 +93,18 @@ class ForgotPasswordController {
             return;
         }
 
+        $code = $params_path['code'];
+
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("create_password", ["flash" => $flash, "code" => $this->params['GET']['code'], "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("create_password", ["flash" => $flash, "code" => $code, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
-    // POST /password/reset/:token
-    function set_new_password() {
+    // POST /password/reset/:code
+    function set_new_password($params_path, $params_post) {
         $logger = getLogger('set new password');
-        $logger->info('POST /password/reset/:token');
+        $logger->info('POST /password/reset/:code');
 
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to reset their password but is already authenticated");
@@ -124,9 +114,10 @@ class ForgotPasswordController {
             return;
         }
 
-        $code                = $this->params['GET']['code'];
-        $password            = $this->params['POST']['password'];
-        $password_confirm    = $this->params['POST']['password_confirm'];
+        $code             = $params_path['code'];
+        $password         = $params_post['password'];
+        $password_confirm = $params_post['password_confirm'];
+
         if(!isset($code, $password, $password_confirm)) {
             $logger->info("User tried to reset their password without setting all parameters");
             $_SESSION['flash']['error'] = 'Compile all fields.';
@@ -155,10 +146,12 @@ class ForgotPasswordController {
             $this->choose_new_password();
             return;
         }
+        
         $user_id = $user_id["user_id"];
 
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
         $res = User::updateUserPassword($user_id, $password_hash);
+
         if(!$res) {
             $logger->info('Database error during password change');
             $_SESSION['flash']['error'] = 'Oops. Something went wrong on our end.';

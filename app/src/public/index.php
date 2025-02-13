@@ -34,7 +34,7 @@
 
         // GET|POST /registration
         case (bool) preg_match('/^\/registration\/?$/', $request):
-            $controller = new UserController($_SERVER, $_GET, $_POST);
+            $controller = new UserController();
 
             switch($method) {
                 case 'GET':
@@ -42,7 +42,7 @@
                     break;
 
                 case 'POST':
-                    $controller->create();
+                    $controller->create($_POST);
                     break;
 
                 default:
@@ -54,7 +54,7 @@
 
         // GET|POST /login
         case (bool) preg_match('/^\/login\/?$/', $request):
-            $controller = new LoginController($_SERVER, $_GET, $_POST);
+            $controller = new LoginController();
 
             switch($method) {
                 case 'GET':
@@ -62,7 +62,7 @@
                     break;
 
                 case 'POST':
-                    $controller->login();
+                    $controller->login($_POST);
                     break;
 
                 default:
@@ -74,7 +74,7 @@
 
         // GET /logout
         case (bool) preg_match('/^\/logout\/?$/', $request):
-            $controller = new LoginController($_SERVER, $_GET, $_POST);
+            $controller = new LoginController();
 
             switch($method) {
                 case 'GET':
@@ -90,7 +90,7 @@
 
         // GET|POST /settings
         case (bool) preg_match('/^\/user\/settings\/?$/', $request):
-            $controller = new SettingsController($_SERVER, $_GET, $_POST);
+            $controller = new SettingsController();
 
             switch($method) {
                 case 'GET':
@@ -98,7 +98,7 @@
                     break;
 
                 case 'POST':
-                    $controller->settings_change();
+                    $controller->settings_change($_POST);
                     break;
 
                 default:
@@ -110,7 +110,7 @@
 
         // GET|POST /password/reset
         case (bool) preg_match('/^\/password\/reset\/?$/', $request):
-            $controller = new ForgotPasswordController($_SERVER, $_GET, $_POST);
+            $controller = new ForgotPasswordController();
 
             switch($method) {
                 case 'GET':
@@ -118,7 +118,7 @@
                     break;
 
                 case 'POST':
-                    $controller->validate_reset_request();
+                    $controller->validate_reset_request($_POST);
                     break;
 
                 default:
@@ -130,19 +130,19 @@
 
         // GET|POST /password/reset/:code
         case (bool) preg_match('/^\/password\/reset\/([0-9A-Z]{5})\/?$/', $request, $matches):
-            $params = [
+            $params_path = [
                 "code" => $matches[1]
             ];
 
-            $controller = new ForgotPasswordController($_SERVER, array_merge($_GET, $params), $_POST);
+            $controller = new ForgotPasswordController();
 
             switch($method) {
                 case 'GET':
-                    $controller->choose_new_password();
+                    $controller->choose_new_password($params_path);
                     break;
 
                 case 'POST':
-                    $controller->set_new_password();
+                    $controller->set_new_password($params_path, $_POST);
                     break;
 
                 default:
@@ -154,7 +154,7 @@
 
         // GET|POST /novel/add
         case (bool) preg_match('/^\/novel\/add\/?$/', $request):
-            $controller = new NovelController($_SERVER, $_GET, $_POST, $_FILES);
+            $controller = new NovelController();
 
             switch($method) {
                 case 'GET':
@@ -162,7 +162,7 @@
                     break;
 
                 case 'POST':
-                    $controller->create();
+                    $controller->create($_POST, $_FILES);
                     break;
 
                 default:
@@ -174,7 +174,7 @@
 
         // GET /novels
         case (bool) preg_match('/^\/novels\/?$/', $request):
-            $controller = new NovelController($_SERVER, $_GET, $_POST, $_FILES);
+            $controller = new NovelController();
 
             switch($method) {
                 case 'GET':
@@ -190,15 +190,15 @@
 
         // GET /novels/:uuid
         case (bool) preg_match('/^\/novels\/([0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})\/?$/', $request, $matches):
-            $params = [
+            $params_path = [
                 "uuid" => $matches[1]
             ];
 
-            $controller = new NovelController($_SERVER, array_merge($_GET, $params), $_POST, $_FILES);
+            $controller = new NovelController();
 
             switch($method) {
                 case 'GET':
-                    $controller->show();
+                    $controller->show($params_path);
                     break;
 
                 default:
@@ -210,7 +210,7 @@
 
             // GET /user/novels
             case (bool) preg_match('/^\/user\/novels\/?$/', $request):
-                $controller = new NovelController($_SERVER, $_GET, $_POST, $_FILES);
+                $controller = new NovelController();
     
                 switch($method) {
                     case 'GET':
@@ -226,7 +226,7 @@
 
         // GET /admin
         case (bool) preg_match('/^\/admin\/?$/', $request):
-            $controller = new AdminController($_SERVER, $_GET, $_POST);
+            $controller = new AdminController();
 
             switch($method) {
                 case 'GET':
@@ -242,7 +242,7 @@
 
         // GET|POST /admin/services/edit
         case (bool) preg_match('/^\/admin\/services\/edit\/?$/', $request):
-            $controller = new AdminController($_SERVER, $_GET, $_POST);
+            $controller = new AdminController();
 
             switch($method) {
                 case 'GET':
@@ -250,7 +250,7 @@
                     break;
 
                 case 'POST':
-                    $controller->request_user_edit();
+                    $controller->request_user_edit($_POST);
                     break;
 
                 default:
@@ -262,11 +262,11 @@
 
         // POST /api/v1/users
         case (bool) preg_match('/^\/api\/v1\/users\/?$/', $request):
-            $controller = new ApiController($_SERVER, $_GET, $_POST);
+            $controller = new ApiController();
 
             switch($method) {
                 case 'POST':
-                    $controller->searchUsers();
+                    $controller->searchUsers($_POST);
                     break;
 
                 default:
@@ -280,10 +280,3 @@
             $controller = new ErrorPageController();
             $controller->error(404);
     }
-
-    /*
-    match(true) {
-        (bool) preg_match('/\/?/', $request) => (new HomeController())->new(),
-        default => http_response_code(404)
-    }
-    */

@@ -14,20 +14,8 @@ use App\Utils\ViewManager;
 use App\Utils\Validator;
 
 class SettingsController {
-    private array $server;
-    private array $params;
-
-    public function __construct(array $server, array $params_get, array $params_post) {
-        $this->server = $server;
-
-        $this->params = array(
-            'GET'  => $params_get,
-            'POST' => $params_post
-        );
-    }
-
     // GET /settings
-    function new() {
+    public function new() {
         $logger = getLogger('settings');
         $logger->info('GET /user/settings');
 
@@ -48,7 +36,7 @@ class SettingsController {
     }
 
     // POST /user/settings
-    function settings_change() {
+    public function settings_change($params_post) {
         $logger = getLogger('settings update');
         $logger->info('POST /user/settings');
 
@@ -60,9 +48,9 @@ class SettingsController {
             return;
         }
 
-        $password_old           = $this->params['POST']['password_old'];
-        $password_new           = $this->params['POST']['password_new'];
-        $password_new_confirm   = $this->params['POST']['password_new_confirm'];
+        $password_old         = $params_post['password_old'];
+        $password_new         = $params_post['password_new'];
+        $password_new_confirm = $params_post['password_new_confirm'];
 
         if(!Validator::passwordValidation($password_old)) {
             $logger->info('Invalid old password');
@@ -100,6 +88,6 @@ class SettingsController {
         } else {
             $_SESSION['flash']['error'] = 'Ooops! Something went wrong while changing your password. Please try again later or contact support if the problem persists.';
         }
-        header("Location: /");
+        header("Location: " . ROOT_PATH);
     }
 }

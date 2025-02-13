@@ -12,24 +12,12 @@ use App\Utils\Validator;
 use App\Models\User;
 
 class ApiController {
-    private array $server;
-    private array $params;
-
-    public function __construct(array $server, array $params_get, array $params_post) {
-        $this->server = $server;
-
-        $this->params = array(
-            'GET'  => $params_get,
-            'POST' => $params_post
-        );
-    }
-
     // POST /api/v1/users
-    public function searchUsers() {
+    public function searchUsers($params_post) {
         $logger = getLogger('api');
         $logger->info('POST /api/v1/users');
 
-        $partial_username = $this->params['POST']['username'];
+        $partial_username = $params_post['username'];
         
         if(!Validator::partialUsernameValidation($partial_username)) {
             $logger->info('Invalid partial username');

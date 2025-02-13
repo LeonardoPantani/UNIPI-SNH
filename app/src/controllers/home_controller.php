@@ -12,11 +12,13 @@ use App\Models\User;
 use App\Models\Novel;
 use App\Utils\ViewManager;
 
-class HomeController
-{
+class HomeController {
+
     // GET /
-    public function new()
-    {
+    public function new() {
+        $logger = getLogger('HomeController');
+        $logger->info('function: new');
+
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 

@@ -14,18 +14,6 @@ use App\Utils\Validator;
 use App\Utils\ViewManager;
 
 class UserController {
-    private array $server;
-    private array $params;
-
-    public function __construct(array $server, array $params_get, array $params_post) {
-        $this->server = $server;
-
-        $this->params = array(
-            'GET'  => $params_get,
-            'POST' => $params_post
-        );
-    }
-
     // GET /registration
     function new() {
         $logger = getLogger('registration');
@@ -49,10 +37,10 @@ class UserController {
         $logger = getLogger('registration');
         $logger->info('POST /registration');
 
-        $email            = $this->params['POST']['email'];
-        $username         = $this->params['POST']['username'];
-        $password         = $this->params['POST']['password'];
-        $password_confirm = $this->params['POST']['password_confirm'];
+        $email            = $params_post['email'];
+        $username         = $params_post['username'];
+        $password         = $params_post['password'];
+        $password_confirm = $params_post['password_confirm'];
 
         if(!Validator::emailValidation($email)) {
             $logger->info('Invalid email');

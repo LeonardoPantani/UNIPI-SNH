@@ -12,20 +12,7 @@ use App\Models\User;
 use App\Utils\Validator;
 use App\Utils\ViewManager;
 
-class LoginController
-{
-    private array $server;
-    private array $params;
-
-    public function __construct(array $server, array $params_get, array $params_post) {
-        $this->server = $server;
-
-        $this->params = array(
-            'GET'  => $params_get,
-            'POST' => $params_post
-        );
-    }
-
+class LoginController {
     // GET /login
     public function new() {
         $logger = getLogger('login');
@@ -45,26 +32,26 @@ class LoginController
     }
 
     // POST /login
-    public function login() {
+    public function login($params_post) {
         $logger = getLogger('login');
         $logger->info('POST /login');
 
-        if(!isset($this->params["POST"]["username"])) {
+        if(!isset($params_post["username"])) {
             $logger->info('Empty username');
             $_SESSION['flash']['error'] = 'Username length must be at least '. Validator::USERNAME_MIN_LENGTH .' chars and less than '. Validator::USERNAME_MAX_LENGTH . ' and can only contain letters, numbers, dashes and underscores.';
             $this->new();
             return;
         }
 
-        if(!isset($this->params["POST"]["password"])) {
+        if(!isset($params_post["password"])) {
             $logger->info('Empty password');
             $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
             $this->new();
             return;
         }
 
-        $username = $this->params["POST"]["username"];
-        $password = $this->params["POST"]["password"];
+        $username = $params_post["username"];
+        $password = $params_post["password"];
 
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to login but is already authenticated", ['username' => $username]);

@@ -15,20 +15,8 @@ use App\Utils\Validator;
 use App\Controllers\ErrorPageController;
 
 class AdminController {
-    private array $server;
-    private array $params;
-
-    public function __construct(array $server, array $params_get, array $params_post) {
-        $this->server = $server;
-
-        $this->params = array(
-            'GET'  => $params_get,
-            'POST' => $params_post
-        );
-    }
-
     // GET /admin
-    function panel() {
+    public function panel() {
         $logger = getLogger('admin panel');
         $logger->info('GET /admin');
 
@@ -47,7 +35,7 @@ class AdminController {
     }
 
     // GET /admin/services/edit
-    function edit_user() {
+    public function edit_user() {
         $logger = getLogger('edit user');
         $logger->info('GET /admin/services/edit');
 
@@ -66,7 +54,7 @@ class AdminController {
     }
 
     // POST /admin/services/edit
-    function request_user_edit() {
+    function request_user_edit($params_post) {
         $controller = new ErrorPageController();
         $controller->error(501);
     }
