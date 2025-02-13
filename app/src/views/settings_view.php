@@ -86,7 +86,7 @@ ob_start();
             <button class="button is-primary" type="submit">Update Settings</button>
         </div>
         <div class="control">
-            <a class="button is-secondary" href="/">Homepage</a>
+            <a class="button is-secondary" href="<?= ROOT_PATH ?>">Homepage</a>
         </div>
     </div>
 </form>
