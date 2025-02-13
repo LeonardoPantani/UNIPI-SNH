@@ -1,6 +1,7 @@
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../../vendor/autoload.php';
@@ -25,18 +26,24 @@ require __DIR__ . '/../../vendor/autoload.php';
 function sendEmail(string $to, string $subject, string $template_name = "default", array $placeholders = []) {
     $mail = new PHPMailer(true);
 
+    $host = getenv('MAIL_HOST');
+    $port = getenv('MAIL_PORT');
+    $address = getenv('MAIL_ADDRESS');
+    $password = getenv('MAIL_PASSWORD');
+
     try {
         // Server settings
         $mail->isSMTP();
-        $mail->Host = getenv('MAIL_HOST');
+        $mail->Host = $host;
         $mail->SMTPAuth = true;
-        $mail->Username = getenv('MAIL_ADDRESS');
-        $mail->Password = getenv('MAIL_PASSWORD');
+        $mail->Username = $address;
+        $mail->Password = $password;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port = getenv('MAIL_PORT');
+        $mail->Port = $port;
+        $mail->CharSet = 'UTF-8';
 
         // Sender settings
-        $mail->setFrom(getenv('MAIL_ADDRESS'), "StoryForge");
+        $mail->setFrom($address, "StoryForge");
         $mail->addAddress($to);
 
         // Content
