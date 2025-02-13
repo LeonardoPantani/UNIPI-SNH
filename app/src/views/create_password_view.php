@@ -10,7 +10,7 @@ ob_start();
     border-color: #485fc7;
 }
 </style>
-<form action="./create_password.php" method="POST">
+<form action="<?= FORGOT_PASSWORD_PATH ?>" method="POST">
     <div class="field">
         <label class="label">Verification code</label>
         <div class="control">

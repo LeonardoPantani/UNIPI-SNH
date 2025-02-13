@@ -44,7 +44,7 @@ class LoginController
     // POST /login
     public function login() {
         $logger = getLogger('login');
-        $logger->info('POST /storyforge/login.php');
+        $logger->info('POST /storyforge/login');
 
         $username = $this->params["POST"]["username"];
         $password = $this->params["POST"]["password"];

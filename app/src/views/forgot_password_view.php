@@ -31,7 +31,7 @@ ob_start();
             <button class="button is-primary" type="submit">Send email</button>
         </div>
         <div class="control">
-            <a class="button is-secondary" href="./login.php">Back to Login</a>
+            <a class="button is-secondary" href="<?= LOGIN_PATH ?>">Back to Login</a>
         </div>
     </div>
 </form>

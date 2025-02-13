@@ -50,7 +50,7 @@ ob_start();
 			<p>or</p>
 		</div>
 		<div class="control">
-            <a class="button is-secondary" href="./forgot_password.php">Forgot Password</a>
+            <a class="button is-secondary" href="<?= FORGOT_PASSWORD_PATH ?>">Forgot Password</a>
         </div>
     </div>
 </form>

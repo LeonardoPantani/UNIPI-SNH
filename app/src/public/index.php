@@ -7,6 +7,7 @@
     require_once __DIR__ . '/../controllers/admin_controller.php';
     require_once __DIR__ . '/../controllers/api_controller.php';
     require_once __DIR__ . '/../controllers/errorpage_controller.php';
+    require_once __DIR__ . '/../controllers/settings_controller.php';
 
     use App\Controllers\HomeController;
     use App\Controllers\LoginController;
@@ -15,6 +16,7 @@
     use App\Controllers\ForgotPasswordController;
     use App\Controllers\AdminController;
     use App\Controllers\ApiController;
+    use App\Controllers\SettingsController;
     use App\Controllers\ErrorPageController;
     
     session_start();
@@ -77,6 +79,26 @@
             switch($method) {
                 case 'GET':
                     $controller->logout();
+                    break;
+
+                default:
+                    $controller = new ErrorPageController();
+                    $controller->error(405);
+            }
+
+            break;
+
+        // GET|POST /settings
+        case (bool) preg_match('/^\/user\/settings\/?$/', $request):
+            $controller = new SettingsController($_SERVER, $_GET, $_POST);
+
+            switch($method) {
+                case 'GET':
+                    $controller->new();
+                    break;
+
+                case 'POST':
+                    $controller->settings_change();
                     break;
 
                 default:
