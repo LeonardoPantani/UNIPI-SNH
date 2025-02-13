@@ -27,13 +27,16 @@ class LoginController
     }
 
     // GET /login
-    public function new()
-    {
-        $users = User::getAllUsers();
-
+    public function new() {
         $logger = getLogger('login');
+        $logger->info('GET /login');
 
-        $logger->info('This is a debug message', ['users' => $users], ['extra information' => 'Nothing']);
+        if(isset($_SESSION["user"])) {
+            $logger->info("User tried to access login page but is already authenticated");
+            $_SESSION['flash']['error'] = 'You are already authenticated.';
+            header('Location: ' . ROOT_PATH);
+            return;
+        }
 
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
@@ -44,7 +47,21 @@ class LoginController
     // POST /login
     public function login() {
         $logger = getLogger('login');
-        $logger->info('POST /storyforge/login');
+        $logger->info('POST /login');
+
+        if(!isset($this->params["POST"]["username"])) {
+            $logger->info('Empty username');
+            $_SESSION['flash']['error'] = 'Username length must be at least '. Validator::USERNAME_MIN_LENGTH .' chars and less than '. Validator::USERNAME_MAX_LENGTH . ' and can only contain letters, numbers, dashes and underscores.';
+            $this->new();
+            return;
+        }
+
+        if(!isset($this->params["POST"]["password"])) {
+            $logger->info('Empty password');
+            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $this->new();
+            return;
+        }
 
         $username = $this->params["POST"]["username"];
         $password = $this->params["POST"]["password"];

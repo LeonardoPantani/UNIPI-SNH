@@ -31,6 +31,13 @@ class UserController {
         $logger = getLogger('registration');
         $logger->info('GET /registration');
 
+        if(isset($_SESSION["user"])) {
+            $logger->info("User tried to access registration page but is already authenticated");
+            $_SESSION['flash']['error'] = 'You are already authenticated.';
+            header('Location: ' . ROOT_PATH);
+            return;
+        }
+
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 

@@ -3,13 +3,10 @@ $title = "Novel";
 ob_start();
 // CODICE DELLA PAGINA INIZIA QUI
 ?>
-<h1 class="title">Novel</h1>
+<h1 class="title mb-3"><?= $vars["novel"]["title"] ?></h1>
+<h2 class="subtitle">Created by <strong><?= $vars["novel_user"]["username"] ?></strong></h2>
 
 <div class="content">
-    <p>
-        <i class="subtitle is-4"><?= $vars["novel"]["title"] ?></i>, 
-        by <?= $vars["novel_user"]["username"] ?>
-    </p>
     <p><?= $vars["novel"]["formContent"] ?></p>
 </div>
 <?php
