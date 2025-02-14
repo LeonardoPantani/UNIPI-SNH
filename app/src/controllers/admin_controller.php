@@ -50,7 +50,7 @@ class AdminController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("admin_edituser", ["flash" => $flash, "roles" => User::getRoles(), "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH]);
+        ViewManager::render("admin_edituser", ["flash" => $flash, "roles" => User::getNonAdminRoles(), "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH]);
     }
 
     // POST /admin/services/edit

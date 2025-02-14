@@ -65,6 +65,10 @@ class User extends DBConnection {
         return self::db_fetchAll("SELECT * FROM role", null) ? : [];
     }
 
+    public static function getNonAdminRoles() : array {
+        return self::db_fetchAll("SELECT * FROM role WHERE name != 'admin'", null) ? : [];
+    }
+
     private static function getRoleNameById(int $role_id) : string {
         return self::db_fetchOne(
             "SELECT name FROM role WHERE id = ?", 
@@ -135,13 +139,19 @@ class User extends DBConnection {
         );
     }
 
-    public static function getUsersByPartialUsername($partial_username) : array {
-        $formatted_username = '%' . $partial_username . '%';
-
+    public static function getNonAdminUsersByPartialUsername($partial_username) : array {
+        /*
+            NOTE: In Mysql, 0 is FALSE and anything else is TRUE. LOCATE(substring, string) returns the position of 
+            the first occurrence of a substring in a string (the position is always greater or equal than 1 since 1 
+            is the first index of a string). If there is no match, 0 is returned.
+            So: 
+                match    => TRUE 
+                no match => FALSE 
+        */
         $res = self::db_fetchAll(
-            "SELECT * FROM users WHERE username LIKE ?", 
-            [$formatted_username]
-        );
+            "SELECT * FROM users u INNER JOIN role r ON u.role_id = r.id WHERE LOCATE(?, username) AND r.name != 'admin'", 
+            [$partial_username]
+        );   
     
         return array_map(fn($row) => new User(
             (int) $row['id'],

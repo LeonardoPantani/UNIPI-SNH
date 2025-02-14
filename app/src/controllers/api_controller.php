@@ -17,9 +17,7 @@ class ApiController {
         $logger = getLogger('api');
         $logger->info('POST /api/v1/users');
 
-        $partial_username = $params_post['username'];
-        
-        if(!Validator::partialUsernameValidation($partial_username)) {
+        if(!isset($params_post['username']) || !Validator::partialUsernameValidation($params_post['username'])) {
             $logger->info('Invalid partial username');
 
             $http_code = 400;
@@ -27,7 +25,8 @@ class ApiController {
                 'response' => 'Username must be a non-empty string with length less than '. Validator::USERNAME_MAX_LENGTH . ' and can only contain letters, numbers, dashes and underscores'
             );
         } else {
-            $users = User::getUsersByPartialUsername($partial_username);
+            $partial_username = $params_post['username'];
+            $users = User::getNonAdminUsersByPartialUsername($partial_username);
 
             $http_code = 200;
             $response = array(
