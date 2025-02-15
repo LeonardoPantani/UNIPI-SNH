@@ -10,12 +10,14 @@ require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../libs/utils/log/logger.php';
 require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
 require_once __DIR__ . '/../libs/utils/config/constants.php';
+require_once __DIR__ . '/../libs/utils/validator/validator.php';
 
 use App\Models\Novel;
 use App\Models\NovelText;
 use App\Models\NovelFile;
 use App\Models\User;
 use App\Utils\ViewManager;
+use App\Utils\Validator;
 
 class NovelController {
     private const string UPLOADS_PATH = __DIR__ . '/../uploads/';
@@ -52,15 +54,45 @@ class NovelController {
             return;
         }
 
+        if(!isset($params_post['title']) || strlen($params_post['title']) <= 0) {
+            $logger->info('Invalid novel title');
+            $_SESSION['flash']['error'] = 'Invalid novel title';
+            $this->new();
+
+            return;
+        }
+
+        if(!isset($params_post['premium']) || !in_array($params_post['premium'], ["0", "1"])) {
+            $logger->info('Invalid novel premium');
+            $_SESSION['flash']['error'] = 'Invalid novel premium';
+            $this->new();
+
+            return;
+        }
+
+        if(!isset($params_post['novel_form'])) {
+            $logger->info('Missing novel form');
+            $_SESSION['flash']['error'] = 'Missing novel form';
+            $this->new();
+
+            return;
+        }
+
         $title     = $params_post['title'];
         $form      = $params_post['novel_form'];
         $isPremium = ((int) $params_post['premium']) > 0;
         $user_id   = $_SESSION['user'];
 
-        // TODO: Validator
-
         switch($form) {
             case 'text':
+                if(!isset($params_post['content']) || strlen($params_post['content']) <= 0 || strlen($params_post['content']) > 500) {
+                    $logger->info('Invalid novel content');
+                    $_SESSION['flash']['error'] = 'Invalid novel content - max 500 characters';
+                    $this->new();
+
+                    return;
+                }
+
                 $content = $params_post['content'];
                 $res = NovelText::addNovelText($title, $isPremium, $content, $user_id);
 
@@ -75,6 +107,15 @@ class NovelController {
                 break;
 
             case 'file':
+
+                if(!isset($params_file['file'])) {
+                    $logger->info('Missing novel file');
+                    $_SESSION['flash']['error'] = 'Missing novel file';
+                    $this->new();
+        
+                    return;
+                }
+
                 $file = $params_file['file'];
                 $tmp_filename = $file['tmp_name'];
 
@@ -243,6 +284,14 @@ class NovelController {
             $logger->info("User tried to access to a novel page but is not authenticated");
             $_SESSION['flash']['error'] = 'You are not authenticated.';
             header('Location: ' . LOGIN_PATH);
+
+            return;
+        }
+
+        if(!isset($params_path['uuid']) || !Validator::uuidValidation($params_path['uuid'])) {
+            $logger->info("Invalid novel uuid");
+            $_SESSION['flash']['error'] = 'Invalid novel uuid';
+            header('Location: ' . ROOT_PATH);
 
             return;
         }

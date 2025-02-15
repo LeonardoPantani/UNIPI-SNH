@@ -48,27 +48,30 @@ class ForgotPasswordController {
             return;
         }
 
-        if(!isset($params_post['email'])) {
+        if(!isset($params_post['email']) || !Validator::emailValidation($params_post['email'])) {
             $logger->info("User tried to reset their password without setting their email");
-            $_SESSION['flash']['error'] = 'Insert your email.';
+            $_SESSION['flash']['error'] = 'Invalid email';
             $this->new();
 
             return;
         }
-        $email = $params_post['email'];
 
+        $email = $params_post['email'];
         $requestStatus = ForgotPassword::send_mail($email);
 
         switch($requestStatus) {
             case 0: // ok
+                $logger->info('Email sent');
                 $_SESSION['flash']['success'] = 'If there is an account with that email address, you will receive an email with further instructions on how to reset your password.';
             break;
 
             case 1: // cannot send email
+                $logger->info('Error during email sending');
                 $_SESSION['flash']['error'] = 'Ooops! Something went wrong while sending the password recovery email. Please try again later or contact support if the problem persists.';
             break;
 
             case 2: // pending request not yet expired
+                $logger->info('Pending request found');
                 $_SESSION['flash']['error'] = 'This account has already a pending password reset request.';
             break;
 
@@ -77,7 +80,8 @@ class ForgotPasswordController {
                 $_SESSION['flash']['error'] = 'Invalid type';
                 
         }
-        $this->new();
+
+        header('Location: ' . ROOT_PATH);
     }
 
     // GET /password/reset/:code
@@ -88,6 +92,14 @@ class ForgotPasswordController {
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to access the password creation page but is already authenticated");
             $_SESSION['flash']['error'] = 'You are already authenticated.';
+            header('Location: ' . ROOT_PATH);
+
+            return;
+        }
+
+        if(!isset($params_path['code']) || !Validator::codeValidation($params_path['code'])) {
+            $logger->info("Invalid code");
+            $_SESSION['flash']['error'] = 'Invalid code';
             header('Location: ' . ROOT_PATH);
 
             return;
@@ -114,23 +126,30 @@ class ForgotPasswordController {
             return;
         }
 
-        $code             = $params_path['code'];
-        $password         = $params_post['password'];
-        $password_confirm = $params_post['password_confirm'];
-
-        if(!isset($code, $password, $password_confirm)) {
-            $logger->info("User tried to reset their password without setting all parameters");
-            $_SESSION['flash']['error'] = 'Compile all fields.';
-            $this->choose_new_password($params_path);
+        if(!isset($params_path['code']) || !Validator::codeValidation($params_path['code'])) {
+            $logger->info("Invalid code");
+            $_SESSION['flash']['error'] = 'Invalid code';
+            header('Location: ' . ROOT_PATH);
             return;
         }
 
-        if(!Validator::passwordValidation($password)) {
+        if(!isset($params_post['password']) || !Validator::passwordValidation($params_post['password'])) {
             $logger->info('Invalid password');
             $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
             $this->choose_new_password($params_path);
             return;
         }
+
+        if(!isset($params_post['password_confirm']) || !Validator::passwordValidation($params_post['password_confirm'])) {
+            $logger->info('Invalid confirmation password');
+            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $this->choose_new_password($params_path);
+            return;
+        }
+
+        $code             = $params_path['code'];
+        $password         = $params_post['password'];
+        $password_confirm = $params_post['password_confirm'];
 
         if($password != $password_confirm) {
             $logger->info('Invalid confirm password');
@@ -140,6 +159,7 @@ class ForgotPasswordController {
         }
 
         $user_id = ForgotPassword::get_userid_by_code($code);
+        
         if(empty($user_id)) { // invalid code
             $logger->info('Invalid code');
             $_SESSION['flash']['error'] = 'The verification code you entered is not correct';

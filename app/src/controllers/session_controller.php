@@ -36,23 +36,6 @@ class LoginController {
         $logger = getLogger('login');
         $logger->info('POST /login');
 
-        if(!isset($params_post["username"])) {
-            $logger->info('Empty username');
-            $_SESSION['flash']['error'] = 'Username length must be at least '. Validator::USERNAME_MIN_LENGTH .' chars and less than '. Validator::USERNAME_MAX_LENGTH . ' and can only contain letters, numbers, dashes and underscores.';
-            $this->new();
-            return;
-        }
-
-        if(!isset($params_post["password"])) {
-            $logger->info('Empty password');
-            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
-            $this->new();
-            return;
-        }
-
-        $username = $params_post["username"];
-        $password = $params_post["password"];
-
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to login but is already authenticated", ['username' => $username]);
             $_SESSION['flash']['error'] = 'You are already authenticated.';
@@ -60,19 +43,22 @@ class LoginController {
             return;
         }
 
-        if(!Validator::usernameValidation($username)) {
+        if(!isset($params_post["username"]) || !Validator::usernameValidation($params_post["username"])) {
             $logger->info('Invalid username');
             $_SESSION['flash']['error'] = 'Username length must be at least '. Validator::USERNAME_MIN_LENGTH .' chars and less than '. Validator::USERNAME_MAX_LENGTH . ' and can only contain letters, numbers, dashes and underscores.';
             $this->new();
             return;
         }
 
-        if(!Validator::passwordValidation($password)) {
+        if(!isset($params_post["password"]) || !Validator::passwordValidation($params_post["password"])) {
             $logger->info('Invalid password');
             $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
             $this->new();
             return;
         }
+
+        $username = $params_post["username"];
+        $password = $params_post["password"];
 
         $user = User::getUserByUsername($username);
 

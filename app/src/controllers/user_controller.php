@@ -15,7 +15,7 @@ use App\Utils\ViewManager;
 
 class UserController {
     // GET /registration
-    function new() {
+    public function new() {
         $logger = getLogger('registration');
         $logger->info('GET /registration');
 
@@ -33,35 +33,42 @@ class UserController {
     }
 
     // POST /registration
-    function create(array $params_post) {
+    public function create(array $params_post) {
         $logger = getLogger('registration');
         $logger->info('POST /registration');
 
-        $email            = $params_post['email'];
-        $username         = $params_post['username'];
-        $password         = $params_post['password'];
-        $password_confirm = $params_post['password_confirm'];
-
-        if(!Validator::emailValidation($email)) {
+        if(!isset($params_post['email']) || !Validator::emailValidation($params_post['email'])) {
             $logger->info('Invalid email');
             $_SESSION['flash']['error'] = 'Invalid email';
             $this->new();
             return;
         }
 
-        if(!Validator::usernameValidation($username)) {
+        if(!isset($params_post['username']) || !Validator::usernameValidation($params_post['username'])) {
             $logger->info('Invalid username');
             $_SESSION['flash']['error'] = 'Username length must be at least '. Validator::USERNAME_MIN_LENGTH .' chars and less than '. Validator::USERNAME_MAX_LENGTH . ' and can only contain letters, numbers, dashes and underscores.';
             $this->new();
             return;
         }
 
-        if(!Validator::passwordValidation($password)) {
+        if(!isset($params_post['password']) || !Validator::passwordValidation($params_post['password'])) {
             $logger->info('Invalid password');
             $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
             $this->new();
             return;
         }
+
+        if(!isset($params_post['password_confirm']) || !Validator::passwordValidation($params_post['password_confirm'])) {
+            $logger->info('Invalid confirmation password');
+            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $this->new();
+            return;
+        }
+
+        $email            = $params_post['email'];
+        $username         = $params_post['username'];
+        $password         = $params_post['password'];
+        $password_confirm = $params_post['password_confirm'];
 
         if($password !== $password_confirm) {
             $logger->info('Invalid confirm password');

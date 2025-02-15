@@ -48,23 +48,30 @@ class SettingsController {
             return;
         }
 
-        $password_old         = $params_post['password_old'];
-        $password_new         = $params_post['password_new'];
-        $password_new_confirm = $params_post['password_new_confirm'];
-
-        if(!Validator::passwordValidation($password_old)) {
+        if(!isset($params_post['password_old']) || !Validator::passwordValidation($params_post['password_old'])) {
             $logger->info('Invalid old password');
             $_SESSION['flash']['error'] = 'The old password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
             $this->new();
             return;
         }
 
-        if(!Validator::passwordValidation($password_new)) {
+        if(!isset($params_post['password_new']) || !Validator::passwordValidation($params_post['password_new'])) {
             $logger->info('Invalid new password');
             $_SESSION['flash']['error'] = 'The old password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
             $this->new();
             return;
         }
+
+        if(!isset($params_post['password_new_confirm']) || !Validator::passwordValidation($params_post['password_new_confirm'])) {
+            $logger->info('Invalid confirmation password');
+            $_SESSION['flash']['error'] = 'The old password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $this->new();
+            return;
+        }
+
+        $password_old         = $params_post['password_old'];
+        $password_new         = $params_post['password_new'];
+        $password_new_confirm = $params_post['password_new_confirm'];
 
         if($password_new !== $password_new_confirm) {
             $logger->info('New password and new password confirm do not match');
