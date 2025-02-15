@@ -44,8 +44,6 @@ services:
         path: ./app/src/libs/composer.json
       - action: rebuild
         path: ./app/src/public/.htaccess
-      - action: rebuild
-        path: ./app/app.env
   tty: true
 
 volumes:
