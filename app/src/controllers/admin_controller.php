@@ -88,7 +88,7 @@ class AdminController {
         User::updateUserRole(User::getUserByUsername($params_post["username"])->getId(), intval($params_post["role"]));
 
         $logger->info('Updated user role for username for role', ["username" => $params_post["username"], "role" => $params_post["role"]]);
-        $_SESSION['flash']['success'] = 'Successfully update role';
+        $_SESSION['flash']['success'] = 'Successfully updated role';
 
         $this->edit_user();
     }

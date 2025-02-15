@@ -24,8 +24,7 @@ services:
   container_name: snh_app
   env_file: app/app.env
   ports:
-   - '127.0.0.1:8080:80'
-   - '127.0.0.1:8443:443'
+   - '127.0.0.1:443:443'
   volumes:
    - app_uploads:/var/www/html/uploads
   depends_on:
