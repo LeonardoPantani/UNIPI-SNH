@@ -33,7 +33,7 @@ class UserController {
     }
 
     // POST /registration
-    function create() {
+    function create(array $params_post) {
         $logger = getLogger('registration');
         $logger->info('POST /registration');
 

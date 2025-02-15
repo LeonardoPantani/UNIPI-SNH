@@ -121,21 +121,21 @@ class ForgotPasswordController {
         if(!isset($code, $password, $password_confirm)) {
             $logger->info("User tried to reset their password without setting all parameters");
             $_SESSION['flash']['error'] = 'Compile all fields.';
-            $this->choose_new_password();
+            $this->choose_new_password($params_path);
             return;
         }
 
         if(!Validator::passwordValidation($password)) {
             $logger->info('Invalid password');
             $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
-            $this->choose_new_password();
+            $this->choose_new_password($params_path);
             return;
         }
 
         if($password != $password_confirm) {
             $logger->info('Invalid confirm password');
             $_SESSION['flash']['error'] = 'Mismatch between password and password confirm';
-            $this->choose_new_password();
+            $this->choose_new_password($params_path);
             return;
         }
 
@@ -143,7 +143,7 @@ class ForgotPasswordController {
         if(empty($user_id)) { // invalid code
             $logger->info('Invalid code');
             $_SESSION['flash']['error'] = 'The verification code you entered is not correct';
-            $this->choose_new_password();
+            $this->choose_new_password($params_path);
             return;
         }
         
@@ -155,7 +155,7 @@ class ForgotPasswordController {
         if(!$res) {
             $logger->info('Database error during password change');
             $_SESSION['flash']['error'] = 'Oops. Something went wrong on our end.';
-            $this->choose_new_password();
+            $this->choose_new_password($params_path);
             return;
         }
 
