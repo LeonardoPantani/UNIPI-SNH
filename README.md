@@ -100,6 +100,42 @@ ALTER INSTANCE RELOAD KEYRING;
 ```
 per eseguire a runtime il reload della componente `component_keyring_file`.  
 
+## Bandwidth throttling
+Il modulo apache2 `mod_evasive` viene utilizzato per prevenire attacchi di bruteforce sul login. Un numero eccessivo di richeste in un arco di tempo ridotto (i.e. ~30 req/s) provocano l'inserimento dell'indirizzo IP in una blacklist temporanea. Il server risponderà alle successive richieste con un errore 403 (Forbidden). Per attivare il modulo, settare `EVASIVE_MOD: yes` in `compose.yml`. 
+
+È possibile testare il funzionamento con il seguente script.
+```
+#!/usr/bin/python
+
+import requests
+
+host = 'http://127.0.0.1:8080/'
+
+n200 = 0
+n403 = 0
+
+for i in range(0,100):
+    r = requests.get(host)
+
+    if r.status_code == 200:
+        n200 += 1
+    else:
+        n403 += 1
+
+print(f'200: {n200}')
+print(f'403: {n403}')
+```
+
+### Debug
+Per disattivare il modulo, eseguire il seguente comando.
+```
+a2dismod evasive
+```
+È possibile inoltre eseguire un restart di apache2 senza ricreare il container, i.e. 
+```
+/etc/init.d/apache2 reload
+```
+
 ## Logs
 Le operazioni eseguite dall'applicazione sono monitorate attraverso un sistema di logging. Per estrarre dal container
 i file di log, eseguire

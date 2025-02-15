@@ -20,8 +20,7 @@ services:
   build: 
     context: ./app
     args:
-      APACHE_DOCUMENT_ROOT: /var/www/html/public
-      APACHE_APP_ROOT: /var/www/html
+      EVASIVE_MOD:
   container_name: snh_app
   env_file: app/app.env
   ports:
