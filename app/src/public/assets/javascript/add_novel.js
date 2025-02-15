@@ -12,18 +12,26 @@ document.addEventListener('DOMContentLoaded', () => {
             switch (el.target.value) {
                 case 'text':
                     form.removeAttribute('enctype')
+
                     file_div.classList.add('is-hidden')
                     file_input.setAttribute('disabled', true)
+                    file_input.removeAttribute('required')
+
                     text_div.classList.remove('is-hidden')
                     text_input.removeAttribute('disabled')
+                    text_input.setAttribute('required', true)
                     break;
 
                 case 'file':
                     form.setAttribute('enctype', 'multipart/form-data')
+
                     text_div.classList.add('is-hidden')
                     text_input.setAttribute('disabled', true)
+                    text_input.removeAttribute('required')
+
                     file_div.classList.remove('is-hidden')
                     file_input.removeAttribute('disabled')
+                    file_input.setAttribute('required', true)
                     break;
 
                 default:

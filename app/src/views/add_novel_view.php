@@ -11,7 +11,7 @@ ob_start();
         <label class="label" for="premium">It is a premium novel?</label>
         <div class="control">
             <label class="radio">
-                <input type="radio" name="premium" value="1">
+                <input type="radio" name="premium" value="1" required>
                 Yes
             </label>
             <label class="radio">
@@ -23,14 +23,14 @@ ob_start();
 
     <div class="field">
         <label class="label" for="title">Title</label>
-        <input class="input" type="text" id="title" name="title" placeholder="Novel title">
+        <input class="input" type="text" id="title" name="title" placeholder="Novel title" required>
     </div>
 
     <div class="field">
         <label class="label" for="novel_form">Type</label>
         <div class="select">
-            <select id="novel_form" name="novel_form">
-                <option disabled selected>-- Select an option --</option>
+            <select id="novel_form" name="novel_form" required>
+                <option value="" disabled selected>-- Select an option --</option>
                 <option value="text">Text</option>
                 <option value="file">File</option>
             </select>
