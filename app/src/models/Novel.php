@@ -9,6 +9,7 @@ require_once __DIR__ . '/../libs/utils/db/DBConnection.php';
 use App\Models\NovelText;
 use App\Models\NovelFile;
 use App\Utils\DBConnection;
+use PDO;
 
 abstract class Novel extends DBConnection {
     protected const string TEXT_FORM = 'text_form';

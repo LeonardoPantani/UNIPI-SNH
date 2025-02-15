@@ -178,6 +178,13 @@ class User extends DBConnection {
         );
     }
 
+    public static function updateUserRole(int $user_id, int $new_role_id) : bool {
+        return self::db_getOutcome(
+            "UPDATE users SET role_id = ? WHERE id = ?", 
+            [$new_role_id, $user_id]
+        );
+    }
+
     public static function getAllUsers(): array {
         $res = self::db_fetchAll("SELECT * FROM users", []);
     

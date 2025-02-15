@@ -101,7 +101,10 @@ class UserController {
             return;
         }
 
-        sendEmail($email, "Welcome to StoryForge!", "welcome", ["username" => $username]);
+        $is_sent = sendEmail($email, "Welcome to StoryForge!", "welcome", ["username" => $username]);
+        if($is_sent !== true) {
+            $logger->info('Unable to send email welcome notification.');
+        }
 
         $_SESSION['flash']['success'] = 'User '.$username.' created!';
         header('Location: ' . LOGIN_PATH);

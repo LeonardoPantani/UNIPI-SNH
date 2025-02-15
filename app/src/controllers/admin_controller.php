@@ -55,7 +55,41 @@ class AdminController {
 
     // POST /admin/services/edit
     function request_user_edit($params_post) {
-        $controller = new ErrorPageController();
-        $controller->error(501);
+        $logger = getLogger('edit user');
+        $logger->info('POST /admin/services/edit');
+
+        if(!isset($_SESSION["user"]) || (isset($_SESSION["user"]) && $_SESSION["role"] != "admin")) {
+            $logger->info("User tried to access the admin panel while not being authenticated");
+            $controller = new ErrorPageController();
+            $controller->error(404);
+            
+            return;
+        }
+
+        if(!isset($params_post["username"]) || !User::usernameExists($params_post["username"])) {
+            $logger->info('Invalid edit user role username');
+            $_SESSION['flash']['error'] = 'Invalid username';
+            $this->edit_user();
+            return;
+        }
+
+        $valid_roles_ids = [];
+        foreach(User::getNonAdminRoles() as $roleType) {
+            array_push($valid_roles_ids, $roleType["id"]);
+        }
+
+        if(!isset($params_post["role"]) || !in_array($params_post["role"], $valid_roles_ids)) {
+            $logger->info('Invalid user role');
+            $_SESSION['flash']['error'] = 'Invalid user role';
+            $this->edit_user();
+            return;
+        }
+
+        User::updateUserRole(User::getUserByUsername($params_post["username"])->getId(), intval($params_post["role"]));
+
+        $logger->info('Updated user role for username for role', ["username" => $params_post["username"], "role" => $params_post["role"]]);
+        $_SESSION['flash']['success'] = 'Successfully update role';
+
+        $this->edit_user();
     }
 }

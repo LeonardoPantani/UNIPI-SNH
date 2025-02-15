@@ -11,17 +11,26 @@ ob_start();
 <form action="<?= ADMIN_EDIT_USER_PATH ?>" method="POST">
     <div class="field">
         <label class="label" for="username">Username</label>
-        <div class="control has-icons-left has-icons-right">
-            <input autofocus pattern="<?= $vars["username_pattern"] ?>" class="input" type="text" id="username" name="username" minlength="<?= $vars["username_minlength"] ?>" maxlength="<?= $vars["username_maxlength"] ?>" required placeholder="Username">
-            <span class="icon is-small is-left">
-                <i class="fas fa-user"></i>
-            </span>
-            <span class="icon is-small is-right is-invisible" id="username-icon-ok">
-                <i class="fas fa-check"></i>
-            </span>
-            <span class="icon is-small is-right is-invisible" id="username-icon-error">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
+        <div class="dropdown" id="username-dropdown">
+            <div class="dropdown-trigger">
+                <div class="control has-icons-left has-icons-right">
+                    <input autocomplete="off" autofocus pattern="<?= $vars["username_pattern"] ?>" class="input" type="text" id="username" name="username" minlength="<?= $vars["username_minlength"] ?>" maxlength="<?= $vars["username_maxlength"] ?>" required placeholder="Username">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                    <span class="icon is-small is-right is-invisible" id="username-icon-ok">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="icon is-small is-right is-invisible" id="username-icon-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="dropdown-menu" role="menu">
+                <div class="dropdown-content" id="username-suggestions">
+                    <!-- suggestions will be added here -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -30,14 +39,12 @@ ob_start();
         <div class="select">
             <select id="role" name="role">
                 <option disabled selected>-- Select an option --</option>
-                
                 <? foreach($vars["roles"] as $role): ?>
                     <option value="<?= $role["id"] ?>"><?= $role["name"] ?></option>
                 <? endforeach; ?>
             </select>
         </div>
     </div>
-
 
     <div class="field is-grouped">
         <div class="control">
@@ -48,8 +55,6 @@ ob_start();
         </div>
     </div>
 </form>
-
-<script type="text/javascript" nonce="<?= $nonce ?>" src="/assets/javascript/utils.js"></script>
 
 <?php
 // CODICE DELLA PAGINA FINISCE QUI

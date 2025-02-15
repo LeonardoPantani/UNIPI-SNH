@@ -7,7 +7,6 @@ require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
 require_once __DIR__ . '/../libs/utils/validator/validator.php';
 require_once __DIR__ . '/../models/User.php';
 
-use App\Utils\ViewManager;
 use App\Utils\Validator;
 use App\Models\User;
 
@@ -17,7 +16,13 @@ class ApiController {
         $logger = getLogger('api');
         $logger->info('POST /api/v1/users');
 
-        if(!isset($params_post['username']) || !Validator::partialUsernameValidation($params_post['username'])) {
+        if(!isset($_SESSION["user"]) || (isset($_SESSION["user"]) && $_SESSION["role"] != "admin")) {
+            $logger->info('Tried calling autocomplete api while not being logged or while not being admin');
+            $http_code = 401;
+            $response = array(
+                'response' => 'Unauthorized'
+            );
+        } elseif(!isset($params_post['username']) || !Validator::partialUsernameValidation($params_post['username'])) {
             $logger->info('Invalid partial username');
 
             $http_code = 400;

@@ -5,7 +5,6 @@ namespace App\Models;
 require_once __DIR__ . '/Novel.php';
 
 use PDO;
-use PDOException;
 use App\Models\Novel;
 
 class NovelFile extends Novel {
