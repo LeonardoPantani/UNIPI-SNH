@@ -20,7 +20,7 @@ services:
   build: 
     context: ./app
     args:
-      EVASIVE_MOD:
+      EVASIVE_MOD: yes
   container_name: snh_app
   env_file: app/app.env
   ports:

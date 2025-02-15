@@ -57,15 +57,27 @@ class ForgotPasswordController {
         }
 
         $email = $params_post['email'];
+
+        // check if email is registered
+        if(!User::emailExists($email)) {
+            usleep(random_int(1e6, 3e6));
+            $logger->info('Email sent');
+            $_SESSION['flash']['success'] = 'If there is an account with that email address, you will receive an email with further instructions on how to reset your password.';
+            header('Location: ' . ROOT_PATH);
+            return;
+        }
+
         $requestStatus = ForgotPassword::send_mail($email);
 
         switch($requestStatus) {
             case 0: // ok
+                usleep(random_int(5e5, 1e6));
                 $logger->info('Email sent');
                 $_SESSION['flash']['success'] = 'If there is an account with that email address, you will receive an email with further instructions on how to reset your password.';
             break;
 
             case 1: // cannot send email
+                usleep(random_int(1e6, 3e6));
                 $logger->info('Error during email sending');
                 $_SESSION['flash']['error'] = 'Ooops! Something went wrong while sending the password recovery email. Please try again later or contact support if the problem persists.';
             break;
@@ -97,7 +109,7 @@ class ForgotPasswordController {
             return;
         }
 
-        if(!isset($params_path['code']) || !Validator::codeValidation($params_path['code'])) {
+        if(!isset($params_path['code']) || !Validator::codePartialValidation($params_path['code'])) {
             $logger->info("Invalid code");
             $_SESSION['flash']['error'] = 'Invalid code';
             header('Location: ' . ROOT_PATH);

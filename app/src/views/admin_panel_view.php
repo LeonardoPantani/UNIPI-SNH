@@ -33,18 +33,18 @@ ob_start();
     <div class="column is-one-third">
       <div class="card">
           <header class="card-header">
-              <p class="card-header-title">Placeholder</p>
+              <p class="card-header-title">Coming Soon</p>
               <span class="card-header-icon">
                   <i class="fas fa-terminal" aria-hidden="true"></i>
               </span>
           </header>
           <div class="card-content">
               <div class="content">
-                This service does not have a description yet.
+                This service will be implemented in a future release.
               </div>
           </div>
           <footer class="card-footer">
-            <span class="card-footer-item has-text-white">This service is not active</span>
+            <span class="card-footer-item has-background-inherit">This service is not active</span>
           </footer>
       </div>
     </div>

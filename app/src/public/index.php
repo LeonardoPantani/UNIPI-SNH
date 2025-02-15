@@ -108,8 +108,8 @@
 
             break;
 
-        // GET|POST /password/reset
-        case (bool) preg_match('/^\/password\/reset\/?$/', $request):
+        // GET|POST /password/forgot
+        case (bool) preg_match('/^\/password\/forgot\/?$/', $request):
             $controller = new ForgotPasswordController();
 
             switch($method) {
@@ -129,7 +129,7 @@
             break;
 
         // GET|POST /password/reset/:code
-        case (bool) preg_match('/^\/password\/reset\/([0-9A-Z]{5})\/?$/', $request, $matches):
+        case (bool) preg_match('/^\/password\/reset\/?([0-9a-zA-Z]{0,5})\/?$/', $request, $matches):
             $params_path = [
                 "code" => $matches[1]
             ];

@@ -4,7 +4,8 @@
     const REGISTRATION_PATH     = '/registration';        // /storyforge/registration.php
     const LOGIN_PATH            = '/login';               // /storyforge/login.php
     const LOGOUT_PATH           = '/logout';              // /storyforge/logout.php
-    const FORGOT_PASSWORD_PATH  = '/password/reset';      // /storyforge/forgot_password.php
+    const FORGOT_PASSWORD_PATH  = '/password/forgot';     // /storyforge/forgot_password.php
+    const RESET_PASSWORD_PATH   = '/password/reset';      // /storyforge/create_password.php
     const ADD_NOVEL_PATH        = '/novel/add';           // /storyforge/add_novel.php
     const SETTINGS_PATH         = '/user/settings';       // /storyforge/settings.php
     const SHOW_NOVELS_PATH      = '/novels';
@@ -23,5 +24,5 @@
     }
 
     function create_password_path($code) {
-        return FORGOT_PASSWORD_PATH . "/$code";
+        return RESET_PASSWORD_PATH . "/$code";
     }

@@ -11,7 +11,8 @@ class Validator {
     public const string PARTIAL_USERNAME_REGEX = "/^[a-zA-Z0-9\-_]{1,".self::USERNAME_MAX_LENGTH."}$/";
     public const string EMAIL_REGEX = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/";
     public const string UUID_REGEX = "/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/";
-    public const string CODE_REGEX = "/^[0-9a-z]{5}$/";
+    public const string CODE_REGEX = "/^[0-9a-zA-Z]{5}$/";
+    public const string PARTIAL_CODE_REGEX = "/^[0-9a-zA-Z]{0,5}$/";
 
     public static function emailValidation(string $email) : bool {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
@@ -35,5 +36,9 @@ class Validator {
 
     public static function codeValidation($code) : bool {
         return preg_match(self::CODE_REGEX, $code);
+    }
+
+    public static function codePartialValidation($code) : bool {
+        return preg_match(self::PARTIAL_CODE_REGEX, $code);
     }
 }

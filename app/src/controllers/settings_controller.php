@@ -92,6 +92,11 @@ class SettingsController {
         $password_new_hash = password_hash($password_new, PASSWORD_DEFAULT);
         if(User::updateUserPassword($user->getId(), $password_new_hash)) {
             $_SESSION['flash']['success'] = 'Your password has been changed.';
+
+            $is_sent = sendEmail($user->getEmail(), "Password reset completed", "password_changed", ["username" => $user->getUsername()]);
+            if($is_sent !== true) {
+                $logger->info('Unable to send email notification for password change');
+            }
         } else {
             $_SESSION['flash']['error'] = 'Ooops! Something went wrong while changing your password. Please try again later or contact support if the problem persists.';
         }
