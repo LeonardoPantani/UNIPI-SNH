@@ -19,6 +19,26 @@
     use App\Controllers\SettingsController;
     use App\Controllers\ErrorPageController;
     
+    /*
+        lifetime: 3600 seconds (i.e. 1 hour)
+        domain:   $_SERVER['HTTP_HOST'] (i.e. '127.0.0.1' or 'localhost', since a cookie for 127.0.0.1 is not valid for localhost and viceversa)
+        secure:   cookie is sent only on https
+        httponly: javascript cannot access cookie, for example through the Document.cookie property
+        samesite: 
+            strict: browser sends the cookie only for same-site requests. If a request originates from a different domain or scheme, cookie is not sent 
+            lax:    default behaviour if samesite is not set. Cookie is not sent on cross-site requests (e.g. requests to load images or frames), 
+                    but is sent when a user is navigating to the origin site from an external site (e.g. when following a link)
+            none:   browser sends the cookie with both cross-site and same-site requests
+    */
+    session_set_cookie_params([
+        'lifetime' => 3600,
+        'path'     => '/',
+        'domain'   => $_SERVER['HTTP_HOST'],
+        'secure'   => true,
+        'httponly' => true,
+        'samesite' => 'strict'
+    ]);
+
     session_start();
 
     $request = $_SERVER['REQUEST_URI'];
