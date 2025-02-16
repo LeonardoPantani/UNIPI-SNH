@@ -1,7 +1,17 @@
 RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-f                # check if doesn't exist a file related to the path. If the condition is met, the next line is executed
-RewriteCond %{REQUEST_FILENAME} !-d                # check if doesn't exist a directory related to the path. If the condition is met, the next line is executed
-RewriteRule ^.*$ /index.php [L]                    # redirect to index.php
 
-RewriteCond %{HTTPS} off                           # check if connection is http. If the condition is met, the next line is executed
-RewriteRule ^(.*)$ https://localhost/$1 [L,R=301]  # redirect http to https with status code 301 (Moved Permanently)
+# check if doesn't exist a file related to the path. If the condition is met, the next line is executed
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# check if doesn't exist a directory related to the path. If the condition is met, the next line is executed
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# redirect to index.php
+RewriteRule ^.*$ /index.php [L]
+
+
+# check if connection is http. If the condition is met, the next line is executed
+RewriteCond %{HTTPS} off
+
+# redirect http to https with status code 301 (Moved Permanently)
+RewriteRule ^(.*)$ https://localhost/$1 [L,R=301]
