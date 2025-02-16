@@ -3,9 +3,11 @@
 namespace App\Utils;
 
 class Validator {
-    public const int PASSWORD_MIN_LENGTH = 8;
-    public const int USERNAME_MIN_LENGTH = 5;
-    public const int USERNAME_MAX_LENGTH = 20;
+    public const int PASSWORD_MIN_LENGTH    = 8;
+    public const int USERNAME_MIN_LENGTH    = 5;
+    public const int USERNAME_MAX_LENGTH    = 20;
+    public const int NOVEL_TITLE_MAX_LENGTH = 100;
+    public const int NOVEL_TEXT_MAX_LENGTH  = 500;
     public const string USERNAME_REGEX_HTML = "[a-zA-Z0-9\-_]{".self::USERNAME_MIN_LENGTH.",".self::USERNAME_MAX_LENGTH."}"; # all letters, digits and these characters: -_
     public const string USERNAME_REGEX = "/^".self::USERNAME_REGEX_HTML."$/";
     public const string PARTIAL_USERNAME_REGEX = "/^[a-zA-Z0-9\-_]{1,".self::USERNAME_MAX_LENGTH."}$/";

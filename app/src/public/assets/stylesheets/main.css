@@ -10,3 +10,24 @@
 .allow-new-line-text {
     white-space: pre-line;
 }
+
+/* novel creation radio buttons style */
+.toggle-button {
+border: 1px solid #777;
+padding: 0.5em 1em;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+.toggle-button.is-active {
+background-color: #3273dc;
+color: white;
+border-color: transparent;
+}
+.buttons.has-addons .toggle-button:first-child {
+border-top-left-radius: 4px;
+border-bottom-left-radius: 4px;
+}
+.buttons.has-addons .toggle-button:last-child {
+border-top-right-radius: 4px;
+border-bottom-right-radius: 4px;
+}

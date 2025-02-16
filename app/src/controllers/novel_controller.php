@@ -21,6 +21,37 @@ use App\Utils\Validator;
 
 class NovelController {
     private const string UPLOADS_PATH = __DIR__ . '/../uploads/';
+    private const array PLACEHOLDERS_TITLE = [
+        "The Hunger Games: The Snack Edition",
+        "Pride and Prejudice... and the Spilled Coffee",
+        "Moby-Dick and the Whale That Got Away",
+        "Harry Potter and the Quest for the Perfect Burrito",
+        "1984: The Year of the Selfie Stick",
+        "Romeo and Juliet... and the Broken Heart Emoji",
+        "I don't need therapy, I just need a Snorlax nap",
+        "Sherlock Holmes and the Case of the Missing Socks",
+        "Alice's Big Adventure: The Lost Keys and the Mad Tea Party",
+        "Treasure Island: Pirates, Plunder, and Really Bad Maps",
+        "Zeno's Conscience: A Man and His Endless Regrets",
+        "The Decameron: Ten Days of Laughter and Stories to Tell",
+    ];
+    private const array PLACEHOLDERS_CONTENT = [
+        "It was a dark and stormy night...",
+        "Midway upon the journey of our life, I found myself within a forest dark...",
+        "To be, or not to be...",
+        "Abandon all hope, ye who enter...",
+        "I have a dream that one day...",
+        "All that we see or seem is but a dream...",
+        "The only thing we have to fear is...",
+        "Elementary, my dear...",
+        "The first rule of Fight Club is...",
+        "That's one small step for man, one giant...",
+        "War is peace. Freedom is slavery. Ignorance is...",
+        "Houston, we have a...",
+        "The answer to the ultimate question of life, the universe, and everything is...",
+        "Winter is coming... when the snows fall and the white winds blow...",
+        "The reports of my death are greatly...",
+    ];
 
     // GET /novel/add
     public function new() {
@@ -38,7 +69,7 @@ class NovelController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("add_novel", ["flash" => $flash]);
+        ViewManager::render("add_novel", ["flash" => $flash, "title_maxlength" => Validator::NOVEL_TITLE_MAX_LENGTH, "content_maxlength" => Validator::NOVEL_TEXT_MAX_LENGTH, "title_placeholder" => self::PLACEHOLDERS_TITLE[array_rand(self::PLACEHOLDERS_TITLE)], "content_placeholder" => self::PLACEHOLDERS_CONTENT[array_rand(self::PLACEHOLDERS_CONTENT)]]);
     }
 
     // POST /novel/add
