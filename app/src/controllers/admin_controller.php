@@ -68,10 +68,11 @@ class AdminController {
             return;
         }
 
-        if(!isset($params_post["username"]) || !User::usernameExists($params_post["username"])) {
+        if(!isset($params_post["username"]) || !Validator::usernameValidation($params_post["username"])) {
             $logger->info('Invalid edit user role username');
             $_SESSION['flash']['error'] = 'Invalid username';
             $this->edit_user();
+
             return;
         }
 
@@ -84,14 +85,44 @@ class AdminController {
             $logger->info('Invalid user role');
             $_SESSION['flash']['error'] = 'Invalid user role';
             $this->edit_user();
+
             return;
         }
 
-        User::updateUserRole(User::getUserByUsername($params_post["username"])->getId(), intval($params_post["role"]));
+        $role = intval($params_post["role"]);
+        $username = $params_post["username"];
+        
+        $user = User::getUserByUsername($username);
 
-        $logger->info('Updated user role for username for role', ["username" => $params_post["username"], "role" => $params_post["role"]]);
+        if(is_null($user)) {
+            $logger->info('User not found');
+            $_SESSION['flash']['error'] = 'User not found';
+            $this->edit_user();
+            
+            return;
+        }
+
+        if($user->getRoleName() === 'admin') {
+            $logger->info('Cannot change the role of an admin user');
+            $_SESSION['flash']['error'] = 'Cannot change the role of an admin user';
+            $this->edit_user();
+            
+            return;
+        }
+
+        $res = User::updateUserRole($user->getId(), $role);
+
+        if(!$res) {
+            $logger->info('Database error during role updating');
+            $_SESSION['flash']['error'] = 'An error occured during role updating';
+            $this->edit_user();
+            
+            return;
+        }
+
+        $logger->info('Updated user role', ["username" => $username, "role" => $role]);
         $_SESSION['flash']['success'] = 'Successfully updated role';
 
-        $this->edit_user();
+        header('Location: ' . ADMIN_EDIT_USER_PATH);
     }
 }
