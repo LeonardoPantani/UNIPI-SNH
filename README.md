@@ -108,14 +108,18 @@ Il modulo apache2 `mod_evasive` viene utilizzato per prevenire attacchi di brute
 #!/usr/bin/python
 
 import requests
+from urllib3.exceptions import InsecureRequestWarning
 
-host = 'http://127.0.0.1:8080/'
+# disable verify=False warning
+requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+
+host = 'https://127.0.0.1'
 
 n200 = 0
 n403 = 0
 
 for i in range(0,100):
-    r = requests.get(host)
+    r = requests.get(host, verify=False)
 
     if r.status_code == 200:
         n200 += 1
