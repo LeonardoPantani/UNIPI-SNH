@@ -15,3 +15,7 @@ RewriteCond %{HTTPS} off
 
 # redirect http to https with status code 301 (Moved Permanently)
 RewriteRule ^(.*)$ https://localhost/$1 [L,R=301]
+
+
+# Error 403 (Forbidden) redirect to /errors/403.html
+ErrorDocument 403 /errors/403.html
