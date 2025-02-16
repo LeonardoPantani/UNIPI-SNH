@@ -14,7 +14,7 @@ services:
    start_period: 5s
    interval: 5s
    timeout: 5s
-   retries: 4
+   retries: 8
 
  app:
   build: 
