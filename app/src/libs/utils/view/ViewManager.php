@@ -46,7 +46,7 @@ class ViewManager {
             base-uri 'none' => block the injection of <base> tags. This prevents attackers from changing 
                                the locations of scripts loaded from relative URLs
         */
-        header("Content-Security-Policy: default-src 'none'; script-src 'nonce-$nonce'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' cataas.com; frame-ancestors 'none'; base-uri 'none';");
+        header("Content-Security-Policy: default-src 'none'; script-src 'nonce-$nonce'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' cataas.com; frame-ancestors 'none'; form-action 'self'; base-uri 'none';");
 
         # for every variable in $vars, it replaces it with the cleaned version
         array_walk_recursive($vars, function(&$value) {

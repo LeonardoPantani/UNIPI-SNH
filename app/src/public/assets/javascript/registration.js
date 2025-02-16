@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
             helpText.classList.remove('is-invisible');
             elem.classList.add('is-danger');
         } else {
-            // Esempio: se vuoi che compaia l'OK anche per la conferma
             if (value.length >= PASSWORD_MIN_LENGTH) {
                 checkIcon.classList.remove('is-invisible');
                 elem.classList.add('is-success');
