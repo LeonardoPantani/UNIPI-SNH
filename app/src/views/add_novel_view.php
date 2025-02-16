@@ -28,7 +28,7 @@ ob_start();
     <div class="field">
         <label class="label" for="title">Title</label>
         <div class="control has-icons-left has-icons-right">
-            <input class="input" type="text" id="title" name="title" placeholder="<?= $vars["title_placeholder"] ?>" required>
+            <input autocomplete="off" class="input" type="text" id="title" name="title" placeholder="<?= $vars["title_placeholder"] ?>" required>
             <span class="icon is-small is-left">
                 <i class="fas fa-heading"></i>
             </span>
