@@ -15,7 +15,8 @@ use App\Utils\ViewManager;
 
 class UserController {
     // GET /registration
-    public function new() {
+    public function new(): void
+    {
         $logger = getLogger('registration');
         $logger->info('GET /registration');
 
@@ -33,7 +34,8 @@ class UserController {
     }
 
     // POST /registration
-    public function create(array $params_post) {
+    public function create(array $params_post): void
+    {
         $logger = getLogger('registration');
         $logger->info('POST /registration');
 

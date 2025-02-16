@@ -25,7 +25,7 @@ function getLogger(string $component = "generic"): Logger
     }
 
     $logDirectory = __DIR__ . "/../../../logs";
-    $logFile = $logDirectory . "/{$component}.log";
+    $logFile = $logDirectory . "/$component.log";
 
     if (!is_dir($logDirectory)) {
         mkdir($logDirectory, 0755, true);

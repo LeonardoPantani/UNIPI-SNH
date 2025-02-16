@@ -3,3 +3,4 @@ specs/
 vendor/
 **/composer.lock
 doc/specs.pdf
+**/.idea

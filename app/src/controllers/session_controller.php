@@ -14,7 +14,8 @@ use App\Utils\ViewManager;
 
 class LoginController {
     // GET /login
-    public function new() {
+    public function new(): void
+    {
         $logger = getLogger('login');
         $logger->info('GET /login');
 
@@ -32,12 +33,13 @@ class LoginController {
     }
 
     // POST /login
-    public function login($params_post) {
+    public function login($params_post): void
+    {
         $logger = getLogger('login');
         $logger->info('POST /login');
 
         if(isset($_SESSION["user"])) {
-            $logger->info("User tried to login but is already authenticated", ['username' => $username]);
+            $logger->info("User tried to login but is already authenticated", ['user_id' => $_SESSION["user"]]);
             $_SESSION['flash']['error'] = 'You are already authenticated.';
             header('Location: ' . ROOT_PATH);
             return;
@@ -85,7 +87,8 @@ class LoginController {
         header('Location: ' . ROOT_PATH);
     }
 
-    public function logout() {
+    public function logout(): void
+    {
         $logger = getLogger('logout');
 
         if(!isset($_SESSION["user"])) {

@@ -16,7 +16,7 @@ class ApiController {
         $logger = getLogger('api');
         $logger->info('POST /api/v1/users');
 
-        if(!isset($_SESSION["user"]) || (isset($_SESSION["user"]) && $_SESSION["role"] != "admin")) {
+        if(!isset($_SESSION["user"]) || ($_SESSION["role"] != "admin")) {
             $logger->info('Tried calling autocomplete api while not being logged or while not being admin');
             $http_code = 401;
             $response = array(

@@ -18,7 +18,8 @@ class ErrorPageController {
         501 => "This feature is still a work in progress. Stay tuned!"
     ];
 
-    function error(int $error_code = 500) {
+    function error(int $error_code = 500): void
+    {
         $logger = getLogger('error page');
         $logger->info('error '.$error_code);
 

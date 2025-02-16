@@ -15,7 +15,8 @@ use App\Utils\Validator;
 
 class SettingsController {
     // GET /settings
-    public function new() {
+    public function new(): void
+    {
         $logger = getLogger('settings');
         $logger->info('GET /user/settings');
 
@@ -36,7 +37,8 @@ class SettingsController {
     }
 
     // POST /user/settings
-    public function settings_change($params_post) {
+    public function settings_change($params_post): void
+    {
         $logger = getLogger('settings update');
         $logger->info('POST /user/settings');
 

@@ -4,10 +4,11 @@ namespace App\Utils;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
+use Exception;
 use Ramsey\Uuid\Uuid;
 
 class ViewManager {
-    private const VIEWS_PATH = "/../../../views/";
+    private const string VIEWS_PATH = "/../../../views/";
 
     private static function clean(string $var) : string {
         return htmlentities($var, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
@@ -56,7 +57,7 @@ class ViewManager {
             }
 
             if(!is_bool($value) && !is_int($value) && !is_double($value)) {
-                throw new \Exception("Invalid parameter - only string, bool, int and double are accepted");
+                throw new Exception("Invalid parameter - only string, bool, int and double are accepted");
             }
         });
         

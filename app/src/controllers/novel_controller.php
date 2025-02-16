@@ -54,7 +54,8 @@ class NovelController {
     ];
 
     // GET /novel/add
-    public function new() {
+    public function new(): void
+    {
         $logger = getLogger('add novel');
         $logger->info('GET /novel/add');
 
@@ -73,7 +74,8 @@ class NovelController {
     }
 
     // POST /novel/add
-    public function create($params_post, $params_file) {
+    public function create($params_post, $params_file): void
+    {
         $logger = getLogger('add novel');
         $logger->info('POST /novel/add');
 
@@ -264,7 +266,8 @@ class NovelController {
     }
 
     // GET /novels
-    function showAll() {
+    function showAll(): void
+    {
         $logger = getLogger('show novels');
         $logger->info('GET /novels');
 
@@ -292,11 +295,11 @@ class NovelController {
             
             switch(get_class($novel)) {
                 case 'App\Models\NovelText':
-                    array_push($novels_text, $item);
+                    $novels_text[] = $item;
                     break;
     
                 case 'App\Models\NovelFile':
-                    array_push($novels_file, $item);
+                    $novels_file[] = $item;
                     break;
 
                 default:
@@ -315,7 +318,8 @@ class NovelController {
     }
 
     // GET /novels/:uuid
-    function show($params_path) {
+    function show($params_path): void
+    {
         $logger = getLogger('show a novel');
         $logger->info('GET /novels/:uuid');
 
@@ -393,13 +397,12 @@ class NovelController {
                 $logger->info("unknown novel form");
                 $_SESSION['flash']['error'] = 'Nove not found';
                 header('Location: ' . SHOW_NOVELS_PATH);
-
-                return;
         }
     }
 
     // GET /user/novels
-    function showUser() {
+    function showUser(): void
+    {
         $logger = getLogger('show user novels');
         $logger->info('GET /user/novels');
 
@@ -425,11 +428,11 @@ class NovelController {
             
             switch(get_class($novel)) {
                 case 'App\Models\NovelText':
-                    array_push($novels_text, $item);
+                    $novels_text[] = $item;
                     break;
     
                 case 'App\Models\NovelFile':
-                    array_push($novels_file, $item);
+                    $novels_file[] = $item;
                     break;
 
                 default:

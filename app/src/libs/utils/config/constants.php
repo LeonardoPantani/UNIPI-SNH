@@ -19,10 +19,12 @@
 
 
     // DYNAMIC PATHS
-    function show_novel_path($uuid) {
+    function show_novel_path($uuid): string
+    {
         return SHOW_NOVELS_PATH . "/$uuid";
     }
 
-    function create_password_path($code) {
+    function create_password_path($code): string
+    {
         return RESET_PASSWORD_PATH . "/$code";
     }

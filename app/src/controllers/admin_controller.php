@@ -16,11 +16,12 @@ use App\Controllers\ErrorPageController;
 
 class AdminController {
     // GET /admin
-    public function panel() {
+    public function panel(): void
+    {
         $logger = getLogger('admin panel');
         $logger->info('GET /admin');
 
-        if(!isset($_SESSION["user"]) || (isset($_SESSION["user"]) && $_SESSION["role"] != "admin")) {
+        if(!isset($_SESSION["user"]) || ($_SESSION["role"] != "admin")) {
             $logger->info("User tried to access the admin panel while not being authenticated");
             $controller = new ErrorPageController();
             $controller->error(404);
@@ -39,7 +40,7 @@ class AdminController {
         $logger = getLogger('edit user');
         $logger->info('GET /admin/services/edit');
 
-        if(!isset($_SESSION["user"]) || (isset($_SESSION["user"]) && $_SESSION["role"] != "admin")) {
+        if(!isset($_SESSION["user"]) || ($_SESSION["role"] != "admin")) {
             $logger->info("User tried to access the admin panel while not being authenticated");
             $controller = new ErrorPageController();
             $controller->error(404);
@@ -54,11 +55,12 @@ class AdminController {
     }
 
     // POST /admin/services/edit
-    function request_user_edit($params_post) {
+    function request_user_edit($params_post): void
+    {
         $logger = getLogger('edit user');
         $logger->info('POST /admin/services/edit');
 
-        if(!isset($_SESSION["user"]) || (isset($_SESSION["user"]) && $_SESSION["role"] != "admin")) {
+        if(!isset($_SESSION["user"]) || ($_SESSION["role"] != "admin")) {
             $logger->info("User tried to access the admin panel while not being authenticated");
             $controller = new ErrorPageController();
             $controller->error(404);
@@ -75,7 +77,7 @@ class AdminController {
 
         $valid_roles_ids = [];
         foreach(User::getNonAdminRoles() as $roleType) {
-            array_push($valid_roles_ids, $roleType["id"]);
+            $valid_roles_ids[] = $roleType["id"];
         }
 
         if(!isset($params_post["role"]) || !in_array($params_post["role"], $valid_roles_ids)) {

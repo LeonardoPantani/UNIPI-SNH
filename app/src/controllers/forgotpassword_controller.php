@@ -17,7 +17,8 @@ use App\Utils\Validator;
 
 class ForgotPasswordController {
     // GET /password/forgot
-    public function new() {
+    public function new(): void
+    {
         $logger = getLogger('forgot password');
         $logger->info('GET /password/reset');
 
@@ -36,7 +37,8 @@ class ForgotPasswordController {
     }
 
     // POST /password/forgot
-    public function validate_reset_request($params_post) {
+    public function validate_reset_request($params_post): void
+    {
         $logger = getLogger('validate reset request');
         $logger->info('POST /password/reset');
 
@@ -92,7 +94,7 @@ class ForgotPasswordController {
                 return;
             }
 
-            $forgotPassword = ForgetPassword::update_code($user->getId());
+            $forgotPassword = ForgotPassword::update_code($user->getId());
 
             if(is_null($forgotPassword)) {
                 $logger->info('Error during code update');
@@ -122,7 +124,8 @@ class ForgotPasswordController {
     }
 
     // GET /password/reset/:code
-    public function choose_new_password($params_path) {
+    public function choose_new_password($params_path): void
+    {
         $logger = getLogger('choose new password');
         $logger->info('GET /password/reset/:code');
 
@@ -151,7 +154,8 @@ class ForgotPasswordController {
     }
 
     // POST /password/reset/:code
-    function set_new_password($params_path, $params_post) {
+    function set_new_password($params_path, $params_post): void
+    {
         $logger = getLogger('set new password');
         $logger->info('POST /password/reset/:code');
 

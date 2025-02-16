@@ -1,7 +1,6 @@
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../../vendor/autoload.php';
@@ -23,7 +22,8 @@ require __DIR__ . '/../../vendor/autoload.php';
  * 
  * @return bool|string True if the email is sent successfully, or an error message on failure.
  */
-function sendEmail(string $to, string $subject, string $template_name = "default", array $placeholders = []) {
+function sendEmail(string $to, string $subject, string $template_name = "default", array $placeholders = []): bool|string
+{
     $mail = new PHPMailer(true);
 
     $host = getenv('MAIL_HOST');
@@ -47,7 +47,7 @@ function sendEmail(string $to, string $subject, string $template_name = "default
         $mail->addAddress($to);
 
         // Content
-        $mail->isHTML(true);
+        $mail->isHTML();
         $mail->Subject = $subject;
 
         // Loading template
@@ -61,7 +61,7 @@ function sendEmail(string $to, string $subject, string $template_name = "default
 
         $mail->send();
         return true;
-    } catch (Exception $e) {
-        return "Mailer Error: {$mail->ErrorInfo}";
+    } catch (Exception) {
+        return "Mailer Error: $mail->ErrorInfo";
     }
 }
