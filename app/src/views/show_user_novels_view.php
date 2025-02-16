@@ -39,7 +39,11 @@ ob_start();
                             <i class="fas fa-arrow-up-right-from-square fa-lg"></i>
                         </a>
                     </span>
-                    <b><?= $novel_title ?></b>
+                    <?php if(strlen($novel_title) > 15): ?>
+                        <b><?= substr($novel_title, 0, 15) . "..." ?></b>
+                    <?php else: ?>
+                        <b><?= $novel_title ?></b>
+                    <?php endif; ?>
                 </p>
             </div>
             <?php 
@@ -80,7 +84,11 @@ ob_start();
                             <i class="fas fa-download fa-lg"></i>
                         </a>
                     </span>
-                    <b><?= $novel_title ?></b>
+                    <?php if(strlen($novel_title) > 15): ?>
+                        <b><?= substr($novel_title, 0, 15) . "..." ?></b>
+                    <?php else: ?>
+                        <b><?= $novel_title ?></b>
+                    <?php endif; ?>
                 </p>
             </div>
             <?php 
