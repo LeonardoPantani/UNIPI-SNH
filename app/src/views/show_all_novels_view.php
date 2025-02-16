@@ -45,8 +45,8 @@ ob_start();
                             <i class="fas fa-arrow-up-right-from-square fa-lg"></i>
                         </a>
                     </span>
-                    <?php if(strlen($novel_title) > 15): ?>
-                        <b><?= substr($novel_title, 0, 15) . "..." ?></b>
+                    <?php if(strlen($novel_title) > 30): ?>
+                        <b><?= substr($novel_title, 0, 30) . "..." ?></b>
                     <?php else: ?>
                         <b><?= $novel_title ?></b>
                     <?php endif; ?>
@@ -86,12 +86,12 @@ ob_start();
                         <?php endif; ?>
                     </span>
                     <span class="icon is-medium">
-                        <a href="<?= $url ?>">
+                        <a href="<?= $url ?>" target="_blank" rel="noopener noreferrer">
                             <i class="fas fa-download fa-lg"></i>
                         </a>
                     </span>
-                    <?php if(strlen($novel_title) > 15): ?>
-                        <b><?= substr($novel_title, 0, 15) . "..." ?></b>
+                    <?php if(strlen($novel_title) > 30): ?>
+                        <b><?= substr($novel_title, 0, 30) . "..." ?></b>
                     <?php else: ?>
                         <b><?= $novel_title ?></b>
                     <?php endif; ?>
