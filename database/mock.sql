@@ -30,8 +30,8 @@ VALUES
 ('0107678f-af7e-4c90-a4eb-0f058da76b16', 'Controcorrente', 0, 'file_form', 1, NOW(), 3);
 
 -- Inserting password challenges
-INSERT INTO password_challenge (user_id, random_string, expire_at)
+INSERT INTO password_challenge (random_string, expire_at, user_id)
 VALUES
-(1, '5TUP1', NOW() + INTERVAL 1 MONTH),
-(2, 'D0C0G', NOW() + INTERVAL 1 MONTH),
-(3, 'L10N3', NOW() + INTERVAL 1 MONTH);
+('5TUP1', NOW() + INTERVAL 1 MONTH, 1),
+('D0C0G', NOW() + INTERVAL 1 MONTH, 2),
+('L10N3', NOW() + INTERVAL 1 MONTH, 3);

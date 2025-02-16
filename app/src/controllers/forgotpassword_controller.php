@@ -16,7 +16,7 @@ use App\Utils\ViewManager;
 use App\Utils\Validator;
 
 class ForgotPasswordController {
-    // GET /password/reset
+    // GET /password/forgot
     public function new() {
         $logger = getLogger('forgot password');
         $logger->info('GET /password/reset');
@@ -35,7 +35,7 @@ class ForgotPasswordController {
         ViewManager::render("forgot_password", ["flash" => $flash]);
     }
 
-    // POST /password/reset
+    // POST /password/forgot
     public function validate_reset_request($params_post) {
         $logger = getLogger('validate reset request');
         $logger->info('POST /password/reset');
@@ -57,43 +57,68 @@ class ForgotPasswordController {
         }
 
         $email = $params_post['email'];
+        $user = User::getUserByEmail($email);
 
         // check if email is registered
-        if(!User::emailExists($email)) {
+        if(is_null($user)) {
             usleep(random_int(1e6, 3e6));
             $logger->info('Email sent');
             $_SESSION['flash']['success'] = 'If there is an account with that email address, you will receive an email with further instructions on how to reset your password.';
             header('Location: ' . ROOT_PATH);
+            
             return;
         }
 
-        $requestStatus = ForgotPassword::send_mail($email);
+        $need_update = false;
+        $forgotPassword = ForgotPassword::pending_request_by_user_id($user->getId());
+        
+        if(is_null($forgotPassword)) {
+            $forgotPassword = ForgotPassword::add_code($user->getId());
 
-        switch($requestStatus) {
-            case 0: // ok
-                usleep(random_int(5e5, 1e6));
-                $logger->info('Email sent');
-                $_SESSION['flash']['success'] = 'If there is an account with that email address, you will receive an email with further instructions on how to reset your password.';
-            break;
+            if(is_null($forgotPassword)) {
+                $logger->info('Error during creation of new code');
+                $_SESSION['flash']['error'] = 'Error during code generation';
+                header('Location: ' . ROOT_PATH);
 
-            case 1: // cannot send email
-                usleep(random_int(1e6, 3e6));
-                $logger->info('Error during email sending');
-                $_SESSION['flash']['error'] = 'Ooops! Something went wrong while sending the password recovery email. Please try again later or contact support if the problem persists.';
-            break;
-
-            case 2: // pending request not yet expired
+                return;
+            }
+        } else {
+            // the request is not yet expired
+            if(strtotime($forgotPassword->getExpireAt()) > strtotime("now")) {
                 $logger->info('Pending request found');
                 $_SESSION['flash']['error'] = 'This account has already a pending password reset request.';
-            break;
+                header('Location: ' . ROOT_PATH);
 
-            default:
-                $logger->info('Unknown answer from send_mail method');
-                $_SESSION['flash']['error'] = 'Invalid type';
-                
+                return;
+            }
+
+            $forgotPassword = ForgetPassword::update_code($user->getId());
+
+            if(is_null($forgotPassword)) {
+                $logger->info('Error during code update');
+                $_SESSION['flash']['error'] = 'Error during code generation';
+                header('Location: ' . ROOT_PATH);
+
+                return;
+            }
         }
 
-        header('Location: ' . ROOT_PATH);
+        $is_sent = sendEmail($email, "Password reset request", "forgot_password", ["username" => $user->getUsername(), "code" => $forgotPassword->getRandomString(), "time" => ForgotPassword::INTERVAL]);
+
+        // cannot send email
+        if($is_sent !== true) {
+            usleep(random_int(1e6, 3e6));
+            $logger->info('Error during email sending');
+            $_SESSION['flash']['error'] = 'Ooops! Something went wrong while sending the password recovery email. Please try again later or contact support if the problem persists.';
+            header('Location: ' . ROOT_PATH);
+
+            return;
+        }
+
+        usleep(random_int(5e5, 1e6));
+        $logger->info('Email sent');
+        $_SESSION['flash']['success'] = 'If there is an account with that email address, you will receive an email with further instructions on how to reset your password.';
+        header('Location: ' . ROOT_PATH);        
     }
 
     // GET /password/reset/:code
@@ -142,6 +167,7 @@ class ForgotPasswordController {
             $logger->info("Invalid code");
             $_SESSION['flash']['error'] = 'Invalid code';
             header('Location: ' . ROOT_PATH);
+
             return;
         }
 
@@ -149,6 +175,7 @@ class ForgotPasswordController {
             $logger->info('Invalid password');
             $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
             $this->choose_new_password($params_path);
+
             return;
         }
 
@@ -156,6 +183,7 @@ class ForgotPasswordController {
             $logger->info('Invalid confirmation password');
             $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
             $this->choose_new_password($params_path);
+
             return;
         }
 
@@ -167,23 +195,24 @@ class ForgotPasswordController {
             $logger->info('Invalid confirm password');
             $_SESSION['flash']['error'] = 'Mismatch between password and password confirm';
             $this->choose_new_password($params_path);
+
             return;
         }
 
-        $user_id = ForgotPassword::get_userid_by_code($code);
+        $forgotPassword = ForgotPassword::get_user_id_by_code($code);
         
-        if(empty($user_id)) { // invalid code
+        if(is_null($forgotPassword)) {
             $logger->info('Invalid code');
             $_SESSION['flash']['error'] = 'The verification code you entered is not correct';
             $this->choose_new_password($params_path);
+            
             return;
         }
         
-        $user_id = $user_id["user_id"];
-
+        $user_id = $forgotPassword->getUserId();
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
-        $res = User::updateUserPassword($user_id, $password_hash);
 
+        $res = User::updateUserPassword($user_id, $password_hash);
         if(!$res) {
             $logger->info('Database error during password change');
             $_SESSION['flash']['error'] = 'Oops. Something went wrong on our end.';
@@ -194,13 +223,20 @@ class ForgotPasswordController {
         $res = ForgotPassword::delete_code($user_id);
         if(!$res) {
             $logger->info('Database error during password change');
+            $_SESSION['flash']['error'] = 'Oops. Something went wrong on our end.';
+            $this->choose_new_password($params_path);
+            return;
         }
 
         $user = User::getUserById($user_id);
-        if($user != null) {
+        if(!is_null($user)) {
             $is_sent = sendEmail($user->getEmail(), "Password reset completed", "password_changed", ["username" => $user->getUsername()]);
+            
             if($is_sent !== true) {
                 $logger->info('Unable to send email notification for password change');
+                $_SESSION['flash']['error'] = 'Oops. Something went wrong on our end.';
+                $this->choose_new_password($params_path);
+                return;
             }
         }
 

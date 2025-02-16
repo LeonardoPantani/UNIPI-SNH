@@ -117,6 +117,27 @@ class User extends DBConnection {
             $row['role_id']
         );
     }   
+
+    public static function getUserByEmail(string $email) : ?User {
+        $row = self::db_fetchOne(
+            "SELECT * FROM users WHERE email = ?",
+            [$email]
+        );
+
+        if(count($row) <= 0) {
+            return null;
+        }
+
+        return new User(
+            (int) $row['id'],
+            $row['uuid'],
+            $row['email'],
+            $row['username'],
+            $row['password_hash'],
+            $row['created_at'],
+            $row['role_id']
+        );
+    } 
     
     public static function getUserById(int $id) : ?User {
         $row = self::db_fetchOne(

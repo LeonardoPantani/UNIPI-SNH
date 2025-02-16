@@ -56,8 +56,11 @@ CREATE TABLE novel (
 ) ENGINE=InnoDB;
 
 CREATE TABLE password_challenge (
-    user_id INTEGER PRIMARY KEY, -- id dell'utente
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
     random_string VARCHAR(255) NOT NULL,
     expire_at TIMESTAMP NOT NULL,
+    user_id INTEGER NOT NULL, -- table user id
+    UNIQUE(user_id),
+    UNIQUE(random_string),
     FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE=InnoDB;
