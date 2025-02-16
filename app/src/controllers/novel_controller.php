@@ -114,6 +114,14 @@ class NovelController {
         $isPremium = ((int) $params_post['premium']) > 0;
         $user_id   = $_SESSION['user'];
 
+        if(Novel::titleAndUserExists($title, $user_id)) {
+            $logger->info('User cannot create more than one novel with the same title');
+            $_SESSION['flash']['error'] = 'You cannot create more than one novel with the same title';
+            $this->new();
+
+            return;
+        }
+
         switch($form) {
             case 'text':
                 if(!isset($params_post['content']) || strlen($params_post['content']) <= 0 || strlen($params_post['content']) > 500) {

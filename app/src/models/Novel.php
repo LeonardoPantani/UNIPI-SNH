@@ -246,4 +246,11 @@ abstract class Novel extends DBConnection {
 
         return array_merge($novels_text, $novels_file);
     }
+
+    public static function titleAndUserExists($title, $user_id) : bool {
+        return self::db_contains(
+            "SELECT id FROM novel WHERE title = ? AND user_id = ?", 
+            [$title, $user_id]
+        );
+    }
 }
