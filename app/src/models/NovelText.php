@@ -4,8 +4,6 @@ namespace App\Models;
 
 require_once __DIR__ . '/Novel.php';
 
-use App\Models\Novel;
-
 class NovelText extends Novel {
     private int $form_id;
     private string $form_content;
@@ -17,11 +15,8 @@ class NovelText extends Novel {
         $this->form_content = $form_content;
     }
 
-    public function getFormId() {
-        return $this->form_id;
-    }
-
-    public function getFormContent() {
+    public function getFormContent(): string
+    {
         return $this->form_content;
     }
 

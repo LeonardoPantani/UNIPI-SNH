@@ -13,7 +13,8 @@ use App\Utils\ViewManager;
 
 class ApiController {
     // POST /api/v1/users
-    public function searchUsers($params_post) {
+    public function searchUsers($params_post): void
+    {
         $logger = getLogger('api');
         $logger->info('POST /api/v1/users');
 

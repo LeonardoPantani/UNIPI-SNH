@@ -22,27 +22,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    (document.querySelectorAll('#password') || []).forEach((elem) => {
-        document.getElementById('password').addEventListener('blur', () => {
-            const elem = document.getElementById('password');
-            const checkIcon = document.getElementById('password-icon-ok');
-            const exclamationIcon = document.getElementById('password-icon-error');
-            const helpText = document.getElementById('password-message-error');
-            const value = elem.value.trim();
-            checkIcon.classList.add('is-invisible');
-            exclamationIcon.classList.add('is-invisible');
-            helpText.classList.add('is-invisible');
-            elem.classList.remove('is-danger', 'is-success');
-            if (!value) return;
-    
-            if (value.length < PASSWORD_MIN_LENGTH) {
-                exclamationIcon.classList.remove('is-invisible');
-                helpText.classList.remove('is-invisible');
-                elem.classList.add('is-danger');
-            } else {
-                checkIcon.classList.remove('is-invisible');
-                elem.classList.add('is-success');
-            }
-        });
+    document.getElementById('password').addEventListener('blur', () => {
+        const elem = document.getElementById('password');
+        const checkIcon = document.getElementById('password-icon-ok');
+        const exclamationIcon = document.getElementById('password-icon-error');
+        const helpText = document.getElementById('password-message-error');
+        const value = elem.value.trim();
+        checkIcon.classList.add('is-invisible');
+        exclamationIcon.classList.add('is-invisible');
+        helpText.classList.add('is-invisible');
+        elem.classList.remove('is-danger', 'is-success');
+        if (!value) return;
+
+        if (value.length < PASSWORD_MIN_LENGTH) {
+            exclamationIcon.classList.remove('is-invisible');
+            helpText.classList.remove('is-invisible');
+            elem.classList.add('is-danger');
+        } else {
+            checkIcon.classList.remove('is-invisible');
+            elem.classList.add('is-success');
+        }
     });
 });

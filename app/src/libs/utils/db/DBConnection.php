@@ -32,7 +32,7 @@ abstract class DBConnection {
     public static function db_transaction(PDO $conn) : bool {
         try {
             return $conn->beginTransaction();
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             return false;
         }
     }
@@ -55,7 +55,7 @@ abstract class DBConnection {
         }
 
         $stmt = $conn->prepare($sql);
-        $res = $stmt->execute($params);
+        $stmt->execute($params);
 
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
     }
@@ -66,7 +66,7 @@ abstract class DBConnection {
         }
         
         $stmt = $conn->prepare($sql);
-        $res = $stmt->execute($params);
+        $stmt->execute($params);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
@@ -77,9 +77,7 @@ abstract class DBConnection {
         }
         
         $stmt = $conn->prepare($sql);
-        $res = $stmt->execute($params);
-
-        return $res;
+        return $stmt->execute($params);
     }
 
     protected static function db_getLastInsertId(string $sql, ?array $params, PDO $conn = null) : int {
@@ -103,7 +101,7 @@ abstract class DBConnection {
         }
 
         $stmt = $conn->prepare($sql);
-        $res = $stmt->execute($params);
+        $stmt->execute($params);
 
         return count($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []);
     }
@@ -114,7 +112,7 @@ abstract class DBConnection {
         }
 
         $stmt = $conn->prepare($sql);
-        $res = $stmt->execute($params);
+        $stmt->execute($params);
 
         return ((int) $stmt->fetchColumn()) > 0;
     }

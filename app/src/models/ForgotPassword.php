@@ -17,19 +17,23 @@ class ForgotPassword extends DBConnection {
     private string $expire_at;
     private int $user_id;
 
-    public function getId() {
+    public function getId(): int
+    {
         return $this->id;
     }
 
-    public function getRandomString() {
+    public function getRandomString(): string
+    {
         return $this->random_string;
     }
 
-    public function getExpireAt() {
+    public function getExpireAt(): ?string
+    {
         return $this->expire_at;
     }
 
-    public function getUserId() {
+    public function getUserId(): int
+    {
         return $this->user_id;
     }
 
@@ -39,7 +43,8 @@ class ForgotPassword extends DBConnection {
         $this->expire_at = $expire_at;
     }
 
-    private static function generateRandomString() {
+    private static function generateRandomString(): string
+    {
         return generate_random_string(self::RANDOM_STRING_LENGTH);
     }
 

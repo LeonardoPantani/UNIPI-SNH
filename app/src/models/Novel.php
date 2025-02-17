@@ -6,8 +6,6 @@ require_once __DIR__ . '/NovelText.php';
 require_once __DIR__ . '/NovelFile.php';
 require_once __DIR__ . '/../libs/utils/db/DBConnection.php';
 
-use App\Models\NovelText;
-use App\Models\NovelFile;
 use App\Utils\DBConnection;
 use PDO;
 
@@ -96,7 +94,7 @@ abstract class Novel extends DBConnection {
         $novel_row['premium'] = ((int) $novel_row['premium']) > 0;
 
         switch ($novel_row['form_type']) {
-            case (string) self::TEXT_FORM:
+            case self::TEXT_FORM:
                 $form_row = self::db_fetchOne(
                     "SELECT id, content FROM text_form WHERE id = ?",
                     [$novel_row['form_id']]
@@ -109,7 +107,7 @@ abstract class Novel extends DBConnection {
 
                 break;
 
-            case (string) self::FILE_FORM:
+            case self::FILE_FORM:
                 $form_row = self::db_fetchOne(
                     "SELECT id, path FROM file_form WHERE id = ?",
                     [$novel_row['form_id']]

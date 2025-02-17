@@ -12,7 +12,6 @@ require_once __DIR__ . '/../controllers/errorpage_controller.php';
 use App\Models\User;
 use App\Utils\ViewManager;
 use App\Utils\Validator;
-use App\Controllers\ErrorPageController;
 
 class AdminController {
     // GET /admin
@@ -36,7 +35,8 @@ class AdminController {
     }
 
     // GET /admin/services/edit
-    public function edit_user() {
+    public function edit_user(): void
+    {
         $logger = getLogger('edit user');
         $logger->info('GET /admin/services/edit');
 
@@ -72,7 +72,7 @@ class AdminController {
         if(!isset($params_post["token"]) || $params_post["token"] !== $_SESSION["token"]) {
             $logger->info('Invalid CSRF token');
             $_SESSION['flash']['error'] = 'Invalid CSRF token';
-            $this->new();
+            $this->edit_user();
             return;
         }
 
