@@ -211,7 +211,7 @@ class ForgotPasswordController {
         $password         = $params_post['password'];
         $password_confirm = $params_post['password_confirm'];
 
-        if($password != $password_confirm) {
+        if($password !== $password_confirm) {
             $logger->info('Invalid confirm password');
             $_SESSION['flash']['error'] = 'Mismatch between password and password confirm';
             $this->choose_new_password($params_path);

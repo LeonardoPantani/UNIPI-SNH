@@ -58,7 +58,7 @@
                         <span>Create Novel</span>
                     </a>
 
-                    <? if(isset($_SESSION["user"]) && $_SESSION["role"] == "admin") { ?>
+                    <? if(isset($_SESSION["user"]) && $_SESSION["role"] === "admin") { ?>
                         <a class="navbar-item" href="<?= ADMIN_PATH ?>">
                             <span class="icon">
                                 <i class="fa-solid fa-toolbox"></i>
@@ -73,9 +73,9 @@
                 <div class="navbar-end">
                     <?php if (isset($_SESSION["user"])) { ?>
                         <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link <?= $_SESSION["role"] == "premium" || $_SESSION["role"] == "admin" ? "has-text-warning has-text-weight-bold" : "" ?>">
+                            <a class="navbar-link <?= $_SESSION["role"] === "premium" || $_SESSION["role"] === "admin" ? "has-text-warning has-text-weight-bold" : "" ?>">
                                 <span class="icon">
-                                    <i class="fa-solid fa-<?= $_SESSION["role"] == "premium" || $_SESSION["role"] == "admin" ? "crown" : "circle-user" ?>"></i>
+                                    <i class="fa-solid fa-<?= $_SESSION["role"] === "premium" || $_SESSION["role"] === "admin" ? "crown" : "circle-user" ?>"></i>
                                 </span>
                                 <span><?= $_SESSION["username"] ?></span>
                             </a>

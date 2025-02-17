@@ -21,7 +21,7 @@ class AdminController {
         $logger = getLogger('admin panel');
         $logger->info('GET /admin');
 
-        if(!isset($_SESSION["user"]) || ($_SESSION["role"] != "admin")) {
+        if(!isset($_SESSION["user"]) || ($_SESSION["role"] !== "admin")) {
             $logger->info("User tried to access the admin panel while not being authenticated");
             $controller = new ErrorPageController();
             $controller->error(404);
@@ -40,7 +40,7 @@ class AdminController {
         $logger = getLogger('edit user');
         $logger->info('GET /admin/services/edit');
 
-        if(!isset($_SESSION["user"]) || ($_SESSION["role"] != "admin")) {
+        if(!isset($_SESSION["user"]) || ($_SESSION["role"] !== "admin")) {
             $logger->info("User tried to access the admin panel while not being authenticated");
             $controller = new ErrorPageController();
             $controller->error(404);
@@ -61,7 +61,7 @@ class AdminController {
         $logger = getLogger('edit user');
         $logger->info('POST /admin/services/edit');
 
-        if(!isset($_SESSION["user"]) || ($_SESSION["role"] != "admin")) {
+        if(!isset($_SESSION["user"]) || ($_SESSION["role"] !== "admin")) {
             $logger->info("User tried to access the admin panel while not being authenticated");
             $controller = new ErrorPageController();
             $controller->error(404);
