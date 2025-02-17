@@ -9,6 +9,7 @@ require_once __DIR__ . '/../models/User.php';
 
 use App\Utils\Validator;
 use App\Models\User;
+use App\Utils\ViewManager;
 
 class ApiController {
     // POST /api/v1/users
@@ -18,29 +19,27 @@ class ApiController {
 
         if(!isset($_SESSION["user"]) || ($_SESSION["role"] != "admin")) {
             $logger->info('Tried calling autocomplete api while not being logged or while not being admin');
-            $http_code = 401;
-            $response = array(
+            ViewManager::renderJson(array(
                 'response' => 'Unauthorized'
-            );
-        } elseif(!isset($params_post['username']) || !Validator::partialUsernameValidation($params_post['username'])) {
-            $logger->info('Invalid partial username');
+            ));
 
-            $http_code = 400;
-            $response = array(
-                'response' => 'Username must be a non-empty string with length less than '. Validator::USERNAME_MAX_LENGTH . ' and can only contain letters, numbers, dashes and underscores'
-            );
-        } else {
-            $partial_username = $params_post['username'];
-            $users = User::getNonAdminUsersByPartialUsername($partial_username);
-
-            $http_code = 200;
-            $response = array(
-                'response' => array_map(fn($user) => $user->getUsername(), $users)
-            );
+            return;
         }
+        
+        if(!isset($params_post['username']) || !Validator::partialUsernameValidation($params_post['username'])) {
+            $logger->info('Invalid partial username');
+            ViewManager::renderJson(array(
+                'response' => 'Username must be a non-empty string with length less than '. Validator::USERNAME_MAX_LENGTH . ' and can only contain letters, numbers, dashes and underscores'
+            ));
+            
+            return;
+        } 
 
-        header('Content-Type: application/json');
-        http_response_code($http_code);
-        echo json_encode($response);
+        $partial_username = $params_post['username'];
+        $users = User::getNonAdminUsersByPartialUsername($partial_username);
+
+        ViewManager::renderJson(array(
+            'response' => array_map(fn($user) => $user->getUsername(), $users)
+        ));
     }
 }

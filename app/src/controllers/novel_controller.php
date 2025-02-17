@@ -388,8 +388,7 @@ class NovelController {
                     return;
                 }
 
-                header('Content-Type: application/pdf');
-                readfile($path);
+                ViewManager::renderPdf($path);
 
                 break;
 

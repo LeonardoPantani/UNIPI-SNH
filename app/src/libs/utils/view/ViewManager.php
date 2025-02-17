@@ -14,8 +14,12 @@ class ViewManager {
         return htmlentities($var, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
     }
 
-    public static function render(string $view_name, array $vars) : void {        
-        $nonce = (Uuid::uuid4())->toString();
+    private static function randomNonce() : string {
+        return (Uuid::uuid4())->toString();
+    }
+
+    private static function setCspHeader() : string {
+        $nonce = self::randomNonce();
 
         /*
             links: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
@@ -48,6 +52,29 @@ class ViewManager {
                                the locations of scripts loaded from relative URLs
         */
         header("Content-Security-Policy: default-src 'none'; script-src 'nonce-$nonce'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' cataas.com; frame-ancestors 'none'; form-action 'self'; base-uri 'none';");
+    
+        return $nonce;
+    }
+
+    public static function renderPdf(string $path) : void {
+        self::setCspHeader();
+        header('Content-Type: application/pdf');
+
+        if(!file_exists($path)) {
+            throw new Exception("Error - Novel pdf not found");
+        }
+        
+        readfile($path);
+    }
+
+    public static function renderJson(array $response) : void {
+        header('Content-Type: application/json');
+        //http_response_code($http_code);
+        echo json_encode($response);
+    }
+
+    public static function render(string $view_name, array $vars) : void {        
+        $nonce = self::setCspHeader();
 
         # for every variable in $vars, it replaces it with the cleaned version
         array_walk_recursive($vars, function(&$value) {
