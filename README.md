@@ -100,8 +100,34 @@ ALTER INSTANCE RELOAD KEYRING;
 ```
 per eseguire a runtime il reload della componente `component_keyring_file`.  
 
+## Login bruteforce
+Attraverso il key-value store `Redis`, è possibile mantenere un contatore per ogni login fallito. In particolare, Redis permette di gestire automaticamente l'expire delle keys inserite nel database. Per esempio, connettendosi al container
+```
+docker exec -it snh_redis redis-cli
+```
+è possibile memorizzare un intero associato ad una chiave e definire un expire di 60 secondi, i.e.
+```
+SET testing 1
+EXPIRE testing 60
+```
+Dopo 60 secondi, la chiave sarà eliminata dal database. È possibile utilizzare uno specifico comando per incrementare l'intero, i.e.
+```
+INCR testing
+```
+e utilizzando nuovamente il comando `EXPIRE` si può aggiornare la scadenza della key. Di seguito una lista dei principali comandi di Redis.
+```
+ping
+SET <key> <value>
+GET <key>
+INCR <key>
+TTL <key>
+DEL <key>
+EXPIRE <key> <seconds>
+```
+Per ulteriori informazioni, consultare il [cheatsheet](https://redis.io/learn/howtos/quick-start/cheat-sheet) di `redis-cli`.
+
 ## Bandwidth throttling
-Il modulo apache2 `mod_evasive` viene utilizzato per prevenire attacchi di bruteforce sul login. Un numero eccessivo di richeste in un arco di tempo ridotto (i.e. ~30 req/s) provocano l'inserimento dell'indirizzo IP in una blacklist temporanea. Il server risponderà alle successive richieste con un errore 403 (Forbidden). Per attivare il modulo, settare `EVASIVE_MOD: yes` in `compose.yml`. 
+Il modulo apache2 `mod_evasive` viene utilizzato per prevenire attacchi di DDos. Un numero eccessivo di richeste in un arco di tempo ridotto (i.e. ~30 req/s) provocano l'inserimento dell'indirizzo IP in una blacklist temporanea. Il server risponderà alle successive richieste con un errore 403 (Forbidden). Per attivare il modulo, settare `EVASIVE_MOD: yes` in `compose.yml`. 
 
 È possibile testare il funzionamento con il seguente script.
 ```
@@ -138,6 +164,17 @@ a2dismod evasive
 È possibile inoltre eseguire un restart di apache2 senza ricreare il container, i.e. 
 ```
 /etc/init.d/apache2 reload
+```
+
+## Testing
+Some useful `cURL` commands.
+```
+curl -s -o /dev/null -k -c cookie.jar https://127.0.0.1
+curl -s -k -b cookie.jar https://127.0.0.1/login | grep -oP [0-9a-z]{64} > token.txt
+curl -s -X POST -k -b cookie.jar -c cookie.jar -d "username=aaaaaaaa&password=12345678&token=$(cat token.txt)" https://127.0.0.1/login
+curl -s -k -b cookie.jar https://127.0.0.1/logout
+
+curl -X POST -s -o /dev/null -w 'Authorization: %header{Authorization}' -d '{"username": "aaaaaaaa", "password": "aaaaaaaa"}' -k https://127.0.0.1/login > headers.txt
 ```
 
 ## Logs

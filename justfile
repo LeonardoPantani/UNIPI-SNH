@@ -272,6 +272,11 @@ exec *args='': up
 				&& docker exec -it "${container_name}" $command \
 				|| docker exec -it "${container_name}" /bin/bash -c 'mysql -u root -proot snh_db'
 			;;
+		redis)
+			[ -n "$command" ] \
+				&& docker exec -it "${container_name}" $command \
+				|| docker exec -it "${container_name}" redis-cli
+			;;
 		*)
 			echo 'Error: unknown container'
 			exit 1

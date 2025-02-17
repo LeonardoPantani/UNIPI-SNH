@@ -70,22 +70,65 @@ class LoginController {
         $username = $params_post["username"];
         $password = $params_post["password"];
 
+        $redis = new \Redis([
+            'host' => getenv('REDIS_HOST'),
+            'port' => intval(getenv('REDIS_PORT')),
+            'connectTimeout' => 2.5
+        ]);
+
+        $failures = 0;
+        if($redis->exists($username)) {
+            $failures = intval($redis->get($username));
+        }
+
+        if($failures >= 5) {
+            $logger->info("Too many failed attemps", ['username' => $username]);
+            $redis->expire($username, 5 * 60);
+
+            $_SESSION['flash']['error'] = 'Too many failed attemps. Retry later';
+            $this->new();
+            return;
+        }
+
         $user = User::getUserByUsername($username);
 
         if(is_null($user)) {
             $logger->info("A user used an invalid username", ['username' => $username]);
-            $_SESSION['flash']['error'] = 'Invalid username or password.';
+
+            $failures = $redis->incr($username);
+            if($failures < 5) {
+                $expire = 1 * 60;
+                $error = 'Invalid username or password.';
+            } else {
+                $expire = 5 * 60;
+                $error = 'Too many failed attemps. Retry later';
+            }
+            
+            $redis->expire($username, $expire);
+            $_SESSION['flash']['error'] = $error;
             $this->new();
             return;
         }
 
         if(!password_verify($password, $user->getPasswordHash())) {
             $logger->info("User with username specified a wrong password", ['username' => $username]);
-            $_SESSION['flash']['error'] = 'Invalid username or password.';
+
+            $failures = $redis->incr($username);
+            if($failures < 5) {
+                $expire = 1 * 60;
+                $error = 'Invalid username or password.';
+            } else {
+                $expire = 5 * 60;
+                $error = 'Too many failed attemps. Retry later';
+            }
+            
+            $redis->expire($username, $expire);
+            $_SESSION['flash']['error'] = $error;
             $this->new();
             return;
         }
 
+        $redis->del($username);
         session_regenerate_id(true);
         $_SESSION["user"] = $user->getId();
         $_SESSION["username"] = $user->getUsername();

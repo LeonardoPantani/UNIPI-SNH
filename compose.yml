@@ -23,6 +23,9 @@ services:
       EVASIVE_MOD: yes
   container_name: snh_app
   env_file: app/app.env
+  environment:
+   REDIS_HOST: redis
+   REDIS_PORT: 6379
   ports:
    - '127.0.0.1:443:443'
   volumes:
@@ -43,6 +46,12 @@ services:
       - action: rebuild
         path: ./app/src/public/.htaccess
   tty: true
+
+ redis:
+    image: redis:7.4
+    container_name: snh_redis
+    ports:
+     - '127.0.0.1:6379:6379'
 
 volumes:
   db_data:

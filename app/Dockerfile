@@ -19,6 +19,9 @@ RUN apt-get update && apt-get install -y \
 	vim \
 	libapache2-mod-evasive
 
+RUN pecl install redis \
+	&& docker-php-ext-enable redis
+
 # install pdo and pdo_mysql modules
 RUN docker-php-ext-install pdo pdo_mysql \
     && docker-php-ext-enable pdo pdo_mysql
