@@ -288,9 +288,9 @@ class NovelController {
         }
 
         $user = User::getUserById($_SESSION['user']);
-        $novels = ($user->getRoleName() === 'premium')
-            ? Novel::getAllNovels() 
-            : Novel::getAllNonPremiumNovels();
+        $novels = ($user->getRoleName() === 'nonpremium')
+            ? Novel::getAllNonPremiumNovels()
+            : Novel::getAllNovels();
 
         $novels_text = array();
         $novels_file = array();
@@ -362,7 +362,7 @@ class NovelController {
         }
 
         // check premium permission only if the novel doesn't belong to the current user
-        if($novel->getUserId() !== $user_id && ($novel->getIsPremium() && $user->getRoleName() !== 'premium')) {
+        if($novel->getUserId() !== $user_id && ($novel->getIsPremium() && $user->getRoleName() === 'nonpremium')) {
             $logger->info("User tried to access a premium novel without permissions");
             $_SESSION['flash']['error'] = 'You \'re not allowed to see premium novels';
             header('Location: ' . SHOW_NOVELS_PATH);
