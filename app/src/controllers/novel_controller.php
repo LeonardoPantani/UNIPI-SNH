@@ -156,10 +156,9 @@ class NovelController {
                 break;
 
             case 'file':
-
-                if(!isset($params_file['file'])) {
-                    $logger->info('Missing novel file');
-                    $_SESSION['flash']['error'] = 'Missing novel file';
+                if(!isset($params_file['file']) || $params_file['file']['error'] !== UPLOAD_ERR_OK) {
+                    $logger->info('Missing or invalid novel file');
+                    $_SESSION['flash']['error'] = 'Invalid novel file with error ' . $params_file['file']['error'];
                     $this->new();
         
                     return;
