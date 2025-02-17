@@ -42,7 +42,7 @@ RUN a2enmod ssl
 # apache2 evasive config
 RUN sed -i /etc/apache2/mods-available/evasive.conf \
 		-e '2,7 s/^\(\s*\)#/\1/' \
-		-e 's/^\(\s*DOSSiteCount\s*\)[0-9]\+/\12/' \
+		-e 's/^\(\s*DOSSiteCount\s*\)[0-9]\+/\110/' \
 		-e 's/^\(\s*DOSBlockingPeriod\s*\)[0-9]\+/\125/'
 
 # apache2 evasive activation
