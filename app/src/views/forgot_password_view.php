@@ -9,6 +9,7 @@ ob_start();
 <h2 class="subtitle">No problem! Enter your email to change it.</h2>
 
 <form action="<?= FORGOT_PASSWORD_PATH ?>" method="POST">
+    <input type="hidden" value="<?= $vars["token"] ?>" id="token" name="token">
     <div class="field">
         <label class="label" for="email">Email</label>
         <div class="control has-icons-left has-icons-right">

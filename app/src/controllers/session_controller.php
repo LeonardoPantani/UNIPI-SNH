@@ -26,10 +26,11 @@ class LoginController {
             return;
         }
 
+        $token = $_SESSION["token"];
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("login", ["flash" => $flash, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("login", ["flash" => $flash, "token" => $token, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
     // POST /login
@@ -37,6 +38,13 @@ class LoginController {
     {
         $logger = getLogger('login');
         $logger->info('POST /login');
+
+        if(!isset($params_post["token"]) || $params_post["token"] !== $_SESSION["token"]) {
+            $logger->info('Invalid CSRF token');
+            $_SESSION['flash']['error'] = 'Invalid CSRF token';
+            $this->new();
+            return;
+        }
 
         if(isset($_SESSION["user"])) {
             $logger->info("User tried to login but is already authenticated", ['user_id' => $_SESSION["user"]]);
@@ -82,6 +90,7 @@ class LoginController {
         $_SESSION["user"] = $user->getId();
         $_SESSION["username"] = $user->getUsername();
         $_SESSION["role"] = $user->getRoleName();
+        $_SESSION["token"] = bin2hex(random_bytes(32));
         $_SESSION['flash']['success'] = 'Authenticated as '. $_SESSION["username"] . '.';
 
         header('Location: ' . ROOT_PATH);

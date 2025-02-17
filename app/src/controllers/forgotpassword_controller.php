@@ -30,10 +30,11 @@ class ForgotPasswordController {
             return;
         }
 
+        $token = $_SESSION["token"];
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("forgot_password", ["flash" => $flash]);
+        ViewManager::render("forgot_password", ["flash" => $flash, "token" => $token]);
     }
 
     // POST /password/forgot
@@ -47,6 +48,13 @@ class ForgotPasswordController {
             $_SESSION['flash']['error'] = 'You are already authenticated.';
             header('Location: ' . ROOT_PATH);
 
+            return;
+        }
+
+        if(!isset($params_post["token"]) || $params_post["token"] !== $_SESSION["token"]) {
+            $logger->info('Invalid CSRF token');
+            $_SESSION['flash']['error'] = 'Invalid CSRF token';
+            $this->new();
             return;
         }
 
@@ -146,11 +154,12 @@ class ForgotPasswordController {
         }
 
         $code = $params_path['code'];
-
+        
+        $token = $_SESSION['token'];
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("create_password", ["flash" => $flash, "code" => $code, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("create_password", ["flash" => $flash, "token" => $token, "code" => $code, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
     // POST /password/reset/:code
@@ -167,10 +176,17 @@ class ForgotPasswordController {
             return;
         }
 
+        if(!isset($params_post["token"]) || $params_post["token"] !== $_SESSION["token"]) {
+            $logger->info('Invalid CSRF token');
+            $_SESSION['flash']['error'] = 'Invalid CSRF token';
+            $this->choose_new_password($params_path);
+            return;
+        }
+
         if(!isset($params_path['code']) || !Validator::codeValidation($params_path['code'])) {
             $logger->info("Invalid code");
             $_SESSION['flash']['error'] = 'Invalid code';
-            header('Location: ' . ROOT_PATH);
+            $this->choose_new_password($params_path);
 
             return;
         }
@@ -207,7 +223,7 @@ class ForgotPasswordController {
         
         if(is_null($forgotPassword)) {
             $logger->info('Invalid code');
-            $_SESSION['flash']['error'] = 'The verification code you entered is not correct';
+            $_SESSION['flash']['error'] = 'The verification code you entered is invalid or expired';
             $this->choose_new_password($params_path);
             
             return;

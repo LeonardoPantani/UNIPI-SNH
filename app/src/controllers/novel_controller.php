@@ -67,10 +67,11 @@ class NovelController {
             return;
         }
 
+        $token = $_SESSION["token"];
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("add_novel", ["flash" => $flash, "title_maxlength" => Validator::NOVEL_TITLE_MAX_LENGTH, "content_maxlength" => Validator::NOVEL_TEXT_MAX_LENGTH, "title_placeholder" => self::PLACEHOLDERS_TITLE[array_rand(self::PLACEHOLDERS_TITLE)], "content_placeholder" => self::PLACEHOLDERS_CONTENT[array_rand(self::PLACEHOLDERS_CONTENT)]]);
+        ViewManager::render("add_novel", ["flash" => $flash, "token" => $token, "title_maxlength" => Validator::NOVEL_TITLE_MAX_LENGTH, "content_maxlength" => Validator::NOVEL_TEXT_MAX_LENGTH, "title_placeholder" => self::PLACEHOLDERS_TITLE[array_rand(self::PLACEHOLDERS_TITLE)], "content_placeholder" => self::PLACEHOLDERS_CONTENT[array_rand(self::PLACEHOLDERS_CONTENT)]]);
     }
 
     // POST /novel/add
@@ -84,6 +85,13 @@ class NovelController {
             $_SESSION['flash']['error'] = 'You are not authenticated.';
             header('Location: ' . LOGIN_PATH);
 
+            return;
+        }
+
+        if(!isset($params_post["token"]) || $params_post["token"] !== $_SESSION["token"]) {
+            $logger->info('Invalid CSRF token');
+            $_SESSION['flash']['error'] = 'Invalid CSRF token';
+            $this->new();
             return;
         }
 

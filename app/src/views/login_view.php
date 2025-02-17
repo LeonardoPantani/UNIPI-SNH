@@ -8,6 +8,7 @@ ob_start();
 <h1 class="title">Login</h1>
 
 <form action="<?= LOGIN_PATH ?>" method="POST">
+    <input type="hidden" value="<?= $vars["token"] ?>" id="token" name="token">
     <div class="field">
         <label class="label" for="username">Username</label>
         <div class="control has-icons-left has-icons-right">

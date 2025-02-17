@@ -9,6 +9,7 @@ ob_start();
 <h2 class="subtitle"></h2>
 
 <form action="<?= ADMIN_EDIT_USER_PATH ?>" method="POST">
+    <input type="hidden" value="<?= $vars["token"] ?>" id="token" name="token">
     <div class="field">
         <label class="label" for="username">Username</label>
         <div class="dropdown" id="username-dropdown">

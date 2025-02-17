@@ -27,10 +27,11 @@ class UserController {
             return;
         }
 
+        $token = $_SESSION["token"];
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("registration", ["flash" => $flash, "email_pattern" => Validator::EMAIL_REGEX, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("registration", ["flash" => $flash, "token" => $token, "email_pattern" => Validator::EMAIL_REGEX, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
     // POST /registration
@@ -38,6 +39,20 @@ class UserController {
     {
         $logger = getLogger('registration');
         $logger->info('POST /registration');
+
+        if(isset($_SESSION["user"])) {
+            $logger->info("User tried to perform a registration but is already authenticated");
+            $_SESSION['flash']['error'] = 'You are already authenticated.';
+            header('Location: ' . ROOT_PATH);
+            return;
+        }
+
+        if(!isset($params_post["token"]) || $params_post["token"] !== $_SESSION["token"]) {
+            $logger->info('Invalid CSRF token');
+            $_SESSION['flash']['error'] = 'Invalid CSRF token';
+            $this->new();
+            return;
+        }
 
         if(!isset($params_post['email']) || !Validator::emailValidation($params_post['email'])) {
             $logger->info('Invalid email');

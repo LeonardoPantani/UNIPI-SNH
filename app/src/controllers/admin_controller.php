@@ -48,10 +48,11 @@ class AdminController {
             return;
         }
 
+        $token = $_SESSION['token'];
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("admin_edituser", ["flash" => $flash, "roles" => User::getNonAdminRoles(), "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH]);
+        ViewManager::render("admin_edituser", ["flash" => $flash, "token" => $token, "roles" => User::getNonAdminRoles(), "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH]);
     }
 
     // POST /admin/services/edit
@@ -65,6 +66,13 @@ class AdminController {
             $controller = new ErrorPageController();
             $controller->error(404);
             
+            return;
+        }
+
+        if(!isset($params_post["token"]) || $params_post["token"] !== $_SESSION["token"]) {
+            $logger->info('Invalid CSRF token');
+            $_SESSION['flash']['error'] = 'Invalid CSRF token';
+            $this->new();
             return;
         }
 

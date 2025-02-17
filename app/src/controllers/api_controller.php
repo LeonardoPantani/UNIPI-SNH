@@ -25,6 +25,15 @@ class ApiController {
 
             return;
         }
+
+        if(!isset($params_post["token"]) || $params_post["token"] !== $_SESSION["token"]) {
+            $logger->info('Invalid CSRF token');
+            ViewManager::renderJson(array(
+                'response' => 'Invalid CSRF token'
+            ));
+
+            return;
+        }
         
         if(!isset($params_post['username']) || !Validator::partialUsernameValidation($params_post['username'])) {
             $logger->info('Invalid partial username');

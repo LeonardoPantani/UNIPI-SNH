@@ -9,6 +9,7 @@ ob_start();
 <p class="subtitle">You can change your password here.</p>
 
 <form action="<?= SETTINGS_PATH ?>" method="POST">
+    <input type="hidden" value="<?= $vars["token"] ?>" id="token" name="token">
     <div class="field">
         <label class="label" for="password_old">Your current password</label>
         <div class="control has-icons-left has-icons-right">

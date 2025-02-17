@@ -6,6 +6,7 @@ ob_start();
 <h1 class="title">Create a memorable password</h1>
 
 <form action="<?= create_password_path($vars["code"]) ?>" method="POST">
+    <input type="hidden" value="<?= $vars["token"] ?>" id="token" name="token">
     <div class="field">
         <label class="label">Verification code</label>
         <div class="control">

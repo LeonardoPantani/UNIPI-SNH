@@ -30,10 +30,11 @@ class SettingsController {
 
         $user = User::getUserById($_SESSION["user"]);
 
+        $token = $_SESSION["token"];
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("settings", ["flash" => $flash, "username" => $user->getUsername(), "email" => $user->getEmail(), "email_pattern" => Validator::EMAIL_REGEX, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("settings", ["flash" => $flash, "token" => $token, "username" => $user->getUsername(), "email" => $user->getEmail(), "email_pattern" => Validator::EMAIL_REGEX, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
     }
 
     // POST /user/settings
@@ -47,6 +48,13 @@ class SettingsController {
             $_SESSION['flash']['error'] = 'You are not authenticated.';
             header('Location: ' . ROOT_PATH);
 
+            return;
+        }
+
+        if(!isset($params_post["token"]) || $params_post["token"] !== $_SESSION["token"]) {
+            $logger->info('Invalid CSRF token');
+            $_SESSION['flash']['error'] = 'Invalid CSRF token';
+            $this->new();
             return;
         }
 

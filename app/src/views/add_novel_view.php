@@ -7,7 +7,7 @@ ob_start();
 ?>
 <h1 class="title">Create a novel</h1>
 <form action="<?= ADD_NOVEL_PATH ?>" method="POST">
-
+    <input type="hidden" value="<?= $vars["token"] ?>" id="token" name="token">
     <div class="field">
         <div class="control">
             <label class="label" for="premium">Is it a premium novel?</label>
