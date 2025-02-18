@@ -36,6 +36,17 @@ COPY ./src/libs/composer.json ${APACHE_APP_ROOT}/libs/
 # install php libraries from composer.json
 RUN composer update --no-cache --working-dir=libs
 
+# environment mode setting (actually only for production error_reporting)
+ARG ENV_MODE=
+RUN case "${ENV_MODE}" in	\
+	dev) \
+		ln -s '/usr/local/etc/php/php.ini-development' '/usr/local/etc/php/php.ini' \
+		;; \
+	prod) \
+		ln -s '/usr/local/etc/php/php.ini-production' '/usr/local/etc/php/php.ini' \
+		;; \
+esac
+
 # apache2 RewriteEngine
 RUN a2enmod rewrite
 

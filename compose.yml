@@ -21,6 +21,7 @@ services:
     context: ./app
     args:
       EVASIVE_MOD: yes
+      ENV_MODE: prod
   container_name: snh_app
   env_file: app/app.env
   environment:

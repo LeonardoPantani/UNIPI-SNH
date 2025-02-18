@@ -10,14 +10,14 @@ use Exception;
 
 abstract class DBConnection {
     private static function db_connect($host = null, $user = null, $psw = null, $name = null) : PDO {
-        $host = $host ?? $_ENV["DB_HOST"];
-        $user = $user ?? $_ENV["DB_USER"];
-        $psw = $psw ?? $_ENV["DB_PASSWORD"];
-        $name = $name ?? $_ENV["DB_NAME"];
+        $host = $host ?? getenv("DB_HOST");
+        $user = $user ?? getenv("DB_USER");
+        $psw  = $psw  ?? getenv("DB_PASSWORD");
+        $name = $name ?? getenv("DB_NAME");
 
         // NOTE: PHP uses 'latin1' charset, whereas MySQL uses 'utf8' or 'utf8mb4' charset.
         $dsn = "mysql:host=$host;dbname=$name;charset=latin1";
-            $conn = new PDO($dsn, $user, $psw, array(PDO::ATTR_TIMEOUT => 1, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        $conn = new PDO($dsn, $user, $psw, array(PDO::ATTR_TIMEOUT => 1, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
         return $conn;
     }
@@ -26,7 +26,7 @@ abstract class DBConnection {
         $logger = getLogger('db');
 
         try {
-        return self::db_connect();
+            return self::db_connect();
         } catch (PDOException $e) {
             $logger->info('newDBInstance: ' . $e->getMessage());
             return null;
