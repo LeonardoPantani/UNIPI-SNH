@@ -35,10 +35,10 @@ BINARY and INTEGER have some problems.
      that it stores byte strings rather than character strings, so we cannot use it to store
      integers or boolean values.
   2) if we decide to use booleans to store the info about novel form, we need to change this boolean type when 
-     a new novel form's table is added (boolean cannot store more that 2 states). 
+     a new novel form's table is added (boolean cannot store more than 2 states).
   3) if we decide to use integers to store the info about novel form, we need also to remember how these integer
      values are mapped to the *_form tables (e.g. '0' means 'text_form' and '1' means 'file_form'). How can we 
-     remember this relationships when we access the data directly from the db client?
+     remember these relationships when we access the data directly from the db client?
 Using ENUM("text_form", "file_form") we can set the range of accepted values (can we do the same thing with INTEGER?).
 */
 CREATE TABLE novel (

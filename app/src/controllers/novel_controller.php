@@ -181,6 +181,7 @@ class NovelController {
                 // check if file exists
                 $i = 0;
                 $is_valid = false;
+                $filename = "";
 
                 while($i < 3) {
                     $random_string = rtrim(strtr(base64_encode(random_bytes(25)), '/', '_'), '=');
@@ -211,10 +212,9 @@ class NovelController {
                 }
                 
                 // check file size
-                $max_size = 50 * 1000; //50Kb
-                if ($file["size"] > $max_size) {
+                if ($file["size"] > MAX_FILE_SIZE) {
                     $logger->info('file too large');
-                    $_SESSION['flash']['error'] = 'File is too large (max 50Kb)';
+                    $_SESSION['flash']['error'] = 'File is too large (max 1 MB)';
                     $this->new();
 
                     return;
@@ -376,10 +376,12 @@ class NovelController {
 
         switch(get_class($novel)) {
             case 'App\Models\NovelText':
+                $date = (new \DateTime($novel->getCreatedAt()))->setTimezone((new \DateTimeZone('Europe/Rome')))->format('l d F Y H:i');
+
                 ViewManager::render('show_text_novel', [
                     "flash"      => $flash, 
                     "novel_user" => ["username" => $novel_user->getUsername()],
-                    "novel"      => ["title" => $novel->getTitle(), "formContent" => $novel->getFormContent()]
+                    "novel"      => ["title" => $novel->getTitle(), "formContent" => $novel->getFormContent(), "created_at" => $date]
                 ]);
 
                 break;

@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const logout_path = '/logout'
   const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 
   $navbarBurgers.forEach(el => {
@@ -10,15 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
       el.classList.toggle('is-active');
       $target.classList.toggle('is-active');
 
-    });
-  });
-
-  (document.querySelectorAll('#logout-button') || []).forEach((elem) => {
-    elem.addEventListener('click', function (event) {
-      event.preventDefault();
-      if (confirm("Are you sure you want to log out?")) {
-        window.location.href = logout_path;
-      }
     });
   });
 });

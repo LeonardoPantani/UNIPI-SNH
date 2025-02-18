@@ -1,5 +1,7 @@
 <?php
     require_once __DIR__ . '/../libs/utils/config/constants.php';
+
+    $title = $title ?? 'StoryForge';
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +60,7 @@
                         <span>Create Novel</span>
                     </a>
 
-                    <? if(isset($_SESSION["user"]) && $_SESSION["role"] === "admin") { ?>
+                    <?php if(isset($_SESSION["user"]) && $_SESSION["role"] === "admin") { ?>
                         <a class="navbar-item" href="<?= ADMIN_PATH ?>">
                             <span class="icon">
                                 <i class="fa-solid fa-toolbox"></i>
@@ -97,7 +99,7 @@
                             </div>
                         </div>
                         <div class="navbar-item">
-                            <a class="button is-danger" id="logout-button">
+                            <a class="button is-danger" href="<?= LOGOUT_PATH ?>">
                                 <span class="icon">
                                     <i class="fa-solid fa-door-open"></i>
                                 </span>
@@ -146,8 +148,9 @@
         <?php endforeach; ?>
     </section>
 
-    <main class="hero is-fullheight pt-5">
-        <section class="section">
+    <main class="hero is-fullheight">
+        <?php if(!isset($is_fullscreen)): ?>
+        <section class="section mt-5">
             <div class="container">
                 <div class="columns is-centered">
                     <div class="column is-three-quarters">
@@ -156,6 +159,11 @@
                 </div>
             </div>
         </section>
+        <?php 
+            else:
+                echo $content;
+            endif;
+        ?>
 
         <footer class="footer mt-auto">
             <div class="content has-text-centered">

@@ -11,6 +11,7 @@ require_once __DIR__ . '/../libs/utils/config/constants.php';
 use App\Models\User;
 use App\Utils\Validator;
 use App\Utils\ViewManager;
+use Redis;
 
 class LoginController {
     // GET /login
@@ -70,7 +71,7 @@ class LoginController {
         $username = $params_post["username"];
         $password = $params_post["password"];
 
-        $redis = new \Redis([
+        $redis = new Redis([
             'host' => getenv('REDIS_HOST'),
             'port' => intval(getenv('REDIS_PORT')),
             'connectTimeout' => 2.5

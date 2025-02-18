@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+require_once __DIR__ . '/../log/logger.php';
+
 use PDO;
 use PDOException;
 use Exception;
@@ -42,82 +44,118 @@ abstract class DBConnection {
     }
 
     public static function db_commit(PDO $conn) : bool {
-        return $conn->commit();
+        try {
+            $res = $conn->commit();
+        } catch(PDOException) {
+            return false;
+        }
+        return $res;
     }
 
     public static function db_rollback(PDO $conn) : bool {
-        return $conn->rollBack();
+        try {
+            $res = $conn->rollBack();
+        } catch(PDOException) {
+            return false;
+        }
+        return $res;
     }
 
     protected static function db_fetchOne(string $sql, ?array $params, PDO $conn = null) : array {
-        if(is_null($conn)) {
-            $conn = self::db_connect();
-        }
+        try {
+            if(is_null($conn)) {
+                $conn = self::db_connect();
+            }
 
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($params);
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+        } catch (PDOException) {
+            return [];
+        }
 
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
     }
 
     protected static function db_fetchAll(string $sql, ?array $params, PDO $conn = null) : array {
-        if(is_null($conn)) {
-            $conn = self::db_connect();
+        try {
+            if(is_null($conn)) {
+                $conn = self::db_connect();
+            }
+
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+        } catch (PDOException) {
+            return [];
         }
-        
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($params);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
     protected static function db_getOutcome(string $sql, ?array $params, PDO $conn = null) : bool {
-        if(is_null($conn)) {
-            $conn = self::db_connect();
+        try {
+            if (is_null($conn)) {
+                $conn = self::db_connect();
+            }
+
+            $stmt = $conn->prepare($sql);
+            $res = $stmt->execute($params);
+        } catch (PDOException) {
+            return false;
         }
-        
-        $stmt = $conn->prepare($sql);
-        return $stmt->execute($params);
+
+        return $res;
     }
 
     protected static function db_getLastInsertId(string $sql, ?array $params, PDO $conn = null) : int {
-        if(is_null($conn)) {
-            $conn = self::db_connect();
-        }
+        try {
+            if (is_null($conn)) {
+                $conn = self::db_connect();
+            }
 
-        $stmt = $conn->prepare($sql);
-        $res = $stmt->execute($params);
+            $stmt = $conn->prepare($sql);
+            $res = $stmt->execute($params);
 
-        if(!$res) {
+            if(!$res) {
+                return -1;
+            }
+            $last_id = $conn->lastInsertId();
+        } catch (PDOException) {
             return -1;
         }
 
-        return $conn->lastInsertId();
+        return $last_id;
     }
 
     protected static function db_numRows(string $sql, ?array $params, PDO $conn = null) : int {
-        if(is_null($conn)) {
-            $conn = self::db_connect();
+        try {
+            if (is_null($conn)) {
+                $conn = self::db_connect();
+            }
+
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+
+            $res = count($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []);
+        } catch (PDOException) {
+            return 0;
         }
 
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($params);
-
-        return count($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []);
+        return $res;
     }
 
     protected static function db_contains(string $sql, ?array $params, PDO $conn = null) : bool {
-        if(is_null($conn)) {
-            $conn = self::db_connect();
+        try {
+            if(is_null($conn)) {
+                $conn = self::db_connect();
+            }
+
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+
+            $res = ((int) $stmt->fetchColumn()) > 0;
+        } catch (PDOException) {
+            return false;
         }
-
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($params);
-
-        return ((int) $stmt->fetchColumn()) > 0;
-    }
-
-    private static function db_disconnect(PDO $conn) : void {
-        unset($conn);
+        return $res;
     }
 }

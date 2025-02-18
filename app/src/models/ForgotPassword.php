@@ -37,7 +37,8 @@ class ForgotPassword extends DBConnection {
         return $this->user_id;
     }
 
-    private function __construct(int $user_id, string $random_string, ?string $expire_at) {
+    private function __construct(?int $id, int $user_id, string $random_string, ?string $expire_at) {
+        $this->id = $id;
         $this->user_id = $user_id;
         $this->random_string = $random_string;
         $this->expire_at = $expire_at;

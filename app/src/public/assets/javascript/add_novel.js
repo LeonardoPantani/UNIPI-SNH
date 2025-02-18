@@ -69,15 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-     // Aggiungiamo un event listener per gestire la classe attiva sui label
-  document.querySelectorAll('.toggle-button').forEach(function(label) {
-    label.addEventListener('click', function() {
-      document.querySelectorAll('.toggle-button').forEach(function(btn) {
-        btn.classList.remove('is-active');
-      });
-      this.classList.add('is-active');
+    document.querySelectorAll('.toggle-button').forEach(function(label) {
+        label.addEventListener('click', function() {
+        document.querySelectorAll('.toggle-button').forEach(function(btn) {
+            btn.classList.remove('is-active');
+        });
+        this.classList.add('is-active');
+        });
     });
-  });
 
     (document.querySelectorAll('#file') || []).forEach((elem) => {
         elem.addEventListener('change', () => {
@@ -87,17 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 fileNamePlaceholder.textContent = file.name;
             } else {
                 fileNamePlaceholder.textContent = 'No file added yet';
-            }
-        });
-
-        elem.addEventListener('blur', () => {
-            const helpText = document.getElementById('file-message-error');
-            const value = elem.value.trim();
-
-            if (!value) { // show error
-                helpText.classList.remove('is-hidden'); 
-            } else { // show ok
-                helpText.classList.add('is-hidden'); 
             }
         });
     });

@@ -9,15 +9,15 @@
     require_once __DIR__ . '/../controllers/errorpage_controller.php';
     require_once __DIR__ . '/../controllers/settings_controller.php';
 
-    use App\Controllers\HomeController;
-    use App\Controllers\LoginController;
-    use App\Controllers\UserController;
-    use App\Controllers\NovelController;
-    use App\Controllers\ForgotPasswordController;
-    use App\Controllers\AdminController;
-    use App\Controllers\ApiController;
-    use App\Controllers\SettingsController;
-    use App\Controllers\ErrorPageController;
+    use App\controllers\HomeController;
+    use App\controllers\LoginController;
+    use App\controllers\UserController;
+    use App\controllers\NovelController;
+    use App\controllers\ForgotPasswordController;
+    use App\controllers\AdminController;
+    use App\controllers\ApiController;
+    use App\controllers\SettingsController;
+    use App\controllers\ErrorPageController;
     
     /*
         lifetime: 3600 seconds (i.e. 1 hour)

@@ -9,6 +9,7 @@ require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/ForgotPassword.php';
 require_once __DIR__ . '/../libs/utils/view/ViewManager.php';
 require_once __DIR__ . '/../libs/utils/config/constants.php';
+require_once __DIR__ . '/../libs/utils/utility/utility.php';
 
 use App\Models\User;
 use App\Models\ForgotPassword;
@@ -71,7 +72,10 @@ class ForgotPasswordController {
 
         // check if email is registered
         if(is_null($user)) {
-            usleep(random_int(1e6, 3e6));
+            $random_int = generate_random_integer(1e6, 3e6);
+            if(!is_null($random_int)) {
+                usleep($random_int);
+            }
             $logger->info('Email sent');
             $_SESSION['flash']['success'] = 'If there is an account with that email address, you will receive an email with further instructions on how to reset your password.';
             header('Location: ' . ROOT_PATH);
@@ -79,7 +83,6 @@ class ForgotPasswordController {
             return;
         }
 
-        $need_update = false;
         $forgotPassword = ForgotPassword::pending_request_by_user_id($user->getId());
         
         if(is_null($forgotPassword)) {
@@ -117,7 +120,10 @@ class ForgotPasswordController {
 
         // cannot send email
         if($is_sent !== true) {
-            usleep(random_int(1e6, 3e6));
+            $random_int = generate_random_integer(1e6, 3e6);
+            if(!is_null($random_int)) {
+                usleep($random_int);
+            }
             $logger->info('Error during email sending');
             $_SESSION['flash']['error'] = 'Ooops! Something went wrong while sending the password recovery email. Please try again later or contact support if the problem persists.';
             header('Location: ' . ROOT_PATH);
@@ -125,7 +131,10 @@ class ForgotPasswordController {
             return;
         }
 
-        usleep(random_int(5e5, 1e6));
+        $random_int = generate_random_integer(5e5, 1e6);
+        if(!is_null($random_int)) {
+            usleep($random_int);
+        }
         $logger->info('Email sent');
         $_SESSION['flash']['success'] = 'If there is an account with that email address, you will receive an email with further instructions on how to reset your password.';
         header('Location: ' . ROOT_PATH);        

@@ -18,6 +18,10 @@
     const API_SEARCH_USERS_PATH = API_V1_PATH . '/users';
 
 
+    // CONFIG VARIABLES
+    const MAX_FILE_SIZE = 1024 * 1024; // 1 MiB
+
+
     // DYNAMIC PATHS
     function show_novel_path($uuid): string
     {

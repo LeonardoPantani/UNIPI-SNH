@@ -37,13 +37,18 @@ ob_start();
 
     <div class="field">
         <label class="label" for="role">Role</label>
-        <div class="select">
-            <select id="role" name="role">
-                <option disabled selected>-- Select an option --</option>
-                <? foreach($vars["roles"] as $role): ?>
-                    <option value="<?= $role["id"] ?>"><?= $role["name"] ?></option>
-                <? endforeach; ?>
-            </select>
+        <div class="control has-icons-left">
+            <div class="select">
+                <select id="role" name="role">
+                    <option disabled selected>-- Select an option --</option>
+                    <?php foreach($vars["roles"] as $role): ?>
+                        <option value="<?= $role["id"] ?>"><?= $role["name"] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="icon is-small is-left">
+                <i class="fas fa-hands-holding-circle"></i>
+            </div>
         </div>
     </div>
 

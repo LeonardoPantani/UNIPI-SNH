@@ -51,7 +51,7 @@ class ViewManager {
             base-uri 'none' => block the injection of <base> tags. This prevents attackers from changing 
                                the locations of scripts loaded from relative URLs
         */
-        header("Content-Security-Policy: default-src 'none'; script-src 'nonce-$nonce'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' cataas.com; frame-ancestors 'none'; form-action 'self'; base-uri 'none';");
+        header("Content-Security-Policy: default-src 'none'; script-src 'nonce-$nonce'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' cataas.com; frame-ancestors 'none'; form-action 'self'; media-src 'self'; base-uri 'none';");
     
         return $nonce;
     }
@@ -73,11 +73,14 @@ class ViewManager {
         echo json_encode($response);
     }
 
+    /**
+     * @throws Exception If any element of var is not either a string, bool, int or double.
+     */
     public static function render(string $view_name, array $vars) : void {        
         $nonce = self::setCspHeader();
 
         # for every variable in $vars, it replaces it with the cleaned version
-        array_walk_recursive($vars, function(&$value) {
+        array_walk_recursive( $vars, function(&$value) {
             if(is_string($value)) {
                 $value = self::clean($value);
                 return;

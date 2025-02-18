@@ -5,7 +5,6 @@ namespace App\Models;
 require_once __DIR__ . '/Novel.php';
 
 use PDO;
-use App\Models\Novel;
 
 class NovelFile extends Novel {
     private int $form_id;
@@ -18,11 +17,13 @@ class NovelFile extends Novel {
         $this->form_path = $form_path;
     }
 
-    public function getFormId() {
+    public function getFormId(): ?int
+    {
         return $this->form_id;
     }
 
-    public function getFormPath() {
+    public function getFormPath(): string
+    {
         return $this->form_path;
     }
 

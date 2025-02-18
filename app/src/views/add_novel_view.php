@@ -81,7 +81,7 @@ ob_start();
                 <span class="file-name" id="file-name-placeholder">No file added yet</span>
             </label>
         </div>
-        <p class="help is-danger is-hidden" id="file-message-error">Choose a file.</p>
+        <p class="help">Maximum supported file size is <strong>1 MB</strong>.</p>
     </div>
 
     <div class="field">
