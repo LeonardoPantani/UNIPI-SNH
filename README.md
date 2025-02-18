@@ -189,7 +189,7 @@ docker exec -it snh_app less --follow-name +F logs/file.log
 ```
 È possibile inoltre sfruttare il comando `less` per aprire tutti i file di log e navigare tra essi. Eseguire
 ```
-docker exec -it snh_app less --follow-name +F logs/*
+docker exec -it snh_app bash -c 'less --follow-name +F logs/*'
 ```
 ed usare i seguenti comandi per controllare `less`.
 ```
