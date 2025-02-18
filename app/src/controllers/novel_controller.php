@@ -143,7 +143,20 @@ class NovelController {
                 }
 
                 $content = $params_post['content'];
-                $res = NovelText::addNovelText($title, $isPremium, $content, $user_id);
+
+                // new db instance
+                $conn = NovelText::newDBInstance();
+
+                // create transaction
+                if(!NovelText::db_transaction($conn)) {
+                    $logger->info('cannot create a db transaction');
+                    $_SESSION['flash']['error'] = 'Internal server error';
+                    $this->new();
+
+                    return;
+                }
+
+                $res = NovelText::addNovelText($title, $isPremium, $content, $user_id, $conn);
 
                 if(!$res) {
                     $logger->info('Database error during novel creation');
@@ -152,6 +165,9 @@ class NovelController {
 
                     return;
                 }
+
+                // commit db
+                NovelText::db_commit($conn);
 
                 break;
 

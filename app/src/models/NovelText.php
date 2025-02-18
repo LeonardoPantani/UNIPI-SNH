@@ -4,6 +4,9 @@ namespace App\Models;
 
 require_once __DIR__ . '/Novel.php';
 
+use PDO;
+use App\Models\Novel;
+
 class NovelText extends Novel {
     private int $form_id;
     private string $form_content;
@@ -20,18 +23,48 @@ class NovelText extends Novel {
         return $this->form_content;
     }
 
-    public static function addNovelText(string $title, bool $isPremium, string $content, int $user_id) : bool {
-        //TODO: add transaction
+    public static function addNovelText(string $title, bool $isPremium, string $content, int $user_id, PDO $conn = null) : bool {
+        $isLocal = false;
+
+        if(is_null($conn)) {
+            $isLocal = true;
+            $conn = self::newDBInstance();
+        }
+
+        if(!self::db_isTransactionActive($conn)) {
+            if(!self::db_transaction($conn)) {
+                return false;
+            }
+        }
 
         $form_id = self::db_getLastInsertId(
             "INSERT INTO text_form (content) VALUES (?)",
-            [$content]
+            [$content],
+            $conn
         );
 
         if($form_id < 1) {
+            if($isLocal) {
+                self::db_rollback($conn);
+            }
+
             return false;
         }
 
-        return self::addNovel($title, $isPremium, self::TEXT_FORM, $form_id, $user_id);
+        $res = self::addNovel($title, $isPremium, self::TEXT_FORM, $form_id, $user_id);
+
+        if(!$res) {
+            if($isLocal) {
+                self::db_rollback($conn);
+            }
+
+            return false;
+        }
+
+        if($isLocal) {
+            self::db_commit($conn);
+        }
+
+        return true;
     }
 }
