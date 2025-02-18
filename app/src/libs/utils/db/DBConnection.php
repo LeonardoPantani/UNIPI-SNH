@@ -6,7 +6,6 @@ require_once __DIR__ . '/../log/logger.php';
 
 use PDO;
 use PDOException;
-use Exception;
 
 abstract class DBConnection {
     private static function db_connect($host = null, $user = null, $psw = null, $name = null) : PDO {

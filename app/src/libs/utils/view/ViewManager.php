@@ -7,7 +7,6 @@ require_once __DIR__ . '/../../../models/User.php';
 
 use Exception;
 use Ramsey\Uuid\Uuid;
-use App\Models\User;
 
 class ViewManager {
     private const string VIEWS_PATH = "/../../../views/";

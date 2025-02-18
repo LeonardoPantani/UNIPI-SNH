@@ -122,7 +122,7 @@ class AdminController {
 
         if(!$res) {
             $logger->info('Database error during role updating');
-            $_SESSION['flash']['error'] = 'An error occured during role updating';
+            $_SESSION['flash']['error'] = 'An error occurred during role updating';
             $this->edit_user();
             
             return;
