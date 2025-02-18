@@ -2,10 +2,12 @@
 
 namespace App\Utils;
 
-require __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../../models/User.php';
 
 use Exception;
 use Ramsey\Uuid\Uuid;
+use App\Models\User;
 
 class ViewManager {
     private const string VIEWS_PATH = "/../../../views/";
@@ -78,6 +80,22 @@ class ViewManager {
      */
     public static function render(string $view_name, array $vars) : void {        
         $nonce = self::setCspHeader();
+
+        $role = "";
+        $username = "";
+        $isLogged = false;
+
+        if(isset($_SESSION['user'])) {
+            $role = $_SESSION['role'];
+            $username = $_SESSION['username'];
+            $isLogged = true;
+        }
+
+        $vars['session'] = array(
+            'role'     => $role,
+            'username' => $username,
+            'isLogged' => $isLogged
+        );
 
         # for every variable in $vars, it replaces it with the cleaned version
         array_walk_recursive( $vars, function(&$value) {
