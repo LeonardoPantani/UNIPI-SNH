@@ -148,7 +148,7 @@ class NovelController {
                 $conn = NovelText::newDBInstance();
 
                 // create transaction
-                if(!NovelText::db_transaction($conn)) {
+                if(is_null($conn) || !NovelText::db_transaction($conn)) {
                     $logger->info('cannot create a db transaction');
                     $_SESSION['flash']['error'] = 'Internal server error';
                     $this->new();
@@ -240,7 +240,7 @@ class NovelController {
                 $conn = NovelFile::newDBInstance();
 
                 // create transaction
-                if(!NovelFile::db_transaction($conn)) {
+                if(is_null($conn) || !NovelFile::db_transaction($conn)) {
                     $logger->info('cannot create a db transaction');
                     $_SESSION['flash']['error'] = 'Internal server error';
                     $this->new();

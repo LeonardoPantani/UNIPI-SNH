@@ -29,6 +29,10 @@ class NovelText extends Novel {
         if(is_null($conn)) {
             $isLocal = true;
             $conn = self::newDBInstance();
+
+            if(is_null($conn)) {
+                return false;
+            }
         }
 
         if(!self::db_isTransactionActive($conn)) {

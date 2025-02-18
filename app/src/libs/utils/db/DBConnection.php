@@ -17,24 +17,29 @@ abstract class DBConnection {
 
         // NOTE: PHP uses 'latin1' charset, whereas MySQL uses 'utf8' or 'utf8mb4' charset.
         $dsn = "mysql:host=$host;dbname=$name;charset=latin1";
-
-        try {
             $conn = new PDO($dsn, $user, $psw, array(PDO::ATTR_TIMEOUT => 1, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        } catch (PDOException $e) {
-            throw new Exception("Connection failed: " . $e->getMessage());
-        }
 
         return $conn;
     }
 
-    public static function newDBInstance() : PDO {
+    public static function newDBInstance() : ?PDO {
+        $logger = getLogger('db');
+
+        try {
         return self::db_connect();
+        } catch (PDOException $e) {
+            $logger->info('newDBInstance: ' . $e->getMessage());
+            return null;
+        }
     }
 
     public static function db_transaction(PDO $conn) : bool {
+        $logger = getLogger('db');
+
         try {
             return $conn->beginTransaction();
-        } catch (PDOException) {
+        } catch (PDOException $e) {
+            $logger->info('db_transaction: ' . $e->getMessage());
             return false;
         }
     }
@@ -44,24 +49,30 @@ abstract class DBConnection {
     }
 
     public static function db_commit(PDO $conn) : bool {
+        $logger = getLogger('db');
+
         try {
-            $res = $conn->commit();
-        } catch(PDOException) {
+            return $conn->commit();
+        } catch(PDOException $e) {
+            $logger->info('db_commit: ' . $e->getMessage());
             return false;
         }
-        return $res;
     }
 
     public static function db_rollback(PDO $conn) : bool {
+        $logger = getLogger('db');
+
         try {
-            $res = $conn->rollBack();
-        } catch(PDOException) {
+            return $conn->rollBack();
+        } catch(PDOException $e) {
+            $logger->info('db_rollback: ' . $e->getMessage());
             return false;
         }
-        return $res;
     }
 
     protected static function db_fetchOne(string $sql, ?array $params, PDO $conn = null) : array {
+        $logger = getLogger('db');
+
         try {
             if(is_null($conn)) {
                 $conn = self::db_connect();
@@ -69,7 +80,8 @@ abstract class DBConnection {
 
             $stmt = $conn->prepare($sql);
             $stmt->execute($params);
-        } catch (PDOException) {
+        } catch (PDOException $e) {
+            $logger->info('db_fetchOne: ' . $e->getMessage());
             return [];
         }
 
@@ -77,6 +89,8 @@ abstract class DBConnection {
     }
 
     protected static function db_fetchAll(string $sql, ?array $params, PDO $conn = null) : array {
+        $logger = getLogger('db');
+
         try {
             if(is_null($conn)) {
                 $conn = self::db_connect();
@@ -84,7 +98,8 @@ abstract class DBConnection {
 
             $stmt = $conn->prepare($sql);
             $stmt->execute($params);
-        } catch (PDOException) {
+        } catch (PDOException $e) {
+            $logger->info('db_fetchAll: ' . $e->getMessage());
             return [];
         }
 
@@ -92,6 +107,8 @@ abstract class DBConnection {
     }
 
     protected static function db_getOutcome(string $sql, ?array $params, PDO $conn = null) : bool {
+        $logger = getLogger('db');
+
         try {
             if (is_null($conn)) {
                 $conn = self::db_connect();
@@ -99,7 +116,8 @@ abstract class DBConnection {
 
             $stmt = $conn->prepare($sql);
             $res = $stmt->execute($params);
-        } catch (PDOException) {
+        } catch (PDOException $e) {
+            $logger->info('db_getOutcome: ' . $e->getMessage());
             return false;
         }
 
@@ -107,6 +125,8 @@ abstract class DBConnection {
     }
 
     protected static function db_getLastInsertId(string $sql, ?array $params, PDO $conn = null) : int {
+        $logger = getLogger('db');
+
         try {
             if (is_null($conn)) {
                 $conn = self::db_connect();
@@ -118,8 +138,10 @@ abstract class DBConnection {
             if(!$res) {
                 return -1;
             }
+
             $last_id = $conn->lastInsertId();
-        } catch (PDOException) {
+        } catch (PDOException $e) {
+            $logger->info('db_getLastInsertId: ' . $e->getMessage());
             return -1;
         }
 
@@ -127,6 +149,8 @@ abstract class DBConnection {
     }
 
     protected static function db_numRows(string $sql, ?array $params, PDO $conn = null) : int {
+        $logger = getLogger('db');
+
         try {
             if (is_null($conn)) {
                 $conn = self::db_connect();
@@ -136,7 +160,8 @@ abstract class DBConnection {
             $stmt->execute($params);
 
             $res = count($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []);
-        } catch (PDOException) {
+        } catch (PDOException $e) {
+            $logger->info('db_numRows: ' . $e->getMessage());
             return 0;
         }
 
@@ -144,6 +169,8 @@ abstract class DBConnection {
     }
 
     protected static function db_contains(string $sql, ?array $params, PDO $conn = null) : bool {
+        $logger = getLogger('db');
+
         try {
             if(is_null($conn)) {
                 $conn = self::db_connect();
@@ -153,9 +180,11 @@ abstract class DBConnection {
             $stmt->execute($params);
 
             $res = ((int) $stmt->fetchColumn()) > 0;
-        } catch (PDOException) {
+        } catch (PDOException $e) {
+            $logger->info('db_contains: ' . $e->getMessage());
             return false;
         }
+
         return $res;
     }
 }
