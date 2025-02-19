@@ -16,6 +16,18 @@ services:
    timeout: 5s
    retries: 8
 
+ redis:
+  image: redis:7.4
+  container_name: snh_redis
+  ports:
+    - '127.0.0.1:6379:6379'
+  healthcheck:
+    test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+    start_period: 1s
+    interval: 5s
+    timeout: 5s
+    retries: 3
+
  app:
   build: 
     context: ./app
@@ -34,6 +46,8 @@ services:
   depends_on:
     db:
       condition: service_healthy
+    redis:
+      condition: service_healthy   
   develop:
     watch:
       - action: sync
@@ -47,12 +61,6 @@ services:
       - action: rebuild
         path: ./app/src/public/.htaccess
   tty: true
-
- redis:
-    image: redis:7.4
-    container_name: snh_redis
-    ports:
-     - '127.0.0.1:6379:6379'
 
 volumes:
   db_data:
