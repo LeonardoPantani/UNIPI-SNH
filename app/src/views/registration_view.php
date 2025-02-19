@@ -73,7 +73,7 @@ ob_start();
                 <i class="fas fa-exclamation-triangle"></i>
             </span>
         </div>
-        <p class="help" id="password-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long and must contains one uppercase, lowercase, digit and special char.</p>
+        <p class="help" id="password-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.</p>
     </div>
 
     <div class="field">

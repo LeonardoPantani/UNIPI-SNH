@@ -70,14 +70,14 @@ class UserController {
 
         if(!isset($params_post['password']) || !Validator::passwordValidation($params_post['password'])) {
             $logger->info('Invalid password');
-            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long and must contains one uppercase, lowercase, digit and special char';
+            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .'characters long and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.';
             $this->new();
             return;
         }
 
         if(!isset($params_post['password_confirm']) || !Validator::passwordValidation($params_post['password_confirm'])) {
             $logger->info('Invalid confirmation password');
-            $_SESSION['flash']['error'] = 'The confirmation password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long and must contains one uppercase, lowercase, digit and special char';
+            $_SESSION['flash']['error'] = 'The confirmation password must be at least '. Validator::PASSWORD_MIN_LENGTH .'characters long and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.';
             $this->new();
             return;
         }
