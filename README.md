@@ -169,30 +169,62 @@ a2dismod evasive
 ## Testing
 Some useful `cURL` commands.
 ```
-curl -s -k -c cookie.jar https://127.0.0.1 > response.html
+# NEW USER
+    # get cookie
+    curl -s -k -c cookie.jar https://127.0.0.1 > response.html
 
-# registration
-curl -s -k -L -b cookie.jar https://127.0.0.1/registration | tee response.html | grep -oP [0-9a-z]{64} > token.txt
-curl -s -k -L -b cookie.jar -d "email=a@a.a&username=aaaaaaaa&password=aaaaaA9!&password_confirm=aaaaaA9!&token=$(cat token.txt)" https://127.0.0.1/registration  > response.html
+    # registration
+    curl -s -k -L -b cookie.jar https://127.0.0.1/registration | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+    curl -s -k -L -b cookie.jar -d "email=a@a.a&username=aaaaaaaa&password=aaaaaA9!""&password_confirm=aaaaaA9!""&token=$(cat token.txt)" https://127.0.0.1/registration  > response.html
 
-# login
-curl -s -k -L -b cookie.jar https://127.0.0.1/login | tee response.html | grep -oP [0-9a-z]{64} > token.txt
-curl -s -k -L -b cookie.jar -c cookie.jar -d "username=aaaaaaaa&password=aaaaaA9!&token=$(cat token.txt)" https://127.0.0.1/login > response.html
+    # login
+    curl -s -k -L -b cookie.jar https://127.0.0.1/login | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+    curl -s -k -L -b cookie.jar -c cookie.jar -d "username=aaaaaaaa&password=aaaaaA9!""&token=$(cat token.txt)" https://127.0.0.1/login > response.html
 
-# add novel
-curl -s -k -L -b cookie.jar https://127.0.0.1/novel/add | tee response.html | grep -oP [0-9a-z]{64} > token.txt
-curl -s -k -L -b cookie.jar -d "premium=1&title=aaaaaaaa&novel_form=text&content=aaaaaaaa&token=$(cat token.txt)" https://127.0.0.1/novel/add > response.html
+    # add text novel
+    curl -s -k -L -b cookie.jar https://127.0.0.1/novel/add | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+    curl -s -k -L -b cookie.jar -d "premium=1&title=aaaaaaaa&novel_form=text&content=aaaaaaaa&token=$(cat token.txt)" https://127.0.0.1/novel/add > response.html
 
-# other users' novels
-curl -s -k -b cookie.jar https://127.0.0.1/novels | tee response.html | grep -oP ';\K[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}'
-curl -s -k -b cookie.jar https://127.0.0.1/novels/b3b2aee8-2924-4fc1-bbb5-7ad9d501e3c7 > response.html
+    # add file novel
+    curl -s -k -L -b cookie.jar https://127.0.0.1/novel/add | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+    curl -s -k -L -b cookie.jar -F "premium=1" -F "title=aaaaaaaa" -F "novel_form=file" -F "token=$(cat token.txt)" -F "file=@iscritti.pdf" https://127.0.0.1/novel/add > response.html
 
-# user novels
-curl -s -k -b cookie.jar https://127.0.0.1/user/novels tee response.html | grep -oP ';\K[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}'
-curl -s -k -b cookie.jar https://127.0.0.1/novels/510db56e-ee45-11ef-a6d7-0242ac120002 > response.html
+    # user novels
+    curl -s -k -b cookie.jar https://127.0.0.1/user/novels tee response.html | grep -oP ';\K[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}'
+    curl -s -k -b cookie.jar https://127.0.0.1/novels/510db56e-ee45-11ef-a6d7-0242ac120002 > response.html
 
-# logout
-curl -s -k -L -b cookie.jar https://127.0.0.1/logout > response.html
+    # other users' novels
+    curl -s -k -b cookie.jar https://127.0.0.1/novels | tee response.html | grep -oP ';\K[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}'
+    curl -s -k -b cookie.jar https://127.0.0.1/novels/b3b2aee8-2924-4fc1-bbb5-7ad9d501e3c7 > response.html
+
+    # change password
+    curl -s -k -L -b cookie.jar https://127.0.0.1/settings | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+    curl -s -k -L -b cookie.jar -d "password_old=aaaaaA9!""&password_new=A9!aaaaa&password_new_confirm=A9!aaaaa&token=$(cat token.txt)" https://127.0.0.1/registration  > response.html
+
+    # test admin
+    curl -s -k -L -b cookie.jar -d "" https://127.0.0.1/api/v1/users > response.html
+
+    # logout
+    curl -s -k -L -b cookie.jar https://127.0.0.1/logout > response.html
+
+# ADMIN USER
+    # get cookie
+    curl -s -k -c cookie.jar https://127.0.0.1 > response.html
+
+    # login
+    curl -s -k -L -b cookie.jar https://127.0.0.1/login | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+    curl -s -k -L -b cookie.jar -c cookie.jar -d "username=adminuser&password=passwordA1!""&token=$(cat token.txt)" https://127.0.0.1/login > response.html
+
+    # get users
+    curl -s -k -L -b cookie.jar https://127.0.0.1/admin/services/edit | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+    curl -s -k -L -b cookie.jar -d "username=aa&token=$(cat token.txt)" https://127.0.0.1/api/v1/users | jq .
+    
+    # edit user role
+    curl -s -k -L -b cookie.jar https://127.0.0.1/admin/services/edit | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+    curl -s -k -L -b cookie.jar -d "username=aaaaaaaa&role=1&token=$(cat token.txt)" https://127.0.0.1/admin/services/edit > response.html
+    
+    # logout
+    curl -s -k -L -b cookie.jar https://127.0.0.1/logout > response.html
 ```
 
 ## Logs
