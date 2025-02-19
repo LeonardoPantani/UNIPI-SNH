@@ -169,12 +169,30 @@ a2dismod evasive
 ## Testing
 Some useful `cURL` commands.
 ```
-curl -s -o /dev/null -k -c cookie.jar https://127.0.0.1
-curl -s -k -b cookie.jar https://127.0.0.1/login | grep -oP [0-9a-z]{64} > token.txt
-curl -s -X POST -k -b cookie.jar -c cookie.jar -d "username=aaaaaaaa&password=12345678&token=$(cat token.txt)" https://127.0.0.1/login
-curl -s -k -b cookie.jar https://127.0.0.1/logout
+curl -s -k -c cookie.jar https://127.0.0.1 > response.html
 
-curl -X POST -s -o /dev/null -w 'Authorization: %header{Authorization}' -d '{"username": "aaaaaaaa", "password": "aaaaaaaa"}' -k https://127.0.0.1/login > headers.txt
+# registration
+curl -s -k -L -b cookie.jar https://127.0.0.1/registration | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+curl -s -k -L -b cookie.jar -d "email=a@a.a&username=aaaaaaaa&password=aaaaaA9!&password_confirm=aaaaaA9!&token=$(cat token.txt)" https://127.0.0.1/registration  > response.html
+
+# login
+curl -s -k -L -b cookie.jar https://127.0.0.1/login | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+curl -s -k -L -b cookie.jar -c cookie.jar -d "username=aaaaaaaa&password=aaaaaA9!&token=$(cat token.txt)" https://127.0.0.1/login > response.html
+
+# add novel
+curl -s -k -L -b cookie.jar https://127.0.0.1/novel/add | tee response.html | grep -oP [0-9a-z]{64} > token.txt
+curl -s -k -L -b cookie.jar -d "premium=1&title=aaaaaaaa&novel_form=text&content=aaaaaaaa&token=$(cat token.txt)" https://127.0.0.1/novel/add > response.html
+
+# other users' novels
+curl -s -k -b cookie.jar https://127.0.0.1/novels | tee response.html | grep -oP ';\K[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}'
+curl -s -k -b cookie.jar https://127.0.0.1/novels/b3b2aee8-2924-4fc1-bbb5-7ad9d501e3c7 > response.html
+
+# user novels
+curl -s -k -b cookie.jar https://127.0.0.1/user/novels tee response.html | grep -oP ';\K[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}'
+curl -s -k -b cookie.jar https://127.0.0.1/novels/510db56e-ee45-11ef-a6d7-0242ac120002 > response.html
+
+# logout
+curl -s -k -L -b cookie.jar https://127.0.0.1/logout > response.html
 ```
 
 ## Logs
