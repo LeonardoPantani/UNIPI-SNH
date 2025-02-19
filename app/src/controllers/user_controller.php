@@ -31,7 +31,7 @@ class UserController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("registration", ["flash" => $flash, "token" => $token, "email_pattern" => Validator::EMAIL_REGEX, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("registration", ["flash" => $flash, "token" => $token, "email_pattern" => Validator::EMAIL_REGEX, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH, "password_pattern" => Validator::PASSWORD_REGEX_HTML]);
     }
 
     // POST /registration
@@ -70,14 +70,14 @@ class UserController {
 
         if(!isset($params_post['password']) || !Validator::passwordValidation($params_post['password'])) {
             $logger->info('Invalid password');
-            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long and must contains one uppercase, lowercase, digit and special char';
             $this->new();
             return;
         }
 
         if(!isset($params_post['password_confirm']) || !Validator::passwordValidation($params_post['password_confirm'])) {
             $logger->info('Invalid confirmation password');
-            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $_SESSION['flash']['error'] = 'The confirmation password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long and must contains one uppercase, lowercase, digit and special char';
             $this->new();
             return;
         }
@@ -95,14 +95,14 @@ class UserController {
         }
 
         if(User::usernameExists($username)) {
-            $logger->info('Username already taken');
+            $logger->info('Invalid username');
             $_SESSION['flash']['error'] = 'Username already taken';
             $this->new();
             return;
         }
 
         if(User::emailExists($email)) {
-            $logger->info('Email already taken');
+            $logger->info('Invalid email');
             $_SESSION['flash']['error'] = 'Email already taken';
             $this->new();
             return;

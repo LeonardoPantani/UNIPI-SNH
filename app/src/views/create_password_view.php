@@ -26,6 +26,7 @@ ob_start();
         <label class="label" for="password">Password</label>
         <div class="control has-icons-left has-icons-right">
             <input 
+                pattern="<?= $vars["password_pattern"] ?>"
                 class="input" 
                 type="password" 
                 id="password" 
@@ -43,13 +44,14 @@ ob_start();
                 <i class="fas fa-exclamation-triangle"></i>
             </span>
         </div>
-        <p class="help" id="password-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long.</p>
+        <p class="help" id="password-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long and must contains one uppercase, lowercase, digit and special char.</p>
     </div>
 
     <div class="field is-invisible password-field">
         <label class="label" for="password_confirm">Confirm password</label>
         <div class="control has-icons-left has-icons-right">
             <input 
+                pattern="<?= $vars["password_pattern"] ?>"
                 class="input" 
                 type="password" 
                 id="password_confirm" 

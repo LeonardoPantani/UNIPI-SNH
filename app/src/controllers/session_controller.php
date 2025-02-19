@@ -31,7 +31,7 @@ class LoginController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("login", ["flash" => $flash, "token" => $token, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("login", ["flash" => $flash, "token" => $token, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH, "password_pattern" => Validator::PASSWORD_REGEX_HTML]);
     }
 
     // POST /login

@@ -5,3 +5,4 @@ const NOVEL_TITLE_MAX_LENGTH = 100;
 const NOVEL_TEXT_MAX_LENGTH = 500;
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/;
 const USERNAME_REGEX = new RegExp(`^[a-zA-Z0-9\-_]{${USERNAME_MIN_LENGTH},${USERNAME_MAX_LENGTH}}$`);
+const PASSWORD_REGEX = new RegExp(`^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\\W]).{${PASSWORD_MIN_LENGTH},}$`);

@@ -12,6 +12,8 @@ class Validator {
     public const string USERNAME_REGEX = "/^".self::USERNAME_REGEX_HTML."$/";
     public const string PARTIAL_USERNAME_REGEX = "/^[a-zA-Z0-9\-_]{1,".self::USERNAME_MAX_LENGTH."}$/";
     public const string EMAIL_REGEX = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/";
+    public const string PASSWORD_REGEX_HTML = "(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\W]).{".self::PASSWORD_MIN_LENGTH.",}";
+    public const string PASSWORD_REGEX = "/^".self::PASSWORD_REGEX_HTML."$/";
     public const string UUID_REGEX = "/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/";
     public const string CODE_REGEX = "/^[0-9a-zA-Z]{5}$/";
     public const string PARTIAL_CODE_REGEX = "/^[0-9a-zA-Z]{0,5}$/";
@@ -21,7 +23,7 @@ class Validator {
     }
 
     public static function passwordValidation(string $password) : bool {
-        return strlen($password) >= self::PASSWORD_MIN_LENGTH;
+        return preg_match(self::PASSWORD_REGEX, $password);
     }
 
     public static function usernameValidation($username) : bool {

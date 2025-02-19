@@ -11,15 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('password_confirm').addEventListener('blur', () => {
         checkPasswordConfirm();
     });
-    
+
     function handleCodeInput(e) {
         const input = e.target;
         const nextIndex = parseInt(input.dataset.index) + 1;
-        
+
         if (input.value.length === 1 && nextIndex < 5) {
             codeInputs[nextIndex].focus();
         }
-        
+
         updateHiddenCode();
     }
 
@@ -30,13 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function handlePaste(e) {
         e.preventDefault();
         const pasteData = (e.clipboardData || window.clipboardData).getData('text').slice(0, 5);
-        
+
         pasteData.split('').forEach((char, index) => {
             if (index < 5) {
                 codeInputs[index].value = char.toUpperCase();
             }
         });
-        
+
         updateHiddenCode();
         codeInputs[Math.min(pasteData.length, 4)].focus();
     }
@@ -46,21 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(input => input.value.trim())
             .join('')
             .toUpperCase();
-        
+
         hiddenCode.value = code;
-    
+
         const passwordFields = document.querySelectorAll('.password-field');
         const minicodeFields = document.querySelectorAll('div.minicode > input');
         const minicodeHelpField = document.querySelector('.code-field-message');
         const submitButton = document.querySelector('#submit');
         const shouldShow = code.length === 5;
-        
+
         passwordFields.forEach(field => {
             field.classList.toggle('is-invisible', !shouldShow);
             field.querySelector('input').required = shouldShow;
         });
 
-        if(shouldShow) {
+        if (shouldShow) {
             minicodeFields.forEach(field => {
                 field.classList.add('is-success');
             });
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 codeInputs[0].focus();
             }
-            
+
             if (allSelected && (e.key === 'Delete' || e.key === 'Backspace')) {
                 e.preventDefault();
                 codeInputs.forEach(input => {
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateHiddenCode();
             }
         });
-        
+
         input.addEventListener('input', () => {
             if (allSelected) {
                 allSelected = false;
@@ -143,7 +143,7 @@ function checkPassword() {
     elem.classList.remove('is-danger', 'is-success');
     if (!value) return;
 
-    if (value.length < PASSWORD_MIN_LENGTH) {
+    if (!PASSWORD_REGEX.test(value)) {
         exclamationIcon.classList.remove('is-invisible');
         helpText.classList.add('is-danger');
         elem.classList.add('is-danger');

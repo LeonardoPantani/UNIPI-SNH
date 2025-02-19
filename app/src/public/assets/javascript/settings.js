@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elem.classList.remove('is-danger', 'is-success');
         if (!value) return;
 
-        if (value.length < PASSWORD_MIN_LENGTH) {
+        if (!PASSWORD_REGEX.test(value)) {
             exclamationIcon.classList.remove('is-invisible');
             helpText.classList.remove('is-hidden');
             elem.classList.add('is-danger');
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elem.classList.remove('is-danger', 'is-success');
         if (!value) return;
 
-        if (value.length < PASSWORD_MIN_LENGTH) {
+        if (!PASSWORD_REGEX.test(value)) {
             exclamationIcon.classList.remove('is-invisible');
             helpText.classList.add('is-danger');
             elem.classList.add('is-danger');

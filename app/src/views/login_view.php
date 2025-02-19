@@ -29,7 +29,7 @@ ob_start();
     <div class="field">
         <label class="label" for="password">Password</label>
         <div class="control has-icons-left has-icons-right">
-            <input class="input" type="password" id="password" name="password" minlength="<?= $vars["password_minlength"] ?>" required placeholder="Your password">
+            <input class="input" pattern="<?= $vars["password_pattern"] ?>" type="password" id="password" name="password" minlength="<?= $vars["password_minlength"] ?>" required placeholder="Your password">
             <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
             </span>
@@ -40,7 +40,7 @@ ob_start();
                 <i class="fas fa-exclamation-triangle"></i>
             </span>
         </div>
-        <p class="help is-danger is-invisible" id="password-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long.</p>
+        <p class="help is-danger is-invisible" id="password-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long and must contains one uppercase, lowercase, digit and special char.</p>
     </div>
 
     <div class="field is-grouped">

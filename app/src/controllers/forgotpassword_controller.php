@@ -168,7 +168,7 @@ class ForgotPasswordController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("create_password", ["flash" => $flash, "token" => $token, "code" => $code, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("create_password", ["flash" => $flash, "token" => $token, "code" => $code, "password_minlength" => Validator::PASSWORD_MIN_LENGTH, "password_pattern" => Validator::PASSWORD_REGEX_HTML]);
     }
 
     // POST /password/reset/:code
@@ -202,7 +202,7 @@ class ForgotPasswordController {
 
         if(!isset($params_post['password']) || !Validator::passwordValidation($params_post['password'])) {
             $logger->info('Invalid password');
-            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long and must contains one uppercase, lowercase, digit and special char';
             $this->choose_new_password($params_path);
 
             return;
@@ -210,7 +210,7 @@ class ForgotPasswordController {
 
         if(!isset($params_post['password_confirm']) || !Validator::passwordValidation($params_post['password_confirm'])) {
             $logger->info('Invalid confirmation password');
-            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $_SESSION['flash']['error'] = 'The confirmation password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long and must contains one uppercase, lowercase, digit and special char';
             $this->choose_new_password($params_path);
 
             return;

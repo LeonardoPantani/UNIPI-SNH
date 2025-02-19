@@ -34,7 +34,7 @@ class SettingsController {
         $flash = $_SESSION['flash'] ?? [];
         unset($_SESSION['flash']);
 
-        ViewManager::render("settings", ["flash" => $flash, "token" => $token, "username" => $user->getUsername(), "email" => $user->getEmail(), "email_pattern" => Validator::EMAIL_REGEX, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH]);
+        ViewManager::render("settings", ["flash" => $flash, "token" => $token, "username" => $user->getUsername(), "email" => $user->getEmail(), "email_pattern" => Validator::EMAIL_REGEX, "username_pattern" => Validator::USERNAME_REGEX_HTML, "username_minlength" => Validator::USERNAME_MIN_LENGTH, "username_maxlength" => Validator::USERNAME_MAX_LENGTH, "password_minlength" => Validator::PASSWORD_MIN_LENGTH, "password_pattern" => Validator::PASSWORD_REGEX_HTML]);
     }
 
     // POST /user/settings
@@ -60,21 +60,21 @@ class SettingsController {
 
         if(!isset($params_post['password_old']) || !Validator::passwordValidation($params_post['password_old'])) {
             $logger->info('Invalid old password');
-            $_SESSION['flash']['error'] = 'The old password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $_SESSION['flash']['error'] = 'The old password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long and must contains one uppercase, lowercase, digit and special char';
             $this->new();
             return;
         }
 
         if(!isset($params_post['password_new']) || !Validator::passwordValidation($params_post['password_new'])) {
             $logger->info('Invalid new password');
-            $_SESSION['flash']['error'] = 'The old password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $_SESSION['flash']['error'] = 'The password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long and must contains one uppercase, lowercase, digit and special char';
             $this->new();
             return;
         }
 
         if(!isset($params_post['password_new_confirm']) || !Validator::passwordValidation($params_post['password_new_confirm'])) {
             $logger->info('Invalid confirmation password');
-            $_SESSION['flash']['error'] = 'The old password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long';
+            $_SESSION['flash']['error'] = 'The confirmation password must be at least '. Validator::PASSWORD_MIN_LENGTH .' chars long and must contains one uppercase, lowercase, digit and special char';
             $this->new();
             return;
         }

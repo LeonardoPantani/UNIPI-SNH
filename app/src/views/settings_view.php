@@ -31,13 +31,14 @@ ob_start();
                 <i class="fas fa-exclamation-triangle"></i>
             </span>
         </div>
-        <p class="help is-danger is-hidden" id="password_old-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long.</p>
+        <p class="help is-danger is-hidden" id="password_old-message-error">Password must be at least <?= $vars["password_minlength"] ?> characters long and must contains one uppercase, lowercase, digit and special char.</p>
     </div>
 
     <div class="field">
         <label class="label" for="password_new">New password</label>
         <div class="control has-icons-left has-icons-right">
             <input 
+                pattern="<?= $vars["password_pattern"] ?>"
                 class="input" 
                 type="password" 
                 id="password_new" 
@@ -55,13 +56,14 @@ ob_start();
                 <i class="fas fa-exclamation-triangle"></i>
             </span>
         </div>
-        <p class="help" id="password_new-message-error">New password must be at least <?= $vars["password_minlength"] ?> characters long.</p>
+        <p class="help" id="password_new-message-error">New password must be at least <?= $vars["password_minlength"] ?> characters long and must contains one uppercase, lowercase, digit and special char.</p>
     </div>
 
     <div class="field">
         <label class="label" for="password_new_confirm">Confirm new password</label>
         <div class="control has-icons-left has-icons-right">
             <input 
+                pattern="<?= $vars["password_pattern"] ?>"
                 class="input" 
                 type="password" 
                 id="password_new_confirm" 

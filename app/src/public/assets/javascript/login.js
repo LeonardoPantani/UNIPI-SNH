@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elem.classList.remove('is-danger', 'is-success');
         if (!value) return;
 
-        if (value.length < PASSWORD_MIN_LENGTH) {
+        if (!PASSWORD_REGEX.test(value)) {
             exclamationIcon.classList.remove('is-invisible');
             helpText.classList.remove('is-invisible');
             elem.classList.add('is-danger');
